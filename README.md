@@ -1,4 +1,4 @@
-# Project Name
+# Please don't make us do Tomb of the Mask
 
 TODO: Write a project description
 
