@@ -1,16 +1,16 @@
-\# Project Name
+# Project Name
 
 TODO: Write a project description
 
-\## Installation
+## Installation
 
 TODO: Describe the installation process
 
-\## Usage
+## Usage
 
 TODO: Write usage instructions
 
-\## Contributing
+## Contributing
 
 1\. Fork it!
 
@@ -22,15 +22,15 @@ TODO: Write usage instructions
 
 5\. Submit a pull request :D
 
-\## History
+## History
 
 TODO: Write history
 
-\## Credits
+## Credits
 
 TODO: Write credits
 
-\## License
+## License
 
 TODO: Write license
 
