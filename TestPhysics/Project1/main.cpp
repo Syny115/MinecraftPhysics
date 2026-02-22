@@ -52,10 +52,15 @@ class Player {
         bool isOnFloor = true;
         bool wasOnFloor = true;
 
+        bool leftBlocked = false;
+        bool rightBlocked = false;
+
         const char* imageName = "HOUSE_MD.png";
         Texture2D sprite;
 
-        Vector2 groundCollider = { size * 0.5f , size };
+        Rectangle groundCollider = { 8, size-1, size-16, 4};
+        Rectangle leftCollider = { 0+2, 5, 4, size-20};
+        Rectangle rightCollider = { size-4, 5, 4, size-20};
     public:
         
         Player() {
@@ -70,9 +75,23 @@ class Player {
 
         int GetInpuAxis() { return IsKeyDown(KEY_RIGHT) - IsKeyDown(KEY_LEFT); }
 
+        int CheckCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
+            for (int i = 0; i < len; i++) {
+                if (CheckCollisionPointRec(point, recs[i])) return i;
+            }
+            return -1;
+        }
+
+        int CheckCollisionRecsArr(Rectangle rec1, Rectangle* recs2, int len) {
+            for (int i = 0; i < len; i++) {
+                    if (CheckCollisionRecs(rec1, recs2[i])) return i;
+            }
+            return -1;
+        }
+
         void GroundCollision(Rectangle floorRec) {
             wasOnFloor = isOnFloor;
-            if (CheckCollisionPointRec(groundCollider, floorRec)) {
+            if (CheckCollisionRecs(groundCollider, floorRec)) {
                 isOnFloor = true;
                 position.y = floorRec.y-size;
                 if (velocity.y > 0) {
@@ -81,6 +100,46 @@ class Player {
             }
             else {
                 isOnFloor = false;
+            }
+        }
+
+        void GroundCollision(Rectangle* floorRec, int len) {
+            wasOnFloor = isOnFloor;
+            int i = CheckCollisionRecsArr(groundCollider, floorRec, len);
+            if (i != -1) {
+                isOnFloor = true;
+                position.y = floorRec[i].y - size;
+                if (velocity.y > 0) {
+                    velocity.y = 0;
+                }
+            }
+            else {
+                isOnFloor = false;
+            }
+        }
+
+        void WallCollision(Rectangle* wallRec, int len) {
+            int i = CheckCollisionRecsArr(leftCollider, wallRec, len);
+            if (i != -1) {
+                leftBlocked = true;
+                position.x += GetFrameTime()*50;
+                if (velocity.x < 0) {
+                    velocity.x = 0;
+                }
+            }
+            else {
+                leftBlocked = false;
+            }
+            int j = CheckCollisionRecsArr(rightCollider, wallRec, len);
+            if (j != -1) {
+                rightBlocked = true;
+                position.x -= GetFrameTime()*50;
+                if (velocity.x > 0) {
+                    velocity.x = 0;
+                }
+            }
+            else {
+                rightBlocked = false;
             }
         }
 
@@ -126,14 +185,21 @@ class Player {
             position = Vector2Add(position, velocity);
             position.x = Clamp(position.x, 0, GetScreenWidth()-size);
             position.y = Clamp(position.y, 0, GetScreenHeight());
-            groundCollider = Vector2Add(position, Vector2{ size * 0.5f, size });
+            groundCollider.x = position.x+5 - normalizedVelocity * 2;
+            groundCollider.y = position.y+ size -1;
+            leftCollider.x = position.x-1;
+            leftCollider.y = position.y+5;
+            rightCollider.x = position.x+size-1;
+            rightCollider.y = position.y+5;
         }
 
         void DrawPlayer() {
             rec = { position.x, position.y, size, size };
             DrawRectangleRec(rec, DARKGREEN);
             DrawTextureV(sprite, position, WHITE);
-            DrawCircleV(groundCollider, 2, RED);
+            DrawRectangleRec(groundCollider, RED);
+            DrawRectangleRec(leftCollider, RED);
+            DrawRectangleRec(rightCollider, RED);
         }
 };
 
@@ -162,10 +228,14 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    Rectangle floorRec = { 0, 350, 800, 100 };
+    Rectangle floorRec[4];
     Player player;
-    static double x= 120, y = 35;
-    static double speed_x = 2, speed_y = 2;
+
+    floorRec[0] = { 0, 350, 800, 100 };
+    floorRec[1] = { 80, 250, 50, 100 };
+    floorRec[2] = { 400, 250, 50, 100 };
+    floorRec[3] = { 450, 150, 50, 100 };
+
 
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
@@ -175,17 +245,12 @@ int main(void)
 
 
 
-        player.GroundCollision(floorRec);
+        player.GroundCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
+        player.WallCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
         player.Update();
-        if (IsKeyDown(KEY_RIGHT)) x += speed_x;
-        if (IsKeyDown(KEY_LEFT)) x -= speed_x;
-        if (IsKeyDown(KEY_DOWN)) floorRec.y++;
-        if (IsKeyDown(KEY_UP)) floorRec.y--;
 
-        if (y > screenHeight) y = screenHeight;
-        if (y < 0) y = 0;
-        if (x > screenWidth) x = screenWidth;
-        if (x < 0) x = 0;
+        if (IsKeyDown(KEY_DOWN)) floorRec[0].y++;
+        if (IsKeyDown(KEY_UP)) floorRec[0].y--;
 
         if (IsKeyPressed(KEY_SPACE))
             PlaySound(soundArray[0]);
@@ -199,7 +264,10 @@ int main(void)
 
         DrawText("Cuddy, I need moere vicodon!", 190, 200, 20, LIGHTGRAY);
         
-        DrawRectangleRec(floorRec, BLUE);
+        DrawRectangleRec(floorRec[0], BLUE);
+        DrawRectangleRec(floorRec[1], BLUE);
+        DrawRectangleRec(floorRec[2], BLUE);
+        DrawRectangleRec(floorRec[3], BLUE);
         player.DrawPlayer();
         EndDrawing();
         //----------------------------------------------------------------------------------
