@@ -47,6 +47,7 @@ class Player {
         Vector2 position = {50, 60};
         Vector2 velocity = {0, 0};
         float maxSPD = 10;
+        float maxFALL =  20;
         int normalizedVelocity = 0;
 
         bool isOnFloor = true;
@@ -122,7 +123,7 @@ class Player {
             int i = CheckCollisionRecsArr(leftCollider, wallRec, len);
             if (i != -1) {
                 leftBlocked = true;
-                position.x += GetFrameTime()*50;
+                position.x += GetFrameTime()*80;
                 if (velocity.x < 0) {
                     velocity.x = 0;
                 }
@@ -133,7 +134,7 @@ class Player {
             int j = CheckCollisionRecsArr(rightCollider, wallRec, len);
             if (j != -1) {
                 rightBlocked = true;
-                position.x -= GetFrameTime()*50;
+                position.x -= GetFrameTime()*80;
                 if (velocity.x > 0) {
                     velocity.x = 0;
                 }
@@ -168,7 +169,7 @@ class Player {
             
 
 
-            if (!isOnFloor) {
+            if (!isOnFloor && velocity.y < maxFALL) {
                 velocity.y += grav;
             }
             if (wasOnFloor) {
@@ -185,7 +186,7 @@ class Player {
             position = Vector2Add(position, velocity);
             position.x = Clamp(position.x, 0, GetScreenWidth()-size);
             position.y = Clamp(position.y, 0, GetScreenHeight());
-            groundCollider.x = position.x+5 - normalizedVelocity * 2;
+            groundCollider.x = position.x+8 - GetInpuAxis() * 8;
             groundCollider.y = position.y+ size -1;
             leftCollider.x = position.x-1;
             leftCollider.y = position.y+5;
