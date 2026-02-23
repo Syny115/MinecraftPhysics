@@ -60,8 +60,9 @@ class Player {
         Texture2D sprite;
 
         Rectangle groundCollider = { 8, size-1, size-16, 4};
-        Rectangle leftCollider = { 0+2, 5, 4, size-20};
-        Rectangle rightCollider = { size-4, 5, 4, size-20};
+        Rectangle topCollider = { 8, +4, size-16, 2};
+        Rectangle leftCollider = { 0+2, 10, 4, size-20};
+        Rectangle rightCollider = { size-4, 10, 4, size-20};
     public:
         
         Player() {
@@ -116,6 +117,13 @@ class Player {
             }
             else {
                 isOnFloor = false;
+            }
+        }
+
+        void CeilingCollision(Rectangle* ceilingRec, int len) {
+            int i = CheckCollisionRecsArr(topCollider, ceilingRec, len);
+            if (i != -1 && velocity.y < 0) {
+                velocity.y = 0;
             }
         }
 
@@ -188,10 +196,12 @@ class Player {
             position.y = Clamp(position.y, 0, GetScreenHeight());
             groundCollider.x = position.x+8 - GetInpuAxis() * 8;
             groundCollider.y = position.y+ size -1;
+            topCollider.x = position.x+8;
+            topCollider.y = position.y+4;
             leftCollider.x = position.x-1;
-            leftCollider.y = position.y+5;
+            leftCollider.y = position.y+10;
             rightCollider.x = position.x+size-1;
-            rightCollider.y = position.y+5;
+            rightCollider.y = position.y+10;
         }
 
         void DrawPlayer() {
@@ -199,6 +209,7 @@ class Player {
             DrawRectangleRec(rec, DARKGREEN);
             DrawTextureV(sprite, position, WHITE);
             DrawRectangleRec(groundCollider, RED);
+            DrawRectangleRec(topCollider, RED);
             DrawRectangleRec(leftCollider, RED);
             DrawRectangleRec(rightCollider, RED);
         }
@@ -247,6 +258,7 @@ int main(void)
 
 
         player.GroundCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
+        player.CeilingCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
         player.WallCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
         player.Update();
 
