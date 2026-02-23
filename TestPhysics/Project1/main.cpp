@@ -183,7 +183,12 @@ class Player {
             if (wasOnFloor) {
                 if (IsKeyPressed(KEY_SPACE)) velocity.y -= jumpForce;
             }
-
+            if (IsKeyDown(KEY_SPACE)) {
+                grav = 1;
+            }
+            else {
+                grav = 2;
+            }
 
 
             if (abs(velocity.x) < 0.1) {
@@ -217,10 +222,10 @@ class Player {
             rec = { position.x, position.y, size, size };
             DrawRectangleRec(rec, DARKGREEN);
             DrawTextureV(sprite, position, WHITE);
-            DrawRectangleRec(groundCollider, RED);
-            DrawRectangleRec(topCollider, RED);
-            DrawRectangleRec(leftCollider, RED);
-            DrawRectangleRec(rightCollider, RED);
+            //DrawRectangleRec(groundCollider, RED);
+            //DrawRectangleRec(topCollider, RED);
+            //DrawRectangleRec(leftCollider, RED);
+            //DrawRectangleRec(rightCollider, RED);
         }
 };
 
@@ -282,7 +287,7 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(GREEN);
 
         DrawText("Cuddy, I need moere vicodon!", 190, 200, 20, LIGHTGRAY);
         
