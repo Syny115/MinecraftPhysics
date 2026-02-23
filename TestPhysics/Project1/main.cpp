@@ -61,8 +61,8 @@ class Player {
 
         Rectangle groundCollider = { 8, size-1, size-16, 4};
         Rectangle topCollider = { 8, +4, size-16, 2};
-        Rectangle leftCollider = { 0+2, 10, 4, size-20};
-        Rectangle rightCollider = { size-4, 10, 4, size-20};
+        Rectangle leftCollider = { 0+2, 10, 4, size-40};
+        Rectangle rightCollider = { size-4, 10, 4, size-40};
     public:
         
         Player() {
@@ -202,6 +202,15 @@ class Player {
             leftCollider.y = position.y+10;
             rightCollider.x = position.x+size-1;
             rightCollider.y = position.y+10;
+
+            if (velocity.y > 10) {
+                leftCollider.height = size - 40;
+                rightCollider.height = size - 40;
+            }
+            else {
+                leftCollider.height = size - 20;
+                rightCollider.height = size - 20;
+            }
         }
 
         void DrawPlayer() {
