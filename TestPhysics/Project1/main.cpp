@@ -26,6 +26,7 @@
 #include <iostream>
 #include "raymath.h"
 #include <math.h>
+#include "tileSet.cpp"
 
 Sound soundArray[10];
 
@@ -84,7 +85,7 @@ class Player {
             return -1;
         }
 
-        int CheckCollisionRecsArr(Rectangle rec1, Rectangle* recs2, int len) {
+        int CheckCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len) {
             for (int i = 0; i < len; i++) {
                     if (CheckCollisionRecs(rec1, recs2[i])) return i;
             }
@@ -105,7 +106,7 @@ class Player {
             }
         }
 
-        void GroundCollision(Rectangle* floorRec, int len) {
+        void GroundCollision(vector<Rectangle> floorRec, int len) {
             wasOnFloor = isOnFloor;
             int i = CheckCollisionRecsArr(groundCollider, floorRec, len);
             if (i != -1) {
@@ -120,14 +121,14 @@ class Player {
             }
         }
 
-        void CeilingCollision(Rectangle* ceilingRec, int len) {
+        void CeilingCollision(vector<Rectangle> ceilingRec, int len) {
             int i = CheckCollisionRecsArr(topCollider, ceilingRec, len);
             if (i != -1 && velocity.y < 0) {
                 velocity.y = 0;
             }
         }
 
-        void WallCollision(Rectangle* wallRec, int len) {
+        void WallCollision(vector<Rectangle> wallRec, int len) {
             int i = CheckCollisionRecsArr(leftCollider, wallRec, len);
             if (i != -1) {
                 leftBlocked = true;
@@ -233,13 +234,37 @@ class Player {
 
 int main(void)
 {
-    // Initialization
-    //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenWidth = 1280;
+    const int screenHeight = 640;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
     InitAudioDevice();
+
+    Image tileInput = LoadImage("SceneTile.png");
+    Texture2D tileMap = LoadTexture("TileSetTest.png");
+    bool debug = true;
+
+    vector<vector<int>> mat(tileInput.height, std::vector<int>(tileInput.width));
+
+
+    for (int i = 0; i < tileInput.width; i++) {
+        for (int j = 0; j < tileInput.height; j++) {
+            if (ColorIsEqual(GetImageColor(tileInput, i, j), BLACK) ||
+                ColorIsEqual(GetImageColor(tileInput, i, j), { 0x00, 0x00, 0xFF, 0xFF }) ||
+                ColorIsEqual(GetImageColor(tileInput, i, j), { 0x00, 0xFF, 0x00, 0xFF }) ||
+                ColorIsEqual(GetImageColor(tileInput, i, j), { 0x00, 0xFF, 0xFF, 0xFF }) ||
+                ColorIsEqual(GetImageColor(tileInput, i, j), { 0xFF, 0x00, 0xFF, 0xFF })) {
+                mat[j][i] = 1;
+            }
+        }
+    }
+    vector<Rectangle> collisionRects;
+    matrixToRects(&collisionRects, mat);
+
+
+    // Initialization
+    //--------------------------------------------------------------------------------------
+    
 
     soundArray[0] = LoadSound("resources/raylib_audio_resources/sound.wav");
 
@@ -269,11 +294,11 @@ int main(void)
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
 
+        if (IsKeyPressed(KEY_ENTER)) debug = !debug;
 
-
-        player.GroundCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
-        player.CeilingCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
-        player.WallCollision(floorRec, sizeof(floorRec) / sizeof(floorRec[0]));
+        player.GroundCollision(collisionRects, collisionRects.size());
+        player.CeilingCollision(collisionRects, collisionRects.size());
+        player.WallCollision(collisionRects, collisionRects.size());
         player.Update();
 
         if (IsKeyDown(KEY_DOWN)) floorRec[0].y++;
@@ -286,15 +311,65 @@ int main(void)
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
+        ClearBackground({ 0xA0, 0xF0, 0xFF, 0xFF });
+        Rectangle src;
+        Rectangle dest;
+        for (int i = 0; i < tileInput.width; i++) {
+            for (int j = 0; j < tileInput.height; j++) {
+                if (ColorIsEqual(GetImageColor(tileInput, i, j), BLACK)) {
+                    src = { 0, 3 * 16, 16, 16 };
+                    dest = { (float)i * 80, (float)j * 80, 80, 80 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+                else if (ColorIsEqual(GetImageColor(tileInput, i, j), WHITE)) {
+                    src = { 16, 16, 32, 32 };
+                    dest = { (float)i * 80, (float)j * 80, 160, 160 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+                else if (ColorIsEqual(GetImageColor(tileInput, i, j), { 0x00, 0x00, 0xFF, 0xFF })) {
+                    src = { 0, 2 * 16, 16, 16 };
+                    dest = { (float)i * 80, (float)j * 80, 80, 80 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+                else if (ColorIsEqual(GetImageColor(tileInput, i, j), { 0x00, 0xFF, 0x00, 0xFF })) {
+                    src = { 0, 16, 16, 16 };
+                    dest = { (float)i * 80, (float)j * 80, 80, 80 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+                else if (ColorIsEqual(GetImageColor(tileInput, i, j), { 0x00, 0xFF, 0xFF, 0xFF })) {
+                    src = { 0, 0, 16, 16 };
+                    dest = { (float)i * 80, (float)j * 80, 80, 80 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+                else if (ColorIsEqual(GetImageColor(tileInput, i, j), { 0xFF, 0x00, 0xFF, 0xFF })) {
+                    src = { 16, 0, 16, 16 };
+                    dest = { (float)i * 80, (float)j * 80, 80, 80 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+                else if (ColorIsEqual(GetImageColor(tileInput, i, j), { 0xFF, 0xFF, 0x00, 0xFF })) {
+                    src = { 16 * 2, 0, 16, 16 };
+                    dest = { (float)i * 80, (float)j * 80, 80, 80 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+                else if (ColorIsEqual(GetImageColor(tileInput, i, j), { 0xFF, 0x00, 0x00, 0xFF })) {
+                    src = { 16 * 3, 0, 16, 16 };
+                    dest = { (float)i * 80, (float)j * 80, 80, 80 };
+                    DrawTexturePro(tileMap, src, dest, Vector2{ 0, 0 }, 0, WHITE);
+                }
+            }
+        }
 
-        ClearBackground(GREEN);
+        for (int i = 0; i < collisionRects.size() && !debug; i++) {
+            DrawRectangleRec(collisionRects[i], BLACK);
+            DrawRectangle(collisionRects[i].x + 5, collisionRects[i].y + 5, collisionRects[i].width - 10, collisionRects[i].height - 10, GREEN);
+        }
 
         DrawText("Cuddy, I need moere vicodon!", 190, 200, 20, LIGHTGRAY);
         
-        DrawRectangleRec(floorRec[0], BLUE);
+        /*DrawRectangleRec(floorRec[0], BLUE);
         DrawRectangleRec(floorRec[1], BLUE);
         DrawRectangleRec(floorRec[2], BLUE);
-        DrawRectangleRec(floorRec[3], BLUE);
+        DrawRectangleRec(floorRec[3], BLUE);*/
         player.DrawPlayer();
         EndDrawing();
         //----------------------------------------------------------------------------------
@@ -305,7 +380,8 @@ int main(void)
     CloseAudioDevice();
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
-
+    UnloadImage(tileInput);
+    UnloadTexture(tileMap);
     return 0;
 }
 // raylib example source code

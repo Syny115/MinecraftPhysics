@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libraries\raylib\include\raylib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="libraries\raylib\include\raymath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
