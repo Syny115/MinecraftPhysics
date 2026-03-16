@@ -30,7 +30,7 @@ void Player::GroundCollision(Rectangle floorRec) {
     wasOnFloor = isOnFloor;
     if (CheckCollisionRecs(groundCollider, floorRec)) {
         isOnFloor = true;
-        position.y = floorRec.y - size;
+        position.y = floorRec.y - size.y;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
@@ -40,12 +40,15 @@ void Player::GroundCollision(Rectangle floorRec) {
     }
 }
 
-void Player::GroundCollision(vector<Rectangle> floorRec, int len) {
+void Player::GroundCollision(vector<Rectangle> floorRec) {
     wasOnFloor = isOnFloor;
-    int i = CheckCollisionRecsArr(groundCollider, floorRec, len);
+    int len = floorRec.size();
+    Rectangle predictedRec = groundCollider;
+    predictedRec.y += velocity.y;
+    int i = CheckCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
         isOnFloor = true;
-        position.y = floorRec[i].y - size;
+        position.y = floorRec[i].y - size.y;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
@@ -62,25 +65,27 @@ void Player::CeilingCollision(vector<Rectangle> ceilingRec, int len) {
     }
 }
 
-void Player::WallCollision(vector<Rectangle> wallRec, int len) {
-    int i = CheckCollisionRecsArr(leftCollider, wallRec, len);
+void Player::WallCollision(vector<Rectangle> wallRec) {
+    int len = wallRec.size();
+    Rectangle predictedRec = leftCollider;
+    predictedRec.x += velocity.x;
+
+    int i = CheckCollisionRecsArr(predictedRec, wallRec, len);
     if (i != -1) {
         leftBlocked = true;
-        position.x += GetFrameTime() * 80;
-        if (velocity.x < 0) {
-            velocity.x = 0;
-        }
+        if (velocity.x < 0) position.x = wallRec[i].x + wallRec[i].width;
     }
     else {
         leftBlocked = false;
     }
-    int j = CheckCollisionRecsArr(rightCollider, wallRec, len);
+
+    predictedRec = rightCollider;
+    predictedRec.x += velocity.x;
+
+    int j = CheckCollisionRecsArr(predictedRec, wallRec, len);
     if (j != -1) {
         rightBlocked = true;
-        position.x -= GetFrameTime() * 80;
-        if (velocity.x > 0) {
-            velocity.x = 0;
-        }
+        if (velocity.x > 0) position.x = wallRec[j].x - size.x;
     }
     else {
         rightBlocked = false;
@@ -111,7 +116,7 @@ void Player::Update() {
     }
 
 
-
+    
     if (!isOnFloor && velocity.y < maxFALL) {
         velocity.y += grav;
     }
@@ -119,10 +124,10 @@ void Player::Update() {
         if (IsKeyPressed(KEY_SPACE)) velocity.y -= jumpForce;
     }
     if (IsKeyDown(KEY_SPACE)) {
-        grav = 1;
+        grav = halfGrav;
     }
     else {
-        grav = 2;
+        grav = halfGrav*2;
     }
 
 
@@ -130,36 +135,39 @@ void Player::Update() {
         velocity.x = 0;
     }
 
-
-    position = Vector2Add(position, velocity);
-    position.x = Clamp(position.x, 0, GetScreenWidth() - size);
-    position.y = Clamp(position.y, 0, GetScreenHeight());
-    groundCollider.x = position.x + 8 - GetInpuAxis() * 8;
-    groundCollider.y = position.y + size - 1;
-    topCollider.x = position.x + 8;
-    topCollider.y = position.y + 4;
-    leftCollider.x = position.x - 1;
-    leftCollider.y = position.y + 10;
-    rightCollider.x = position.x + size - 1;
-    rightCollider.y = position.y + 10;
-
-    if (velocity.y > 10) {
-        leftCollider.height = size - 40;
-        rightCollider.height = size - 40;
+    if ((rightBlocked && velocity.x > 0) || (leftBlocked && velocity.x < 0)) {
+        velocity.x = 0;
     }
     else {
-        leftCollider.height = size - 20;
-        rightCollider.height = size - 20;
+        position.x += velocity.x;
     }
+    position.y += velocity.y;
+
+    position.x = Clamp(position.x, 0, 256 - size.x);
+    position.y = Clamp(position.y, 0, 240);
+
+    groundCollider.x = position.x;
+    groundCollider.y = position.y + size.y- 1;
+
+    topCollider.x = position.x;
+    topCollider.y = position.y;
+
+    leftCollider.x = position.x -1;
+    leftCollider.y = position.y + 10;
+    rightCollider.x = position.x + size.x;
+    rightCollider.y = position.y + 10;
+
+        leftCollider.height = size.y - 20;
+        rightCollider.height = size.y - 20;
 }
 
 void Player::DrawPlayer() {
-    rec = { position.x, position.y, size, size };
+    Rectangle rec = { position.x, position.y, size.x, size.y };
     DrawRectangleRec(rec, DARKGREEN);
     DrawTextureV(sprite, position, WHITE);
-    //DrawRectangleRec(groundCollider, RED);
-    //DrawRectangleRec(topCollider, RED);
-    //DrawRectangleRec(leftCollider, RED);
-    //DrawRectangleRec(rightCollider, RED);
+    DrawRectangleRec(groundCollider, RED);
+    DrawRectangleRec(topCollider, RED);
+    DrawRectangleRec(leftCollider, RED);
+    DrawRectangleRec(rightCollider, RED);
 }
 
