@@ -26,5 +26,8 @@
     <ClInclude Include="libraries\raylib\include\rlgl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="entities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
