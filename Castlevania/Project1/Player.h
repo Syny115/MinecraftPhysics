@@ -3,6 +3,7 @@
 #include "raymath.h"
 #include <vector>
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Player
@@ -23,17 +24,17 @@ public:
     void DrawPlayer();
 
 private:
-    float jumpForce =           5;
-    float grav =                0.5f;
+    float jumpForce =           250;
+    float grav =                1100;
     float halfGrav =            0.5f * grav;
-    float acc =                 10;
-    float dec =                 5;
-    float airDec =              3;
+    float acc =                 300;
+    float dec =                 200;
+    float airDec =              50;
     Vector2 size =              { 16, 32 };
-    Vector2 position =          { 50, 60 };
+    Vector2 position =          { 50, 176 };
     Vector2 velocity =          { 0, 0 };
-    float maxSPD =              1.2;
-    float maxFALL =             20;
+    float maxSPD =              80;
+    float maxFALL =             400;
     int normalizedVelocity =    0;
     bool isOnFloor =            true;
     bool wasOnFloor =           true;

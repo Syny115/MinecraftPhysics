@@ -44,7 +44,7 @@ void Player::GroundCollision(vector<Rectangle> floorRec) {
     wasOnFloor = isOnFloor;
     int len = floorRec.size();
     Rectangle predictedRec = groundCollider;
-    predictedRec.y += velocity.y;
+    predictedRec.y += velocity.y * GetFrameTime();
     int i = CheckCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
         isOnFloor = true;
@@ -68,7 +68,7 @@ void Player::CeilingCollision(vector<Rectangle> ceilingRec, int len) {
 void Player::WallCollision(vector<Rectangle> wallRec) {
     int len = wallRec.size();
     Rectangle predictedRec = leftCollider;
-    predictedRec.x += velocity.x;
+    predictedRec.x += velocity.x * GetFrameTime();
 
     int i = CheckCollisionRecsArr(predictedRec, wallRec, len);
     if (i != -1) {
@@ -80,7 +80,7 @@ void Player::WallCollision(vector<Rectangle> wallRec) {
     }
 
     predictedRec = rightCollider;
-    predictedRec.x += velocity.x;
+    predictedRec.x += velocity.x * GetFrameTime();
 
     int j = CheckCollisionRecsArr(predictedRec, wallRec, len);
     if (j != -1) {
@@ -118,18 +118,24 @@ void Player::Update() {
 
     
     if (!isOnFloor && velocity.y < maxFALL) {
-        velocity.y += grav;
+        velocity.y += grav * GetFrameTime();
     }
     if (wasOnFloor) {
         if (IsKeyPressed(KEY_SPACE)) velocity.y -= jumpForce;
     }
+
     if (IsKeyDown(KEY_SPACE)) {
         grav = halfGrav;
+        
+
     }
     else {
         grav = halfGrav*2;
     }
-
+    string str = to_string(pow(GetFrameTime(), -1));
+    const char* cstr = str.c_str();
+    DrawText(cstr, 0, 0, 50, WHITE);
+    
 
     if (abs(velocity.x) < 0.1) {
         velocity.x = 0;
@@ -139,9 +145,9 @@ void Player::Update() {
         velocity.x = 0;
     }
     else {
-        position.x += velocity.x;
+        position.x += velocity.x * GetFrameTime();
     }
-    position.y += velocity.y;
+    position.y += velocity.y * GetFrameTime();
 
     position.x = Clamp(position.x, 0, 256 - size.x);
     position.y = Clamp(position.y, 0, 240);
