@@ -33,6 +33,10 @@ public:
     void updateTimer() {
         time -= GetFrameTime();
     }
+
+    bool isTriggerd() {
+        return time <= 0;
+    }
 };
 
 class Player
