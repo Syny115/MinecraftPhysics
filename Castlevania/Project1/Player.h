@@ -51,7 +51,7 @@ public:
     int checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len);
     void groundCollision(Rectangle floorRec);
     void groundCollision(vector<Rectangle> floorRec);
-    void ceilingCollision(vector<Rectangle> ceilingRec, int len);
+    void ceilingCollision(vector<Rectangle> ceilingRec);
     void wallCollision(vector<Rectangle> wallRec);
     void update();
     //void lateUpdate();
@@ -78,7 +78,7 @@ private:
     float dec = 200;
     float airDec = 50;
     Vector2 size = { 16, 32 };
-    Vector2 position = { 50, 100 };
+    Vector2 position = { 0, 100 };
     Vector2 velocity = { 0, 0 };
     float maxSPD = 80;
     float minSPD = 0.5f;

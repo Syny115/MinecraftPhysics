@@ -84,7 +84,8 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     }
 }
 
-void Player::ceilingCollision(vector<Rectangle> ceilingRec, int len) {
+void Player::ceilingCollision(vector<Rectangle> ceilingRec) {
+    int len = ceilingRec.size();
     int i = checkCollisionRecsArr(topCollider, ceilingRec, len);
     if (i != -1 && velocity.y < 0) {
         velocity.y = 0;
