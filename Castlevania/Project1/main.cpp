@@ -60,10 +60,10 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         camera.target = Vector2{ viewportWidth / 2, viewportHeight / 2 };//player.GetPosition().x + 20.0f, player.GetPosition().y + 20.0f };
-        player.GroundCollision(floorRec);
-        player.CeilingCollision(floorRec, floorRec.size());
-        player.WallCollision(floorRec);
-        player.Update();
+        player.groundCollision(floorRec);
+        player.ceilingCollision(floorRec, floorRec.size());
+        player.wallCollision(floorRec);
+        player.update();
 
         UpdateMusicStream(musicArray[0]);
         //----------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ int main(void)
             DrawRectangleRec(floorRec[1], BLUE);
             DrawRectangleRec(floorRec[2], BLUE);
             DrawRectangleRec(floorRec[3], BLUE);
-            player.DrawPlayer();
+            player.drawPlayer();
         EndMode2D();
 
         // Debug
