@@ -4,9 +4,25 @@
 #include "Player.h";
 #include <iostream>
 #include <queue>
+#include <vector>
 
 
 class Scene {
+private:
+	Camera2D camera = { 0 };
+	//queue<Entity> deletionQueue;
+public:
+	Scene();
+	virtual void updateScene();
+	virtual void updateCamera();
+	virtual void drawScene();
+};
+
+
+
+
+
+class PlayableScene : public Scene {
 private:
 	Camera2D camera = { 0 };
 		
@@ -27,12 +43,12 @@ private:
 	//vector<Projectile> projectiles;
 public:
 	vector<Rectangle> solidRects;
-	Scene();
+	PlayableScene();
 	//void startScene();
 
-	void updateScene();
-	void updateCamera();
+	void updateScene() override;
+	void updateCamera() override;
 	void readTilemap();
-	void drawScene();
+	void drawScene() override;
 	void drawTiles(const char* path);
 };

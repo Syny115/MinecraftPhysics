@@ -11,7 +11,7 @@ void Game::startGame() {
     const float screenWidth = 800;
     const float screenHeight = 700;
     InitWindow(screenWidth, screenHeight, "Castlevania");
-    activeScene = new Scene();
+    activeScene = new PlayableScene();
 
     
 

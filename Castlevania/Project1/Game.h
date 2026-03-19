@@ -6,7 +6,7 @@
 
 class Game {
 private:
-	Scene* activeScene;
+	Scene* activeScene = nullptr;
 	int currentLevel = 0;
 public:
 	~Game();
