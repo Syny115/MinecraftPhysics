@@ -150,7 +150,7 @@ void Player::moveH() {
     }
 
     //Clamp position to World Size TODO: Add world size to Game Manager
-    position.x = Clamp(position.x, 0, 256 - size.x);
+    position.x = Clamp(position.x, 0, 16*20 - size.x);
 }
 
 void Player::moveV() {

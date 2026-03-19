@@ -53,13 +53,14 @@ void PlayableScene::updateScene() {
 }
 
 void PlayableScene::drawScene() {
-	ClearBackground({ 0xA0, 0xF0, 0xFF, 0xFF });
+	ClearBackground(/*{0xA0, 0xF0, 0xFF, 0xFF}*/BLACK);
 	BeginMode2D(camera);
-		/*DrawRectangleRec(solidRects[0], BLUE);
-		DrawRectangleRec(solidRects[1], BLUE);
-		DrawRectangleRec(solidRects[2], BLUE);
-		DrawRectangleRec(solidRects[3], BLUE);*/
 		drawTiles();
+		//for (int i = 0; i < solidRects.size(); i++) {
+		//	DrawRectangleRec(solidRects[i], WHITE);
+		//	DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
+		//}
+		
 		player.drawPlayer();
 	EndMode2D();
 }
@@ -80,40 +81,4 @@ void PlayableScene::drawTiles() {
 			}
 		}
 	}
-}
-
-void PlayableScene::parseTiles(const char* path) {
-	ifstream data(path);
-	json doc = json::parse(data);
-	int row = doc["height"];
-	int col = doc["width"];
-
-	vector<vector<int>> collisionMat(row, vector<int>(col));
-	tileMat = collisionMat;
-	tileHeight = doc["tileheight"];
-	tileWidth = doc["tilewidth"];
-	worldHeight = row * tileHeight;
-	worldWidth = col * tileWidth;
-
-
-	int background = 0; int foreground = 0;
-	int len = doc["layers"].size();
-	for (int i = 0; i < len; i++) {
-		if (doc["layers"][i]["name"] == "BackGround") background = i;
-		if (doc["layers"][i]["name"] == "ForeGround") foreground = i;
-	}
-	len = row * col;
-	int bData, fData;
-	for (int j = 0; j < len; j++) {
-		bData = doc["layers"][background]["data"][j];
-		fData = doc["layers"][foreground]["data"][j];
-		tileMat[j / col][j % col] = bData;
-		if (fData != 0) {
-			collisionMat[j / col][j % col] = 1;
-			tileMat[j / col][j % col] = fData;
-		}
-		else collisionMat[j / col][j % col] = 0;
-		
-	}
-	data.close();
 }
