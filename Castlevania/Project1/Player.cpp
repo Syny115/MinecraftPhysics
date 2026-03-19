@@ -139,8 +139,12 @@ void Player::moveH() {
         position.x += velocity.x * GetFrameTime();
     }
 
-    //Apply other half of velocity
-    if (abs(velocity.x) <= maxSPD && abs(velocity.x) >= minSPD) {
+    //Limit velocity
+    if (abs(velocity.x) > maxSPD) {
+        velocity.x = maxSPD * normalizedVelocity;
+    }
+    //Apply half of velocity
+    else {
         increaseHalfOfVelocity();
     }
 
