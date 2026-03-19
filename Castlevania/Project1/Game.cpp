@@ -11,7 +11,7 @@ void Game::startGame() {
     const float screenWidth = 800;
     const float screenHeight = 700;
     InitWindow(screenWidth, screenHeight, "Castlevania");
-    activeScene = new PlayableScene();
+    activeScene = new PlayableScene("resources/json/Test1.json");
 
     
 
@@ -23,7 +23,7 @@ void Game::startGame() {
    // soundArray[0] = LoadSound("resources/raylib_audio_resources/sound.wav");
 
     //Music
-    //musicArray[0] = LoadMusicStream("resources/raylib_audio_resources/VampireKiller.mp3");
+    //musicArray[0] = LoadMusicStream("resources/audio/VampireKiller.mp3");
    // musicArray[0].looping = true;
     float pitch = 0.5f;
 

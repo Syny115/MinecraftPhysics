@@ -5,7 +5,10 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-
+#include <fstream>
+#include "libraries/json.hpp"
+using json = nlohmann::json;
+using namespace std;
 
 class Scene {
 private:
@@ -25,7 +28,6 @@ public:
 class PlayableScene : public Scene {
 private:
 	Camera2D camera = { 0 };
-		
 
 	Player player;
 	
@@ -35,20 +37,26 @@ private:
 
 	//queue<Entity> deletionQueue;
 
-	float worldWidth = 256*2;
-	float worldHeight = 224;
+	float worldWidth;
+	float worldHeight;
+	int tileHeight;
+	int tileWidth;
+
+	vector<vector<int>> tileMat;
+	Texture2D tileAtlas = LoadTexture("resources/sprites/CastlevaniaTileset.png");
 
 
 
 	//vector<Projectile> projectiles;
 public:
 	vector<Rectangle> solidRects;
-	PlayableScene();
+	PlayableScene(const char* path);
+	~PlayableScene();
 	//void startScene();
 
 	void updateScene() override;
 	void updateCamera() override;
-	void readTilemap();
 	void drawScene() override;
-	void drawTiles(const char* path);
+	void drawTiles();
+	void parseTiles(const char* path);
 };
