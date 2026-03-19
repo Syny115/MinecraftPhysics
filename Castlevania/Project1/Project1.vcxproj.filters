@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Classes">
       <UniqueIdentifier>{6a960934-7442-428b-94b5-2c82a03d51ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SpriteRenderer">
+      <UniqueIdentifier>{46cb8311-6219-42f6-8a59-982e1cfcc5b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files\SpriteRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="Classes.h">
       <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Source Files\SpriteRenderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

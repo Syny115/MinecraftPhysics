@@ -28,6 +28,13 @@ int main(void)
     vector<Rectangle> floorRec;
     Player player;
 
+    Texture2D testing;
+    const char* path = "resources/sprites/spriteSheet.png";
+    testing = LoadTexture(path);
+
+    float currentFrame = 0;
+    int height = 0;
+
     camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
     camera.rotation = 0.0f;
     camera.zoom = screenWidth/ viewportWidth;
@@ -79,6 +86,21 @@ int main(void)
             DrawRectangleRec(floorRec[2], BLUE);
             DrawRectangleRec(floorRec[3], BLUE);
             player.drawPlayer();
+            
+            currentFrame += GetFrameTime()*10;
+
+            Rectangle source = {32*((int)currentFrame%4),height%(6*32),32,32};
+
+            if (IsKeyPressed(KEY_SPACE))
+            {
+                height += 32;
+            }
+
+            DrawTextureRec(testing, source, Vector2{32,32}, WHITE);
+
+
+
+
         EndMode2D();
 
         // Debug
@@ -90,7 +112,7 @@ int main(void)
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseAudioDevice();
-
+    UnloadTexture(testing);
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
