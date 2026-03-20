@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Classes.h"
 
 Player::Player() {
     sprite = LoadTexture(imageName);
@@ -192,6 +193,7 @@ void Player::increaseHalfOfVelocity() {
 int someCounter = 0;
 
 void Player::update() {
+    earlyUpdate(); // For things that need to be done before everything else
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
@@ -272,6 +274,7 @@ void Player::update() {
         break;
     }
     updateColliderPosiotions();
+    lateUpdate(); // For things that need to be done after everything else
 }
 
 void Player::drawPlayer() {
