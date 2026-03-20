@@ -1,7 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <vector>
-#include "entity.h"
+#include "Entity.h"
 using namespace std;
 
 
