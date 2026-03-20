@@ -24,12 +24,12 @@ public:
 	Vector2 getVelocity() {
 		return velocity;
 	}
-	int checkSelfCollisionPointRecArr(Rectangle* recs, int len) {} //moved to entity.cpp
+	int checkSelfCollisionPointRecArr(Rectangle* recs, int len); //moved to entity.cpp
 
-	void moveV() {} // moved to entity.cpp
+	void moveV(); // moved to entity.cpp
 	void load() {isLoaded = true;}
 	void unload() {isLoaded = false;}
-	void queueDeletion() {}
-	void earlyUpdate() {}
-	void lateUpdate() {}
+	void queueDeletion();
+	void earlyUpdate();
+	void lateUpdate();
 };

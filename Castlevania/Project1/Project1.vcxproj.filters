@@ -13,14 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Player">
+    <Filter Include="Source Files\Classes">
+      <UniqueIdentifier>{caba59a6-e130-4495-9783-aba9be05b062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Player">
       <UniqueIdentifier>{03cc2d54-124f-4014-bff8-0d2a4776bcd7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scene">
+    <Filter Include="Source Files\Classes\Scene">
       <UniqueIdentifier>{35397faa-c750-4ac7-8617-acc3d2571524}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game">
+    <Filter Include="Source Files\Classes\Game">
       <UniqueIdentifier>{205872ff-6adc-4f6b-9e19-b168ab69f21c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Entity">
+      <UniqueIdentifier>{69a1bb46-9740-4ce5-a52e-4d233ac6b888}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -28,16 +34,22 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Player</Filter>
+      <Filter>Source Files\Classes\Player</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files\Scene</Filter>
+      <Filter>Source Files\Classes\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Classes\Game</Filter>
     </ClCompile>
     <ClCompile Include="tileParse.cpp">
-      <Filter>Source Files\Scene</Filter>
+      <Filter>Source Files\Classes\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Classes\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,13 +63,19 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Source Files\Player</Filter>
+      <Filter>Source Files\Classes\Player</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Source Files\Scene</Filter>
+      <Filter>Source Files\Classes\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Classes\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes.h">
+      <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Source Files\Classes\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

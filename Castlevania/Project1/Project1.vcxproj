@@ -140,6 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -147,6 +149,8 @@
     <ClCompile Include="tileParse.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Classes.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="libraries\raylib\include\raylib.h" />
     <ClInclude Include="libraries\raylib\include\raymath.h" />
