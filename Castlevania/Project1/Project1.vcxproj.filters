@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Classes">
       <UniqueIdentifier>{6a960934-7442-428b-94b5-2c82a03d51ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Classes\Entity">
+      <UniqueIdentifier>{22dccb64-78ab-4a51-9bda-b043164a68df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="classes.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>Source Files\Classes\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="Classes.h">
       <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>Source Files\Classes\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

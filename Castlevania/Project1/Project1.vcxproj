@@ -140,11 +140,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="classes.cpp" />
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes.h" />
+    <ClInclude Include="entity.h" />
     <ClInclude Include="libraries\raylib\include\raylib.h" />
     <ClInclude Include="libraries\raylib\include\raymath.h" />
     <ClInclude Include="libraries\raylib\include\rlgl.h" />
