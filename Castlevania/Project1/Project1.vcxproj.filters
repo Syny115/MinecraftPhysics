@@ -16,11 +16,11 @@
     <Filter Include="Source Files\Player">
       <UniqueIdentifier>{03cc2d54-124f-4014-bff8-0d2a4776bcd7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Classes">
-      <UniqueIdentifier>{6a960934-7442-428b-94b5-2c82a03d51ae}</UniqueIdentifier>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{35397faa-c750-4ac7-8617-acc3d2571524}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Classes\Entity">
-      <UniqueIdentifier>{22dccb64-78ab-4a51-9bda-b043164a68df}</UniqueIdentifier>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{205872ff-6adc-4f6b-9e19-b168ab69f21c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,11 +30,14 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="classes.cpp">
-      <Filter>Source Files\Classes</Filter>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="entity.cpp">
-      <Filter>Source Files\Classes\Entity</Filter>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="tileParse.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,11 +53,11 @@
     <ClInclude Include="Player.h">
       <Filter>Source Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Classes.h">
-      <Filter>Source Files\Classes</Filter>
+    <ClInclude Include="Scene.h">
+      <Filter>Source Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="entity.h">
-      <Filter>Source Files\Classes\Entity</Filter>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

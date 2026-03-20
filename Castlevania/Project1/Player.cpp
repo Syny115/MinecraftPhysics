@@ -85,7 +85,8 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     }
 }
 
-void Player::ceilingCollision(vector<Rectangle> ceilingRec, int len) {
+void Player::ceilingCollision(vector<Rectangle> ceilingRec) {
+    int len = ceilingRec.size();
     int i = checkCollisionRecsArr(topCollider, ceilingRec, len);
     if (i != -1 && velocity.y < 0) {
         velocity.y = 0;
@@ -139,8 +140,12 @@ void Player::moveH() {
         position.x += velocity.x * GetFrameTime();
     }
 
-    //Apply other half of velocity
-    if (abs(velocity.x) <= maxSPD && abs(velocity.x) >= minSPD) {
+    //Limit velocity
+    if (abs(velocity.x) > maxSPD) {
+        velocity.x = maxSPD * normalizedVelocity;
+    }
+    //Apply half of velocity
+    else {
         increaseHalfOfVelocity();
     }
 
@@ -150,7 +155,7 @@ void Player::moveH() {
     }
 
     //Clamp position to World Size TODO: Add world size to Game Manager
-    position.x = Clamp(position.x, 0, 256 - size.x);
+    position.x = Clamp(position.x, 0, 16*20 - size.x);
 }
 
 void Player::moveV() {

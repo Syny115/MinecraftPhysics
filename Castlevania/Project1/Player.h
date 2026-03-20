@@ -51,7 +51,7 @@ public:
     int checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len);
     void groundCollision(Rectangle floorRec);
     void groundCollision(vector<Rectangle> floorRec);
-    void ceilingCollision(vector<Rectangle> ceilingRec, int len);
+    void ceilingCollision(vector<Rectangle> ceilingRec);
     void wallCollision(vector<Rectangle> wallRec);
     void update();
     //void lateUpdate();
@@ -71,17 +71,17 @@ private:
         IDLE, WALK, JUMP, FALL, ATTACK, STUN, STAIRS, KNOCKBACK, DIE
     };
 
-    float jumpForce = 250;
-    float grav = 1100;
+    float jumpForce = 240;
+    float grav = 1250;
     float halfGrav = 0.5f * grav;
     float acc = 300;
     float dec = 200;
     float airDec = 50;
     Vector2 size = { 16, 32 };
-    Vector2 position = { 50, 100 };
+    Vector2 position = { 0, 100 };
     Vector2 velocity = { 0, 0 };
-    float maxSPD = 80;
-    float minSPD = 0.5f;
+    float maxSPD = 58.85;
+    float minSPD = 5;
     float maxFALL = 400;
     int normalizedVelocity = 0;
     bool isOnFloor = true;
