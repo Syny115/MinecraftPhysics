@@ -3,6 +3,7 @@
 void Game::loadScene(Scene* newScene) {
     delete activeScene;
     activeScene = newScene;
+    activeScene->start();
 }
 
 void Game::startGame() {
@@ -12,7 +13,7 @@ void Game::startGame() {
     const float screenHeight = 700;
     InitWindow(screenWidth, screenHeight, "Castlevania");
     activeScene = new PlayableScene("resources/json/Test1.json");
-
+    activeScene->start();
     
 
 

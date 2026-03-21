@@ -1,7 +1,18 @@
 #include "Player.h"
+#include "GameManager.h"
 
 Player::Player() {
     sprite = LoadTexture(imageName);
+    size = { (float) GameManager::getInstance().getActiveScene()->getTileWidth(), (float) GameManager::getInstance().getActiveScene()->getTileHeight() *2};
+    position = { 0, 100 };
+    velocity = { 0, 0 };
+    worldHeight = (float)GameManager::getInstance().getActiveScene()->getWorldHeight();
+    worldWidth = (float)GameManager::getInstance().getActiveScene()->getWorldWidth();
+
+    groundCollider = { 0, 0, size.x, 4 };
+    topCollider = { 0, 0, size.x, 2 };
+    leftCollider = { 0, 0, 1, size.y };
+    rightCollider = { 0, 0, 1, size.y };
 }
 Player::~Player() {
     UnloadTexture(sprite);
@@ -154,30 +165,14 @@ void Player::moveH() {
     }
 
     //Clamp position to World Size TODO: Add world size to Game Manager
-    position.x = Clamp(position.x, 0, 16*20 - size.x);
+    position.x = Clamp(position.x, 0, worldWidth - size.x);
 }
 
 void Player::moveV() {
     //If Space is down, gravity is halved (Variable Jump height)
     grav = IsKeyDown(KEY_SPACE) ? halfGrav : halfGrav * 2;
 
-    //Apply half of gravity
-    increaseHalfOfGravity();
-
-    //Apply Vertical Movement
-    position.y += velocity.y * GetFrameTime();
-
-    //Apply other half of gravity
-    increaseHalfOfGravity();
-
-    //Clamp position to World Size TODO: Add world size to Game Manager
-    position.y = Clamp(position.y, 0, 240);
-}
-
-void Player::increaseHalfOfGravity() {
-    if (!isOnFloor && velocity.y < maxFALL) {
-        velocity.y += grav * GetFrameTime() * 0.5f;
-    }
+    Entity::moveV();
 }
 
 void Player::increaseHalfOfVelocity() {
@@ -192,13 +187,14 @@ void Player::increaseHalfOfVelocity() {
 int someCounter = 0;
 
 void Player::update() {
+
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 1);
+
     //earlyUpdate(); // For things that need to be done before everything else
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
 
-    DrawText(to_string(velocity.x).c_str(), 0, 0, 50, WHITE);
-    DrawText(to_string(lowerState.current).c_str(), 0, 50, 50, WHITE);
     //Lower Body State Machine
     switch (lowerState.current) {
 

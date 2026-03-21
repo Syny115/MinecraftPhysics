@@ -1,6 +1,7 @@
 #include "libraries/raylib/include/raylib.h"
 #include "raylib.h"
 #include "Game.h"
+#include "GameManager.h"
 
 
 Sound soundArray[10];
@@ -10,6 +11,7 @@ Music musicArray[10];
 int main(void)
 {
     Game game;
+    GameManager::getInstance().setGamePointer(&game);
     game.startGame();
     return 0;
 }

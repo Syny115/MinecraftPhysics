@@ -14,6 +14,10 @@ Scene::Scene() {
 	camera.zoom = screenWidth / viewportWidth;
 }
 
+void Scene::start() {
+
+}
+
 void Scene::updateCamera() {
 	camera.target = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
 }
@@ -35,20 +39,26 @@ PlayableScene::PlayableScene(const char* path) {
 	parseTiles(path);
 }
 
+void PlayableScene::start() {
+	player = new Player;
+}
+
+
 PlayableScene::~PlayableScene() {
+	delete player;
 	UnloadTexture(tileAtlas);
 }
 
 void PlayableScene::updateCamera() {
-	camera.target = player.getPosition();
+	camera.target = player->getPosition();
 	camera.target = { Clamp(camera.target.x, viewportWidth / 2.0f, worldWidth - viewportWidth / 2.0f), Clamp(camera.target.y, viewportHeight / 2.0f, worldHeight - viewportHeight / 2.0f) };
 }
 
 void PlayableScene::updateScene() {
-	player.groundCollision(solidRects);
-	player.ceilingCollision(solidRects);
-	player.wallCollision(solidRects);
-	player.update();
+	player->groundCollision(solidRects);
+	player->ceilingCollision(solidRects);
+	player->wallCollision(solidRects);
+	player->update();
 	updateCamera();
 }
 
@@ -61,8 +71,10 @@ void PlayableScene::drawScene() {
 		//	DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
 		//}
 		
-		player.drawPlayer();
+		player->drawPlayer();
 	EndMode2D();
+	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
+	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
 }
 
 void PlayableScene::drawTiles() {

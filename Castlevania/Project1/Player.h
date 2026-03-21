@@ -1,9 +1,12 @@
 #pragma once
 #include "raylib.h"
 #include "raymath.h"
+#include "Classes.h"
+#include "Entity.h"
 #include <vector>
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 struct PlayerState {
@@ -15,31 +18,7 @@ struct PlayerState {
     }
 };
 
-class Timer
-{
-private:
-    float lifeTime;
-    float time = lifeTime;
-public:
-    float getTime() { return time; }
-    float getLifeTime() { return lifeTime; }
-
-    Timer(float _lifeTime) : lifeTime(_lifeTime), time(_lifeTime) {}
-
-    void startTimer() {
-        time = lifeTime;
-    }
-
-    void updateTimer() {
-        time -= GetFrameTime();
-    }
-
-    bool isTriggerd() {
-        return time <= 0;
-    }
-};
-
-class Player
+class Player : public Entity
 {
 public:
     Player();
@@ -58,10 +37,9 @@ public:
     //void earlyUpdate();
 
     void moveH();
-    void moveV();
+    void moveV() override;
     int getNormalizedVelocity();
     void increaseHalfOfVelocity();
-    void increaseHalfOfGravity();
     void updateColliderPosiotions();
     void drawPlayer();
 
@@ -72,14 +50,10 @@ private:
     };
 
     float jumpForce = 240;
-    float grav = 1250;
     float halfGrav = 0.5f * grav;
     float acc = 300;
     float dec = 200;
     float airDec = 50;
-    Vector2 size = { 16, 32 };
-    Vector2 position = { 0, 100 };
-    Vector2 velocity = { 0, 0 };
     float maxSPD = 58.85;
     float minSPD = 5;
     float maxFALL = 400;
@@ -96,10 +70,10 @@ private:
     const char* imageName = "HOUSE_MD.png";
     Texture2D sprite;
 
-    Rectangle groundCollider = { 0, 0, size.x, 4 };
-    Rectangle topCollider = { 0, 0, size.x, 2 };
-    Rectangle leftCollider = { 0, 0, 1, size.y };
-    Rectangle rightCollider = { 0, 0, 1, size.y };
+    Rectangle groundCollider;
+    Rectangle topCollider;
+    Rectangle leftCollider;
+    Rectangle rightCollider;
 
     PlayerState upperState = { 0, 0 };
     PlayerState lowerState = { 0, 0 };

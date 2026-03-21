@@ -12,4 +12,6 @@ public:
 	~Game();
 	void startGame();
 	void loadScene(Scene* newScene);
+
+	Scene* getActiveScene() { return activeScene; }
 };

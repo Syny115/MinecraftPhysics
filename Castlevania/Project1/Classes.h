@@ -1,42 +1,25 @@
 #pragma once
-#include "raylib.h"
-#include "raymath.h"
-#include <vector>
-#include <iostream>
-#include <string>
-#include <queue>
-using namespace std;
-class GameManager {
+
+class Timer
+{
 private:
-	// Scene scene; (Need Scene class)
-	//Game* gamePointer; (Need game class)
-	const float screenWidth = 800;
-	const float screenHeight = 700;
-
-	const float viewportWidth = 256;
-	const float viewportHeight = 224;
-
-	const int worldWidth = 256;
-	const int worldHeight = 240;
-
+    float lifeTime;
+    float time = lifeTime;
 public:
-	/* Scene getActiveScene() {
-	return game.Scene[currentLevel];
-}*/
-	float getScreenWidth() {
-		return screenWidth;
-	}
-	float getScreenHeight() {
-		return screenHeight;
-	}
-	float getViewportWidth() {
-		return viewportWidth; 
-	}
-	float getViewportHeight() {
-		return getViewportHeight();
-	}
+    float getTime() { return time; }
+    float getLifeTime() { return lifeTime; }
 
+    Timer(float _lifeTime) : lifeTime(_lifeTime), time(_lifeTime) {}
+
+    void startTimer() {
+        time = lifeTime;
+    }
+
+    void updateTimer() {
+        time -= GetFrameTime();
+    }
+
+    bool isTriggerd() {
+        return time <= 0;
+    }
 };
-
-
-

@@ -1,6 +1,4 @@
-#include "raylib.h"
-#include "raymath.h"
-#include <vector>
+#include "GameManager.h"
 #include "Entity.h"
 using namespace std;
 
@@ -12,33 +10,43 @@ int Entity::checkSelfCollisionPointRecArr(Rectangle* recs, int len) {
 	}
 	return -1;
 }
-void Entity::moveV() {
-	//If Space is down, gravity is halved (Variable Jump height)
-	grav = IsKeyDown(KEY_SPACE) ? (grav * 0.5f) : (grav * 0.5f) * 2;
 
-	//Apply half of gravity
+void Entity::increaseHalfOfGravity() {
 	if (!isOnFloor && velocity.y < maxFALL) {
 		velocity.y += grav * GetFrameTime() * 0.5f;
 	}
+}
+
+void Entity::moveV() {
+	//If Space is down, gravity is halved (Variable Jump height)
+	//grav = IsKeyDown(KEY_SPACE) ? (grav * 0.5f) : (grav * 0.5f) * 2;
+
+	//Apply half of gravity
+	increaseHalfOfGravity();
 
 	//Apply Vertical Movement
 	position.y += velocity.y * GetFrameTime();
 
 	//Apply other half of gravity
-	if (!isOnFloor && velocity.y < maxFALL) {
-		velocity.y += grav * GetFrameTime() * 0.5f;
-	}
+	increaseHalfOfGravity();
 
-	//Clamp position to World Size TODO: Add world size to Game Manager
-	position.y = Clamp(position.y, 0, 240);
+	//Clamp position to World Size
+	position.y = Clamp(position.y, 0, GameManager::getInstance().getActiveScene()->getWorldHeight());
 }
+
 void Entity::queueDeletion() { //Doesn't work just yet
 	// Wait for Game Manager to be added for this:
 	//getActiveScene().deleteQueue.push(this);
 }
+
 void Entity::earlyUpdate() {
 	// Things here are done right BEFORE the update code
 }
+
 void Entity::lateUpdate() {
+	// Things here are done right AFTER the update code
+}
+
+void Entity::update() {
 	// Things here are done right AFTER the update code
 }

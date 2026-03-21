@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Classes\Entity">
       <UniqueIdentifier>{69a1bb46-9740-4ce5-a52e-4d233ac6b888}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Classes\GameManager">
+      <UniqueIdentifier>{5b7f3023-3008-469c-aa8a-bef7b309113d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,11 +48,11 @@
     <ClCompile Include="tileParse.cpp">
       <Filter>Source Files\Classes\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Classes.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Classes\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Classes\GameManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,11 +74,14 @@
     <ClInclude Include="Game.h">
       <Filter>Source Files\Classes\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Classes.h">
-      <Filter>Source Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Source Files\Classes\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Source Files\Classes\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes.h">
+      <Filter>Source Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,8 +9,10 @@ protected:
 	Vector2 size;
 	Vector2 position;
 	Vector2 velocity;
-	float grav;
+	float grav = 1250;
 	float maxFALL = 400;
+	float worldHeight, worldWidth;
+
 public:
 	Entity() {}
 	Entity(Vector2 s, Vector2 p, Vector2 v) { size = s; position = p; velocity = v; }
@@ -24,12 +26,15 @@ public:
 	Vector2 getVelocity() {
 		return velocity;
 	}
+
 	int checkSelfCollisionPointRecArr(Rectangle* recs, int len); //moved to entity.cpp
 
-	void moveV(); // moved to entity.cpp
 	void load() {isLoaded = true;}
 	void unload() {isLoaded = false;}
 	void queueDeletion();
-	void earlyUpdate();
-	void lateUpdate();
+	void increaseHalfOfGravity();
+	virtual void earlyUpdate();
+	virtual void lateUpdate();
+	virtual void update();
+	virtual void moveV(); // moved to entity.cpp
 };
