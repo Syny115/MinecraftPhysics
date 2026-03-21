@@ -12,6 +12,7 @@ protected:
 	float grav = 1250;
 	float maxFALL = 400;
 	float worldHeight, worldWidth;
+	int health;
 
 public:
 	Entity() {}

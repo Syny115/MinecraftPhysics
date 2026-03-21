@@ -30,6 +30,17 @@ private:
 	const float viewportWidth = 256;
 	const float viewportHeight = 224;
 
+	enum weapons
+	{
+		EMPTY, DAGGER, AXE, CROSS, HOLYWATER, STOPWATCH
+	};
+
+	int playerHealth;
+	int enemyHealth;
+	int score;
+	int whipLevel;
+	int subWeapon;
+
 public:
 	GameManager(GameManager const&) = delete;
 	void operator=(GameManager const&) = delete;
@@ -55,6 +66,8 @@ public:
 		return viewportHeight;
 	}
 
+
+	friend class Player;
 };
 
 

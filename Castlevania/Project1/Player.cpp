@@ -13,6 +13,9 @@ Player::Player() {
     topCollider = { 0, 0, size.x, 2 };
     leftCollider = { 0, 0, 1, size.y };
     rightCollider = { 0, 0, 1, size.y };
+
+    health = &GameManager::getInstance().playerHealth;
+    whipLevel = &GameManager::getInstance().whipLevel;
 }
 Player::~Player() {
     UnloadTexture(sprite);
@@ -130,7 +133,7 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
     }
 }
 
-void Player::moveH() {
+void Player::moveH(bool accelerate) {
     normalizedVelocity = getNormalizedVelocity();
 
     //Limit velocity
@@ -139,7 +142,7 @@ void Player::moveH() {
     }
     //Apply half of velocity
     else {
-        increaseHalfOfVelocity();
+        increaseHalfOfVelocity(accelerate);
     }
 
     //Apply Horizontal Movement
@@ -156,7 +159,7 @@ void Player::moveH() {
     }
     //Apply half of velocity
     else {
-        increaseHalfOfVelocity();
+        increaseHalfOfVelocity(accelerate);
     }
 
     //Prevent Flickering
@@ -175,8 +178,8 @@ void Player::moveV() {
     Entity::moveV();
 }
 
-void Player::increaseHalfOfVelocity() {
-    velocity.x += getInputAxis() * GetFrameTime() * acc * 0.5f;
+void Player::increaseHalfOfVelocity(bool accelerate) {
+    if (accelerate) velocity.x += getInputAxis() * GetFrameTime() * acc * 0.5f;
     float _dec = dec;
     if (!isOnFloor) {
         _dec = airDec;
@@ -188,7 +191,8 @@ int someCounter = 0;
 
 void Player::update() {
 
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
 
     //earlyUpdate(); // For things that need to be done before everything else
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
@@ -206,8 +210,8 @@ void Player::update() {
         break;
 
     case WALK:
-        moveH();
-
+        moveH(true);
+        updateDirection();
         //Transition
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
         else if (!isOnFloor) lowerState.changeState(FALL);
@@ -223,8 +227,8 @@ void Player::update() {
         }
         moveV();
 
-        moveH();
-
+        moveH(true);
+        updateDirection();
         //Transition
         if (velocity.y >= 0) lowerState.changeState(FALL);
         if (isOnFloor && !wasOnFloor) {
@@ -234,9 +238,9 @@ void Player::update() {
         break;
 
     case FALL:
-        moveH();
+        moveH(true);
         moveV();
-
+        updateDirection();
         //Transition
         if (isOnFloor) {
             if (abs(velocity.x) >= minSPD || getInputAxis()) lowerState.changeState(WALK);
@@ -254,8 +258,10 @@ void Player::update() {
         break;
 
     case ATTACK:
+        moveV();
+        if (!(lowerState.previous == WALK && lowerState.previous == IDLE) && !isOnFloor) moveH(true);
+        else moveH(false);
         //this should only happen if the player attacks from WALK, STAIRS or IDLE
-        velocity.x = 0;
         break;
     }
 
@@ -263,8 +269,19 @@ void Player::update() {
     switch (upperState.current) {
     
     case IDLE:
+        if (IsKeyPressed(KEY_D)) upperState.changeState(STARTATTACK);
+        break;
+    case STARTATTACK:
+        startAttackTimer.updateTimer();
+        if (startAttackTimer.isTriggerd()) upperState.changeState(ATTACK);
         break;
     case ATTACK:
+        //Transition
+        attackTimer.updateTimer();
+        if (attackTimer.isTriggerd()) {
+            upperState.changeState(IDLE);
+            lowerState.changeState(IDLE);
+        }
         break;
     }
     updateColliderPosiotions();
@@ -279,5 +296,24 @@ void Player::drawPlayer() {
     DrawRectangleRec(topCollider, RED);
     DrawRectangleRec(leftCollider, RED);
     DrawRectangleRec(rightCollider, RED);
+
+    if (upperState.current == STARTATTACK) DrawRectangle(position.x- 16*direction, position.y, 16, 30, WHITE);
+    if (upperState.current == ATTACK) DrawRectangle((position.x - 8) + 24*direction, position.y, 32, 16, WHITE);
 }
 
+void Player::betweenStates(int previous, int current, int future, PlayerState* state) {
+    if (state == &upperState) {
+        if (current == IDLE && future == STARTATTACK) {
+            startAttackTimer.startTimer();
+            lowerState.changeState(ATTACK);
+        }
+        else if (current == STARTATTACK && future == ATTACK) {
+            attackTimer.startTimer();
+        }
+    }
+    
+}
+
+void Player::updateDirection() {
+    if (getInputAxis() != 0) direction = getInputAxis();
+}

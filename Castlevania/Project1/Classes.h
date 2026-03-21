@@ -5,6 +5,7 @@ class Timer
 private:
     float lifeTime;
     float time = lifeTime;
+    bool active;
 public:
     float getTime() { return time; }
     float getLifeTime() { return lifeTime; }
@@ -13,13 +14,16 @@ public:
 
     void startTimer() {
         time = lifeTime;
+        active = true;
     }
 
     void updateTimer() {
+        if (!active) return;
         time -= GetFrameTime();
     }
 
     bool isTriggerd() {
+        if (time <= 0) active = false;
         return time <= 0;
     }
 };
