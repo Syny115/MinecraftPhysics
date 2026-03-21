@@ -215,7 +215,6 @@ void Player::update() {
         break;
 
     case JUMP:
-        
         if (jumpAllowed) 
         {
             someCounter++;

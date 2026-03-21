@@ -27,6 +27,10 @@ void Scene::drawScene() {
 }
 
 void Scene::updateScene() {
+	if (!deletionQueue.empty()) {
+		delete deletionQueue.back();
+		deletionQueue.pop();
+	}
 	updateCamera();
 }
 
@@ -55,11 +59,14 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
-	player->groundCollision(solidRects);
-	player->ceilingCollision(solidRects);
-	player->wallCollision(solidRects);
-	player->update();
-	updateCamera();
+	if (player != nullptr)
+	{
+		player->groundCollision(solidRects);
+		player->ceilingCollision(solidRects);
+		player->wallCollision(solidRects);
+		player->update();
+	}
+	Scene::updateScene();
 }
 
 void PlayableScene::drawScene() {

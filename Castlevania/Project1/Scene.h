@@ -14,13 +14,18 @@ using namespace std;
 class Scene {
 protected:
 	Camera2D camera = { 0 };
-	//queue<Entity> deletionQueue;
+	queue<Entity*> deletionQueue;
 public:
 	Scene();
 	virtual void start();
 	virtual void updateScene();
 	virtual void updateCamera();
 	virtual void drawScene();
+
+	void deleteMe(Entity* e) {
+		deletionQueue.push(e);
+	}
+
 
 	//So that the game doesnt go wonky when trying to access playable scene funcions
 	virtual void setDebugMessage(string message, int count) { /* I | Ii | II | I- */ }
@@ -39,10 +44,9 @@ private:
 	Player* player;
 	
 	vector<Rectangle> enemyRects;
-	vector<Rectangle> LootRects;
-	vector<Rectangle> DestructableRects;
-
-	//queue<Entity> deletionQueue;
+	vector<Rectangle> lootRects;
+	vector<Rectangle> destructableRects;
+	vector<Rectangle> playerHitBoxes;
 
 	float worldWidth;
 	float worldHeight;
@@ -52,7 +56,7 @@ private:
 	vector<vector<int>> tileMat;
 	Texture2D tileAtlas = LoadTexture("resources/sprites/CastlevaniaTileset.png");
 
-	//vector<Projectile> projectiles;
+	//vector<Entity*> entities;
 
 	string debug_text1;
 	string debug_text2;

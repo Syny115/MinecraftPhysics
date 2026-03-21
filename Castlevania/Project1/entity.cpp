@@ -36,7 +36,7 @@ void Entity::moveV() {
 
 void Entity::queueDeletion() { //Doesn't work just yet
 	// Wait for Game Manager to be added for this:
-	//getActiveScene().deleteQueue.push(this);
+	GameManager::getInstance().getActiveScene()->deleteMe(this);
 }
 
 void Entity::earlyUpdate() {
