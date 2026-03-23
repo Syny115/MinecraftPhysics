@@ -59,6 +59,7 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
+	if (playerHitBoxes.size() > 0) debug_text2 = to_string(playerHitBoxes[0]->x);
 	if (player != nullptr)
 	{
 		player->groundCollision(solidRects);
@@ -99,5 +100,11 @@ void PlayableScene::drawTiles() {
 				DrawTextureRec(tileAtlas, rect, Vector2{ (float)j * tileWidth,(float)i * tileHeight }, WHITE);
 			}
 		}
+	}
+}
+
+void PlayableScene::removePlayerHitBoxes(Rectangle* hitBox) {
+	for (int i = 0; i < playerHitBoxes.size(); i++) {
+		if (playerHitBoxes[i] == hitBox) playerHitBoxes.erase(playerHitBoxes.begin() + i);
 	}
 }

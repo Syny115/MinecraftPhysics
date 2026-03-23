@@ -50,6 +50,9 @@ void Player::updateColliderPosiotions() {
 
     leftCollider.height = size.y - 10;
     rightCollider.height = size.y - 10;
+
+    whipCollider.x = (position.x - 8) + 24 * direction;
+    whipCollider.y = position.y;
 }
 
 int Player::checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
@@ -192,7 +195,7 @@ int someCounter = 0;
 void Player::update() {
 
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
+   // GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
 
     //earlyUpdate(); // For things that need to be done before everything else
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
@@ -298,17 +301,22 @@ void Player::drawPlayer() {
     DrawRectangleRec(rightCollider, RED);
 
     if (upperState.current == STARTATTACK) DrawRectangle(position.x- 16*direction, position.y, 16, 30, WHITE);
-    if (upperState.current == ATTACK) DrawRectangle((position.x - 8) + 24*direction, position.y, 32, 16, WHITE);
+    if (upperState.current == ATTACK) DrawRectangle((position.x - 8) + 24 * direction, position.y, whipCollider.width, 16, WHITE);
 }
 
 void Player::betweenStates(int previous, int current, int future, PlayerState* state) {
     if (state == &upperState) {
         if (current == IDLE && future == STARTATTACK) {
+            whipCollider.width = GameManager::getInstance().whipLevel < 2 ? 32 : 48;
+            GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(&whipCollider);
             startAttackTimer.startTimer();
             lowerState.changeState(ATTACK);
         }
         else if (current == STARTATTACK && future == ATTACK) {
             attackTimer.startTimer();
+        }
+        else if (current == ATTACK && future == IDLE) {
+            GameManager::getInstance().getActiveScene()->removePlayerHitBoxes(&whipCollider);
         }
     }
     

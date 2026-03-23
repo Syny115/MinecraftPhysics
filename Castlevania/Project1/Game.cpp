@@ -1,10 +1,14 @@
 #include "Game.h"
+#include "GameManager.h"
 
 void Game::loadScene(Scene* newScene) {
     delete activeScene;
     activeScene = newScene;
     activeScene->start();
 }
+
+Sound soundArray[10];
+Music musicArray[10];
 
 void Game::startGame() {
     // Initialization
@@ -21,14 +25,14 @@ void Game::startGame() {
     InitAudioDevice();
 
     //Sound
-   // soundArray[0] = LoadSound("resources/raylib_audio_resources/sound.wav");
+    soundArray[0] = LoadSound("resources/audio/sound.wav");
 
     //Music
-    //musicArray[0] = LoadMusicStream("resources/audio/VampireKiller.mp3");
-   // musicArray[0].looping = true;
+    musicArray[0] = LoadMusicStream("resources/audio/VampireKiller.mp3");
+    musicArray[0].looping = true;
     float pitch = 0.5f;
 
-   // PlayMusicStream(musicArray[0]);
+    PlayMusicStream(musicArray[0]);
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -42,7 +46,7 @@ void Game::startGame() {
 
         activeScene->updateScene();
 
-       // UpdateMusicStream(musicArray[0]);
+        UpdateMusicStream(musicArray[0]);
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -59,7 +63,7 @@ void Game::startGame() {
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseAudioDevice();
-
+    
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 }

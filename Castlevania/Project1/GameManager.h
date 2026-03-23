@@ -42,6 +42,7 @@ private:
 	int subWeapon;
 
 public:
+
 	GameManager(GameManager const&) = delete;
 	void operator=(GameManager const&) = delete;
 

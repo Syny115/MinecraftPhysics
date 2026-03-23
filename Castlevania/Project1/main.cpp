@@ -4,10 +4,6 @@
 #include "GameManager.h"
 
 
-Sound soundArray[10];
-Music musicArray[10];
-
-
 int main(void)
 {
     Game game;

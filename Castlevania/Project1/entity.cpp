@@ -12,7 +12,7 @@ int Entity::checkSelfCollisionPointRecArr(Rectangle* recs, int len) {
 }
 
 void Entity::increaseHalfOfGravity() {
-	if (!isOnFloor && velocity.y < maxFALL) {
+	if (!isOnFloor && velocity.y < maxFALL && GetTime()/GetFrameTime() > 15) {
 		velocity.y += grav * GetFrameTime() * 0.5f;
 	}
 }

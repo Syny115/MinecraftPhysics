@@ -33,6 +33,9 @@ public:
 	virtual float getWorldWidth() { return 0; }
 	virtual int getTileHeight() { return 0; }
 	virtual int getTileWidth() { return 0; }
+
+	virtual void pushPlayerHitBoxes(Rectangle* hitBox) { /* I | Ii | II | I- */ };
+	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
 };
 
 
@@ -46,7 +49,7 @@ private:
 	vector<Rectangle> enemyRects;
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
-	vector<Rectangle> playerHitBoxes;
+	vector<Rectangle*> playerHitBoxes;
 
 	float worldWidth;
 	float worldHeight;
@@ -81,4 +84,7 @@ public:
 	float getWorldWidth() override { return worldWidth; }
 	int getTileHeight() override { return tileHeight; }
 	int getTileWidth() override { return tileWidth; }
+
+	void pushPlayerHitBoxes(Rectangle* hitBox) override { playerHitBoxes.push_back(hitBox); }
+	void removePlayerHitBoxes(Rectangle* hitBox) override;
 };
