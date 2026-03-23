@@ -35,7 +35,7 @@ private:
     int* subWeapon;
     int* score;
 
-    float jumpForce = 240;
+    float jumpForce = 230;
     float halfGrav = 0.5f * grav;
     float acc = 300;
     float dec = 200;

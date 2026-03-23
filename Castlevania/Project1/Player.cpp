@@ -44,12 +44,12 @@ void Player::updateColliderPosiotions() {
     topCollider.y = position.y;
 
     leftCollider.x = position.x - 1;
-    leftCollider.y = position.y + 10;
+    leftCollider.y = position.y + 5;
     rightCollider.x = position.x + size.x;
-    rightCollider.y = position.y + 10;
+    rightCollider.y = position.y + 5;
 
-    leftCollider.height = size.y - 20;
-    rightCollider.height = size.y - 20;
+    leftCollider.height = size.y - 10;
+    rightCollider.height = size.y - 10;
 }
 
 int Player::checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
