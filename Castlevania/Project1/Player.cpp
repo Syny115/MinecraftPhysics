@@ -145,17 +145,19 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
     }
 }
 
-void Player::moveH(bool accelerate) {
+void Player::moveH(bool accelerate, bool decelerate) {
     normalizedVelocity = getNormalizedVelocity();
-
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD), 1);
     //Limit velocity
     if (abs(velocity.x) > maxSPD) {
         velocity.x = maxSPD * normalizedVelocity;
     }
     //Apply half of velocity
     else {
-        increaseHalfOfVelocity(accelerate);
+        increaseHalfOfVelocity(accelerate, decelerate);
+        normalizedVelocity = getNormalizedVelocity();
     }
+
 
     //Apply Horizontal Movement
     if ((rightBlocked && velocity.x > 0) || (leftBlocked && velocity.x < 0)) {
@@ -164,14 +166,15 @@ void Player::moveH(bool accelerate) {
     else {
         position.x += velocity.x * GetFrameTime();
     }
-
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD), 2);
     //Limit velocity
     if (abs(velocity.x) > maxSPD) {
         velocity.x = maxSPD * normalizedVelocity;
     }
     //Apply half of velocity
     else {
-        increaseHalfOfVelocity(accelerate);
+        increaseHalfOfVelocity(accelerate, decelerate);
+        normalizedVelocity = getNormalizedVelocity();
     }
 
     //Prevent Flickering
@@ -192,21 +195,23 @@ void Player::moveV() {
     Entity::moveV();
 }
 
-void Player::increaseHalfOfVelocity(bool accelerate) {
+void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
     if (accelerate) velocity.x += getInputAxis() * GetFrameTime() * acc * 0.5f;
+    if (!decelerate) return;
     float _dec = dec;
     if (!isOnFloor) {
         _dec = airDec;
     }
-    velocity.x -= _dec * GetFrameTime() * normalizedVelocity * 0.5f;
+    
+    if (normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD) velocity.x -= _dec * GetFrameTime() * normalizedVelocity * 0.5f;
 }
 
 int someCounter = 0;
 
 void Player::update() {
 
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
+    //GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
+    
 
     //earlyUpdate(); // For things that need to be done before everything else
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
@@ -217,7 +222,7 @@ void Player::update() {
     switch (lowerState.current) {
 
     case IDLE:
-        moveH(false);
+        moveH(false, true);
         //Transition
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
         else if (!isOnFloor) lowerState.changeState(FALL);
@@ -226,7 +231,7 @@ void Player::update() {
         break;
 
     case WALK:
-        moveH(true);
+        moveH(true, true);
         updateDirection();
         //Transition
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
@@ -244,7 +249,7 @@ void Player::update() {
         }
         moveV();
 
-        moveH(true);
+        moveH(true, true);
         updateDirection();
         //Transition
         if (velocity.y >= 0) lowerState.changeState(FALL);
@@ -255,7 +260,7 @@ void Player::update() {
         break;
 
     case FALL:
-        moveH(true);
+        moveH(true, true);
         moveV();
         updateDirection();
         //Transition
@@ -276,13 +281,13 @@ void Player::update() {
 
     case ATTACK:
         moveV();
-        if (!(lowerState.previous == WALK && lowerState.previous == IDLE) && !isOnFloor) moveH(true);
-        else moveH(false);
+        if (!(lowerState.previous == WALK && lowerState.previous == IDLE) && !isOnFloor) moveH(false, false);
+        else moveH(false, true);
         //this should only happen if the player attacks from WALK, STAIRS or IDLE
         break;
 
     case CROUCH:
-        moveH(false);
+        moveH(false, true);
         if (IsKeyUp(KEY_DOWN) && !attackTimer.isActive()) lowerState.changeState(IDLE);
     }
 

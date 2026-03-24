@@ -37,11 +37,11 @@ private:
 
     float jumpForce = 230;
     float halfGrav = 0.5f * grav;
-    float acc = 300;
-    float dec = 200;
+    float acc = 200;
+    float dec = 350;
     float airDec = 50;
     float maxSPD = 58.85;
-    float minSPD = 5;
+    float minSPD = 2;
     float maxFALL = 400;
     int normalizedVelocity = 0;
     int direction = 1;
@@ -88,10 +88,10 @@ public:
     //void lateUpdate();
     //void earlyUpdate();
 
-    void moveH(bool accelerate);
+    void moveH(bool accelerate, bool decelerate);
     void moveV() override;
     int getNormalizedVelocity();
-    void increaseHalfOfVelocity(bool accelerate);
+    void increaseHalfOfVelocity(bool accelerate, bool decelerate);
     void updateColliderPosiotions();
     void drawPlayer();
     void updateDirection();
