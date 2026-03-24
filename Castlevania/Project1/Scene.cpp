@@ -74,10 +74,10 @@ void PlayableScene::drawScene() {
 	ClearBackground(/*{0xA0, 0xF0, 0xFF, 0xFF}*/BLACK);
 	BeginMode2D(camera);
 		drawTiles();
-		//for (int i = 0; i < solidRects.size(); i++) {
-		//	DrawRectangleRec(solidRects[i], WHITE);
-		//	DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
-		//}
+		for (int i = 0; i < solidRects.size(); i++) {
+			DrawRectangleRec(solidRects[i], WHITE);
+			DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
+		}
 		
 		player->drawPlayer();
 	EndMode2D();

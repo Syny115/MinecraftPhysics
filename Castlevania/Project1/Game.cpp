@@ -7,9 +7,6 @@ void Game::loadScene(Scene* newScene) {
     activeScene->start();
 }
 
-Sound soundArray[10];
-Music musicArray[10];
-
 void Game::startGame() {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -25,7 +22,7 @@ void Game::startGame() {
     InitAudioDevice();
 
     //Sound
-    soundArray[0] = LoadSound("resources/audio/sound.wav");
+    soundArray[0] = LoadSound("resources/audio/snd_whip.wav");
 
     //Music
     musicArray[0] = LoadMusicStream("resources/audio/VampireKiller.mp3");
@@ -43,7 +40,7 @@ void Game::startGame() {
     {
         // Update
         //----------------------------------------------------------------------------------
-
+        //if (IsKeyPressed(KEY_SPACE)) publicPlaySound(0);      // Play WAV sound
         activeScene->updateScene();
 
         UpdateMusicStream(musicArray[0]);
@@ -62,6 +59,11 @@ void Game::startGame() {
     }
     // De-Initialization
     //--------------------------------------------------------------------------------------
+    for (int i = 0; i < 10; i++) {
+        UnloadMusicStream(musicArray[i]);
+        UnloadSound(soundArray[i]);
+    }
+    
     CloseAudioDevice();
     
     CloseWindow();        // Close window and OpenGL context

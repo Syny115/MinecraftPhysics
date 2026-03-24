@@ -67,6 +67,10 @@ public:
 		return viewportHeight;
 	}
 
+	Game* getGamePointer() {
+		return gamePointer;
+	}
+
 
 	friend class Player;
 };

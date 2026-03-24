@@ -11,8 +11,8 @@ using namespace std;
 class Player : public Entity
 {
 private:
-    Timer startAttackTimer{ 0.5 };
-    Timer attackTimer{ 0.5 };
+    Timer startAttackTimer{ 0.25 };
+    Timer attackTimer{ 0.25 };
 
     enum playerStates
     {
@@ -66,6 +66,8 @@ private:
 
     PlayerState upperState{*this};
     PlayerState lowerState{*this};
+
+    Sound soundArray[10];
 
 public:
     Player();

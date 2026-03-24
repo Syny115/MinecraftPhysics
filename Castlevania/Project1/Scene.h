@@ -17,6 +17,7 @@ protected:
 	queue<Entity*> deletionQueue;
 public:
 	Scene();
+	//virtual ~Scene();
 	virtual void start();
 	virtual void updateScene();
 	virtual void updateCamera();

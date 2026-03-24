@@ -313,6 +313,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             lowerState.changeState(ATTACK);
         }
         else if (current == STARTATTACK && future == ATTACK) {
+            GameManager::getInstance().getGamePointer()->publicPlaySound(0);
             attackTimer.startTimer();
         }
         else if (current == ATTACK && future == IDLE) {
