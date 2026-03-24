@@ -16,7 +16,7 @@ private:
 
     enum playerStates
     {
-        IDLE, WALK, JUMP, FALL, ATTACK, STARTATTACK, STUN, STAIRS, KNOCKBACK, DIE
+        IDLE, WALK, JUMP, FALL, ATTACK, STARTATTACK, CROUCH, STUN, STAIRS, KNOCKBACK, DIE
     };
 
     struct PlayerState {
@@ -54,6 +54,9 @@ private:
 
     bool jumpAllowed = false;
 
+    float offsetY; //Top left of the player, 
+    float offsetX; //now that position is at center
+
     const char* imageName = "HOUSE_MD.png";
     Texture2D sprite;
 
@@ -62,7 +65,7 @@ private:
     Rectangle leftCollider;
     Rectangle rightCollider;
 
-    Rectangle whipCollider;
+    Rectangle whipCollider = {0, 0, 32, 16};
 
     PlayerState upperState{*this};
     PlayerState lowerState{*this};

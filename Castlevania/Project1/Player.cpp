@@ -37,22 +37,31 @@ int Player::getNormalizedVelocity() {
 }
 
 void Player::updateColliderPosiotions() {
-    groundCollider.x = position.x;
-    groundCollider.y = position.y + size.y - 1;
+    groundCollider.x = offsetX;
+    groundCollider.y = offsetY + size.y - 1;
 
-    topCollider.x = position.x;
-    topCollider.y = position.y;
+    topCollider.x = offsetX;
+    topCollider.y = offsetY;
 
-    leftCollider.x = position.x - 1;
-    leftCollider.y = position.y + 5;
-    rightCollider.x = position.x + size.x;
-    rightCollider.y = position.y + 5;
+    leftCollider.x = offsetX - 1;
+    leftCollider.y = offsetY + 5;
+    rightCollider.x = offsetX + size.x;
+    rightCollider.y = offsetY + 5;
 
     leftCollider.height = size.y - 10;
     rightCollider.height = size.y - 10;
 
-    whipCollider.x = (position.x - 8) + 24 * direction;
-    whipCollider.y = position.y;
+    whipCollider.x = position.x -whipCollider.width/2 + (whipCollider.width + size.x) * 0.5 * direction;
+    
+
+    if (lowerState.current == STUN || lowerState.current == CROUCH) {
+        hurtbox = Rectangle{ offsetX, position.y, size.x , size.y / 2 };
+        whipCollider.y = position.y;
+    }
+    else {
+        hurtbox = Rectangle{ offsetX, offsetY, size.x, size.y };
+        whipCollider.y = offsetY;
+    }
 }
 
 int Player::checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
@@ -73,7 +82,7 @@ void Player::groundCollision(Rectangle floorRec) {
     wasOnFloor = isOnFloor;
     if (CheckCollisionRecs(groundCollider, floorRec)) {
         isOnFloor = true;
-        position.y = floorRec.y - size.y;
+        position.y = floorRec.y - size.y/2;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
@@ -91,7 +100,7 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
         isOnFloor = true;
-        position.y = floorRec[i].y - size.y;
+        position.y = floorRec[i].y - size.y/2;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
@@ -117,7 +126,7 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
     int i = checkCollisionRecsArr(predictedRec, wallRec, len);
     if (i != -1) {
         leftBlocked = true;
-        if (velocity.x < 0) position.x = wallRec[i].x + wallRec[i].width;
+        if (velocity.x < 0) position.x = wallRec[i].x + wallRec[i].width + size.x/2;
     }
     else {
         leftBlocked = false;
@@ -129,7 +138,7 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
     int j = checkCollisionRecsArr(predictedRec, wallRec, len);
     if (j != -1) {
         rightBlocked = true;
-        if (velocity.x > 0) position.x = wallRec[j].x - size.x;
+        if (velocity.x > 0) position.x = wallRec[j].x - size.x/2;
     }
     else {
         rightBlocked = false;
@@ -171,7 +180,9 @@ void Player::moveH(bool accelerate) {
     }
 
     //Clamp position to World Size TODO: Add world size to Game Manager
-    position.x = Clamp(position.x, 0, worldWidth - size.x);
+    position.x = Clamp(position.x, +size.x/2, worldWidth - size.x/2);
+    offsetY = position.y - size.y / 2;
+    offsetX = position.x - size.x / 2;
 }
 
 void Player::moveV() {
@@ -195,7 +206,7 @@ int someCounter = 0;
 void Player::update() {
 
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
-   // GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
 
     //earlyUpdate(); // For things that need to be done before everything else
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
@@ -206,10 +217,12 @@ void Player::update() {
     switch (lowerState.current) {
 
     case IDLE:
+        moveH(false);
         //Transition
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
         else if (!isOnFloor) lowerState.changeState(FALL);
         else if (getInputAxis()) lowerState.changeState(WALK);
+        if (IsKeyDown(KEY_DOWN)) lowerState.changeState(CROUCH);
         break;
 
     case WALK:
@@ -218,6 +231,7 @@ void Player::update() {
         //Transition
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
         else if (!isOnFloor) lowerState.changeState(FALL);
+        else if (IsKeyDown(KEY_DOWN)) lowerState.changeState(CROUCH);
         else if (abs(velocity.x) < minSPD && !getInputAxis()) lowerState.changeState(IDLE);
         break;
 
@@ -266,6 +280,10 @@ void Player::update() {
         else moveH(false);
         //this should only happen if the player attacks from WALK, STAIRS or IDLE
         break;
+
+    case CROUCH:
+        moveH(false);
+        if (IsKeyUp(KEY_DOWN) && !attackTimer.isActive()) lowerState.changeState(IDLE);
     }
 
     //Upper body state machine (remember that upper body is subserviant to lower body)
@@ -292,16 +310,14 @@ void Player::update() {
 }
 
 void Player::drawPlayer() {
-    Rectangle rec = { position.x, position.y, size.x, size.y };
-    DrawRectangleRec(rec, DARKGREEN);
+    DrawRectangleRec(hurtbox, DARKGREEN);
     DrawTextureV(sprite, position, WHITE);
     DrawRectangleRec(groundCollider, RED);
     DrawRectangleRec(topCollider, RED);
     DrawRectangleRec(leftCollider, RED);
     DrawRectangleRec(rightCollider, RED);
-
-    if (upperState.current == STARTATTACK) DrawRectangle(position.x- 16*direction, position.y, 16, 30, WHITE);
-    if (upperState.current == ATTACK) DrawRectangle((position.x - 8) + 24 * direction, position.y, whipCollider.width, 16, WHITE);
+    if (upperState.current == STARTATTACK) DrawRectangle(offsetX- 16*direction, offsetY, 16, 30, WHITE);
+    if (upperState.current == ATTACK) DrawRectangleRec(whipCollider, WHITE);
 }
 
 void Player::betweenStates(int previous, int current, int future, PlayerState* state) {
@@ -310,7 +326,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             whipCollider.width = GameManager::getInstance().whipLevel < 2 ? 32 : 48;
             GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(&whipCollider);
             startAttackTimer.startTimer();
-            lowerState.changeState(ATTACK);
+            if (lowerState.current != CROUCH) lowerState.changeState(ATTACK);
         }
         else if (current == STARTATTACK && future == ATTACK) {
             GameManager::getInstance().getGamePointer()->publicPlaySound(0);

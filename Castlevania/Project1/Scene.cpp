@@ -59,7 +59,6 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
-	if (playerHitBoxes.size() > 0) debug_text2 = to_string(playerHitBoxes[0]->x);
 	if (player != nullptr)
 	{
 		player->groundCollision(solidRects);

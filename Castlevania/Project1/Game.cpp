@@ -43,7 +43,7 @@ void Game::startGame() {
         //if (IsKeyPressed(KEY_SPACE)) publicPlaySound(0);      // Play WAV sound
         activeScene->updateScene();
 
-        UpdateMusicStream(musicArray[0]);
+        //UpdateMusicStream(musicArray[0]);
         //----------------------------------------------------------------------------------
 
         // Draw

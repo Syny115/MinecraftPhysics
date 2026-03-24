@@ -14,6 +14,8 @@ protected:
 	float worldHeight, worldWidth;
 	int health;
 
+	Rectangle hurtbox;
+
 public:
 	Entity() {}
 	Entity(Vector2 s, Vector2 p, Vector2 v) { size = s; position = p; velocity = v; }
