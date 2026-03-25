@@ -101,6 +101,7 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     if (i != -1) {
         isOnFloor = true;
         position.y = floorRec[i].y - size.y/2;
+        floorHeight = position.y;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
@@ -147,7 +148,6 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
 
 void Player::moveH(bool accelerate, bool decelerate) {
     normalizedVelocity = getNormalizedVelocity();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD), 1);
     //Limit velocity
     if (abs(velocity.x) > maxSPD) {
         velocity.x = maxSPD * normalizedVelocity;
@@ -166,7 +166,6 @@ void Player::moveH(bool accelerate, bool decelerate) {
     else {
         position.x += velocity.x * GetFrameTime();
     }
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD), 2);
     //Limit velocity
     if (abs(velocity.x) > maxSPD) {
         velocity.x = maxSPD * normalizedVelocity;
@@ -178,7 +177,7 @@ void Player::moveH(bool accelerate, bool decelerate) {
     }
 
     //Prevent Flickering
-    if (abs(velocity.x) < minSPD) {
+    if (abs(velocity.x) <= minSPD && normalizedVelocity * getInputAxis() <= 0) {
         velocity.x = 0;
     }
 
@@ -203,17 +202,19 @@ void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
         _dec = airDec;
     }
     
-    if (normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD) velocity.x -= _dec * GetFrameTime() * normalizedVelocity * 0.5f;
+    if ((normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD) || !accelerate) velocity.x -= _dec * GetFrameTime() * normalizedVelocity * 0.5f;
 }
 
 int someCounter = 0;
 
+void Player::earlyUpdate() {
+
+}
+
 void Player::update() {
+    earlyUpdate(); // For things that need to be done before everything else
 
-    //GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
     
-
-    //earlyUpdate(); // For things that need to be done before everything else
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
@@ -222,6 +223,7 @@ void Player::update() {
     switch (lowerState.current) {
 
     case IDLE:
+        velocity.y = 0;
         moveH(false, true);
         //Transition
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
@@ -263,9 +265,11 @@ void Player::update() {
         moveH(true, true);
         moveV();
         updateDirection();
+        if (position.y < maxHeight) maxHeight = position.y;
         //Transition
         if (isOnFloor) {
-            if (abs(velocity.x) >= minSPD || getInputAxis()) lowerState.changeState(WALK);
+            if (floorHeight-maxHeight >= stunHeight) upperState.changeState(STUN);
+            else if (abs(velocity.x) >= minSPD || getInputAxis()) lowerState.changeState(WALK);
             else lowerState.changeState(IDLE);
         }
         break;
@@ -288,10 +292,10 @@ void Player::update() {
 
     case CROUCH:
         moveH(false, true);
-        if (IsKeyUp(KEY_DOWN) && !attackTimer.isActive()) lowerState.changeState(IDLE);
+        if (IsKeyUp(KEY_DOWN) && !attackTimer.isActive() && !stunTimer.isActive()) lowerState.changeState(IDLE);
     }
 
-    //Upper body state machine (remember that upper body is subserviant to lower body)
+    //Upper body state machine
     switch (upperState.current) {
     
     case IDLE:
@@ -309,9 +313,21 @@ void Player::update() {
             lowerState.changeState(IDLE);
         }
         break;
+    case STUN:
+        stunTimer.updateTimer();
+        if (stunTimer.isTriggerd()) upperState.changeState(IDLE);
     }
+    
+   
+    lateUpdate(); // For things that need to be done after everything else
+}
+
+void Player::lateUpdate() {
     updateColliderPosiotions();
-    //lateUpdate(); // For things that need to be done after everything else
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(floorHeight), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(-maxHeight + floorHeight), 2);
+    
+    if (IsKeyPressed(KEY_A)) position.y = 0;
 }
 
 void Player::drawPlayer() {
@@ -340,6 +356,13 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
         else if (current == ATTACK && future == IDLE) {
             GameManager::getInstance().getActiveScene()->removePlayerHitBoxes(&whipCollider);
         }
+        else if (future == STUN) {
+            stunTimer.startTimer();
+            lowerState.changeState(CROUCH);
+        }
+    }
+    else {
+        if (current == FALL) maxHeight = 256;
     }
     
 }

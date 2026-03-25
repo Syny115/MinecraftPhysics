@@ -20,10 +20,10 @@ public:
     void updateTimer() {
         if (!active) return;
         time -= GetFrameTime();
+        if (time <= 0) active = false;
     }
 
     bool isTriggerd() {
-        if (time <= 0) active = false;
         return time <= 0;
     }
 

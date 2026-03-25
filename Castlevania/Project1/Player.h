@@ -13,6 +13,7 @@ class Player : public Entity
 private:
     Timer startAttackTimer{ 0.25 };
     Timer attackTimer{ 0.25 };
+    Timer stunTimer{ 0.5 };
 
     enum playerStates
     {
@@ -41,7 +42,7 @@ private:
     float dec = 350;
     float airDec = 50;
     float maxSPD = 58.85;
-    float minSPD = 2;
+    float minSPD = 5;
     float maxFALL = 400;
     int normalizedVelocity = 0;
     int direction = 1;
@@ -53,6 +54,10 @@ private:
     bool rightBlocked = false;
 
     bool jumpAllowed = false;
+    
+    float stunHeight = 100;
+    float maxHeight = 256;
+    float floorHeight = 256;
 
     float offsetY; //Top left of the player, 
     float offsetX; //now that position is at center
@@ -85,8 +90,8 @@ public:
     void ceilingCollision(vector<Rectangle> ceilingRec);
     void wallCollision(vector<Rectangle> wallRec);
     void update();
-    //void lateUpdate();
-    //void earlyUpdate();
+    void lateUpdate() override;
+    void earlyUpdate() override;
 
     void moveH(bool accelerate, bool decelerate);
     void moveV() override;
