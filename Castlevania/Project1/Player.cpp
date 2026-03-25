@@ -280,8 +280,6 @@ void Player::update() {
         break;
     case KNOCKBACK:
         break;
-    case STUN:
-        break;
 
     case ATTACK:
         moveV();
@@ -310,7 +308,7 @@ void Player::update() {
         attackTimer.updateTimer();
         if (attackTimer.isTriggerd()) {
             upperState.changeState(IDLE);
-            lowerState.changeState(IDLE);
+            if (lowerState.current != CROUCH) lowerState.changeState(IDLE);
         }
         break;
     case STUN:
@@ -324,8 +322,8 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(floorHeight), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(-maxHeight + floorHeight), 2);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
     
     if (IsKeyPressed(KEY_A)) position.y = 0;
 }
