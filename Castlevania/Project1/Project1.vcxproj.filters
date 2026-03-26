@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Classes\GameManager">
       <UniqueIdentifier>{5b7f3023-3008-469c-aa8a-bef7b309113d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Classes\SpriteRenderer">
+      <UniqueIdentifier>{d7ae6849-fef3-45de-ae8a-6374c2dddfbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files\Classes\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files\Classes\SpriteRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="Classes.h">
       <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Source Files\Classes\SpriteRenderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,8 @@
 #include <vector>
 #include <fstream>
 #include "libraries/json.hpp"
+#include "SpriteRenderer.h"
+
 using json = nlohmann::json;
 using namespace std;
 
@@ -45,6 +47,7 @@ public:
 
 class PlayableScene : public Scene {
 private:
+	SpriteRenderer spriteAnimation;
 	Player* player;
 	vector<Rectangle> solidRects;
 	vector<Rectangle> enemyRects;

@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+
 //REPLACE LATER WHEN I HAVE GAME MANAGER
 const float screenWidth = 800;
 const float screenHeight = 700;
@@ -41,10 +42,12 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
+	
 }
 
 void PlayableScene::start() {
 	player = new Player;
+	spriteAnimation = SpriteRenderer("resources/sprites/simon_sprites.png", 0);
 }
 
 
@@ -79,6 +82,7 @@ void PlayableScene::drawScene() {
 		}*/
 		
 		player->drawPlayer();
+		spriteAnimation.playAnimation("walk", 0, Vector2{ 100, 50 });
 	EndMode2D();
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
 	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
