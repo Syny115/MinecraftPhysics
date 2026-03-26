@@ -75,8 +75,6 @@ private:
     PlayerState upperState{*this};
     PlayerState lowerState{*this};
 
-    Sound soundArray[10];
-
 public:
     Player();
     ~Player();

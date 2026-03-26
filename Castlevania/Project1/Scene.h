@@ -46,7 +46,7 @@ public:
 class PlayableScene : public Scene {
 private:
 	Player* player;
-	
+	vector<Rectangle> solidRects;
 	vector<Rectangle> enemyRects;
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
@@ -65,7 +65,7 @@ private:
 	string debug_text1;
 	string debug_text2;
 public:
-	vector<Rectangle> solidRects;
+	
 	PlayableScene(const char* path);
 	~PlayableScene();
 	
