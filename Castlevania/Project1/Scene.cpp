@@ -68,7 +68,12 @@ void PlayableScene::updateScene() {
 		player->ceilingCollision(solidRects);
 		player->wallCollision(solidRects);
 		player->update();
+
+		spriteAnimation.setAnimation("walk"); // o lo que corresponda
+		spriteAnimation.setFlipX(false);      // true si el jugador va a la izquierda
+		spriteAnimation.update(GetFrameTime());
 	}
+
 	Scene::updateScene();
 }
 
@@ -81,8 +86,8 @@ void PlayableScene::drawScene() {
 			DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
 		}*/
 		
-		player->drawPlayer();
-		spriteAnimation.playAnimation("walk", 0, Vector2{ 100, 50 });
+	player->drawPlayer();
+	spriteAnimation.draw(Vector2{ 100, 50 });
 	EndMode2D();
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
 	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);

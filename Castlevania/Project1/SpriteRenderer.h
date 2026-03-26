@@ -1,38 +1,42 @@
 #pragma once
 #include "raylib.h"
-#include <iostream>
+#include <string>
 #include <vector>
 using namespace std;
 
-class SpriteRenderer
-{
-private: 
-	Texture2D sprite;
-	struct animation {
-		string name;
-		int totalFrames;
-		float frameWidth;
-		float frameHeigth;
-		Vector2 framePos;
-		float hOffset;
-		float vOffset;
-	};
+class SpriteRenderer {
+private:
+    Texture2D sprite;
 
-	vector<animation> animationLibrary;
-	
+    struct Animation {
+        string name;
+        int totalFrames;
+        float frameWidth;
+        float frameHeight;
+        float originX;   // X en el spritesheet donde empieza esta animación
+        float originY;   // Y en el spritesheet donde empieza esta animación
+        float fps;       // frames por segundo de esta animación
+    };
+
+    vector<Animation> animationLibrary;
+
+    // Estado interno
+    string currentAnimName;
+    int currentFrame;
+    float frameTimer;
+    bool flipX;          // para mirar a la izquierda
+
+    int findAnimation(const string& name) const;
 
 public:
+    enum Type { PLAYER, ZOMBIE, BAT, BOSS, LOOT };
 
-	void playAnimation(string animationName, int currentFrame, Vector2 position);
+    SpriteRenderer() : currentFrame(0), frameTimer(0), flipX(false) {}
+    SpriteRenderer(const char* path, int spriteType);
+    ~SpriteRenderer();
 
-	enum type
-	{
-		PLAYER, ZOMBIE, BAT, BOSS, LOOT
-	};
-	SpriteRenderer() {}
-	SpriteRenderer(const char* path, int spriteType);
-
-	~SpriteRenderer();
-
+    void setAnimation(const string& animationName); // cambia animación sin resetear si es la misma
+    void setFlipX(bool flip) { flipX = flip; }
+    void update(float deltaTime);                   // avanza el timer
+    void draw(Vector2 position);                    // dibuja el frame actual
 };
-

@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include "SpriteRenderer.h"
 using namespace std;
 
 class Player : public Entity
@@ -62,8 +63,11 @@ private:
     float offsetY; //Top left of the player, 
     float offsetX; //now that position is at center
 
-    const char* imageName = "HOUSE_MD.png";
-    Texture2D sprite;
+   /* const char* imageName = "HOUSE_MD.png";
+    Texture2D sprite;*/
+
+    SpriteRenderer* spriteRenderer = nullptr;
+    Rectangle hurtbox;
 
     Rectangle groundCollider;
     Rectangle topCollider;
@@ -100,4 +104,6 @@ public:
     void updateDirection();
 
     void betweenStates(int previous, int current, int future, PlayerState* state);
+
+    void updateAnimation();
 };

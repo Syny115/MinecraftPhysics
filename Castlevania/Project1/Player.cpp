@@ -2,7 +2,8 @@
 #include "GameManager.h"
 
 Player::Player() {
-    sprite = LoadTexture(imageName);
+    spriteRenderer = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER);
+    spriteRenderer->setAnimation("idle");
     size = { (float) GameManager::getInstance().getActiveScene()->getTileWidth(), (float) GameManager::getInstance().getActiveScene()->getTileHeight() *2};
     position = { 0, 100 };
     velocity = { 0, 0 };
@@ -18,7 +19,7 @@ Player::Player() {
     whipLevel = &GameManager::getInstance().whipLevel;
 }
 Player::~Player() {
-    UnloadTexture(sprite);
+    delete spriteRenderer;
 }
 
 Vector2 Player::getPosition() { return position; }
@@ -316,7 +317,8 @@ void Player::update() {
         if (stunTimer.isTriggerd()) upperState.changeState(IDLE);
     }
     
-   
+    updateAnimation();
+
     lateUpdate(); // For things that need to be done after everything else
 }
 
@@ -330,7 +332,7 @@ void Player::lateUpdate() {
 
 void Player::drawPlayer() {
     DrawRectangleRec(hurtbox, DARKGREEN);
-    DrawTextureV(sprite, position, WHITE);
+    spriteRenderer->draw(Vector2{ offsetX, offsetY });
     DrawRectangleRec(groundCollider, RED);
     DrawRectangleRec(topCollider, RED);
     DrawRectangleRec(leftCollider, RED);
@@ -367,4 +369,37 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
 
 void Player::updateDirection() {
     if (getInputAxis() != 0) direction = getInputAxis();
+}
+
+void Player::updateAnimation() {
+    // Flip según dirección
+    spriteRenderer->setFlipX(direction == -1);
+
+    // Animación según estado
+    switch (lowerState.current) {
+    case IDLE:
+        spriteRenderer->setAnimation("idle");
+        break;
+    case WALK:
+        spriteRenderer->setAnimation("walk");
+        break;
+    case JUMP:
+        spriteRenderer->setAnimation("jump");
+        break;
+    case FALL:
+        spriteRenderer->setAnimation("fall");
+        break;
+    case CROUCH:
+        spriteRenderer->setAnimation("crouch");
+        break;
+    default:
+        break;
+    }
+
+    // Si el upper body está atacando, sobreescribe
+    if (upperState.current == ATTACK || upperState.current == STARTATTACK) {
+        spriteRenderer->setAnimation("attack");
+    }
+
+    spriteRenderer->update(GetFrameTime());
 }
