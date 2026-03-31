@@ -331,12 +331,12 @@ void Player::lateUpdate() {
 }
 
 void Player::drawPlayer() {
-    DrawRectangleRec(hurtbox, DARKGREEN);
-    spriteRenderer->draw(Vector2{ offsetX, offsetY });
-    DrawRectangleRec(groundCollider, RED);
+    //DrawRectangleRec(hurtbox, DARKGREEN);
+    spriteRenderer->draw(Vector2{ offsetX-2, offsetY-6 });
+    /*DrawRectangleRec(groundCollider, RED);
     DrawRectangleRec(topCollider, RED);
     DrawRectangleRec(leftCollider, RED);
-    DrawRectangleRec(rightCollider, RED);
+    DrawRectangleRec(rightCollider, RED);*/
     if (upperState.current == STARTATTACK) DrawRectangle(offsetX- 16*direction, offsetY, 16, 30, WHITE);
     if (upperState.current == ATTACK) DrawRectangleRec(whipCollider, WHITE);
 }

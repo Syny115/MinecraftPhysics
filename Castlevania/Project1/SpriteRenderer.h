@@ -16,6 +16,7 @@ private:
         float originX;   // X en el spritesheet donde empieza esta animación
         float originY;   // Y en el spritesheet donde empieza esta animación
         float fps;       // frames por segundo de esta animación
+        // talvez haria falta un offset por si alguna animacion tiene un relieve mayor o menor
     };
 
     vector<Animation> animationLibrary;
