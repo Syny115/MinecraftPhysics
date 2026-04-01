@@ -35,12 +35,18 @@ void Scene::updateScene() {
 }
 
 //----------- PLAYABLE SCENE -------------//
+Texture test;
+Timer timertest(10);
 
 PlayableScene::PlayableScene(const char* path) {
 	camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
+
+	
+	test = LoadTexture("resources/sprites/fly.png");
+	lootitems.push_back(new Loot(Vector2{16,16},Vector2{100,100},Vector2{0,0}, test, timertest));
 }
 
 void PlayableScene::start() {
@@ -51,6 +57,10 @@ void PlayableScene::start() {
 PlayableScene::~PlayableScene() {
 	delete player;
 	UnloadTexture(tileAtlas);
+	UnloadTexture(test);
+	for (int i = 0; lootitems.empty(); i++) {
+		delete lootitems[i];
+	}
 }
 
 void PlayableScene::updateCamera() {
@@ -66,6 +76,9 @@ void PlayableScene::updateScene() {
 		player->wallCollision(solidRects);
 		player->update();
 	}
+	if (!lootitems.empty()) {
+		lootitems[0]->update();
+	}
 	Scene::updateScene();
 }
 
@@ -79,9 +92,13 @@ void PlayableScene::drawScene() {
 		}*/
 		
 		player->drawPlayer();
+		if (!lootitems.empty()) {
+			lootitems[0]->Draw();
+		}
 	EndMode2D();
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
 	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
+	
 }
 
 void PlayableScene::drawTiles() {
@@ -105,5 +122,11 @@ void PlayableScene::drawTiles() {
 void PlayableScene::removePlayerHitBoxes(Rectangle* hitBox) {
 	for (int i = 0; i < playerHitBoxes.size(); i++) {
 		if (playerHitBoxes[i] == hitBox) playerHitBoxes.erase(playerHitBoxes.begin() + i);
+	}
+}
+
+void PlayableScene::removeLoot(Loot* l) {
+	for (int i = 0; i < lootitems.size(); i++) {
+		if (lootitems[i] == l) lootitems.erase(lootitems.begin() + i);
 	}
 }
