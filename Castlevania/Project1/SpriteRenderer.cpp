@@ -68,7 +68,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
 
         add("idle", 1, 1, 7, 20, 24, 1);   // x=0,  parado
         add("walk", 3, 22, 7, 20, 24, 9);   // x=22..64, caminar (3 frames contiguos)
-        add("startAttack", 2, 85, 7, 41, 23, 4);
+        add("startAttack", 2, 85, 7, 41, 23, 7);
         add("attack", 1, 169, 7, 41, 24, 1); 
         //TODO: hacer un set fps para que los timers siempre estan sincronizados
         add("hurt", 1, 211, 7, 20, 24, 1);
@@ -96,8 +96,8 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         break;
     case WHIP:
         add("hidden", 1, 0, 0, 0, 0, 1);
-        add("shortStart", 2, 1, 91, 20, 26, 4);
-        add("longStart", 2, 43, 91, 20, 26, 4);
+        add("shortStart", 2, 1, 91, 20, 26, 7);
+        add("longStart", 2, 43, 91, 20, 26, 7);
         add("lv1Attack", 1, 85, 91, 62, 20, 1);
         add("lv2Attack", 1, 85, 112, 62, 20, 1);
         add("lv3Attack", 1, 85, 133, 62, 20, 1);

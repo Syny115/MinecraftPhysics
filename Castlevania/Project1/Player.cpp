@@ -229,13 +229,6 @@ void Player::update() {
         jumpAllowed = true;
     }
 
-    topSprite->setFlipX(direction == -1);
-    bottomSprite->setFlipX(direction == -1);
-    whipSprite->setFlipX(direction == -1);
-    topSprite->update(GetFrameTime());
-    bottomSprite->update(GetFrameTime());
-    whipSprite->update(GetFrameTime());
-
     //Lower Body State Machine
     switch (lowerState.current) {
 
@@ -389,7 +382,7 @@ void Player::update() {
         if (stunTimer.isTriggerd()) upperState.changeState(IDLE);
     }
     if (lowerState.current == CROUCH || lowerState.current == STUN) topAnimOffsetY = 2;
-    //updateAnimation();
+    updateAnimation();
 
     lateUpdate(); // For things that need to be done after everything else
 }
@@ -413,7 +406,7 @@ void Player::drawPlayer() {
     if (upperState.current == STARTATTACK) {
         whipSprite->draw(Vector2{ offsetX + (topAnimOffsetX * direction)-4, offsetY + topAnimOffsetY + 13 });
     }
-    if (upperState.current == ATTACK) {
+    if (upperState.current == ATTACK && whipSprite->getAnimation().find("Start") == string::npos) {
         //DrawRectangleRec(whipCollider, WHITE);
         whipSprite->draw(Vector2{ offsetX - 23.5f + 39.5f * direction, offsetY + topAnimOffsetY + 9});
     }
@@ -448,4 +441,13 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
 
 void Player::updateDirection() {
     if (getInputAxis() != 0) direction = getInputAxis();
+}
+
+void Player::updateAnimation() {
+    topSprite->setFlipX(direction == -1);
+    bottomSprite->setFlipX(direction == -1);
+    whipSprite->setFlipX(direction == -1);
+    topSprite->update(GetFrameTime());
+    bottomSprite->update(GetFrameTime());
+    whipSprite->update(GetFrameTime());
 }

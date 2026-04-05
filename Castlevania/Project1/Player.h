@@ -12,8 +12,8 @@ using namespace std;
 class Player : public Entity
 {
 private:
-    Timer startAttackTimer{ 0.5 };
-    Timer attackTimer{ 0.5 };
+    Timer startAttackTimer{ 0.25 };
+    Timer attackTimer{ 0.25 };
     Timer stunTimer{ 0.5 };
 
     enum playerStates
@@ -67,9 +67,6 @@ private:
     float topAnimOffsetY;
     float topAnimOffsetX;
 
-   /* const char* imageName = "HOUSE_MD.png";
-    Texture2D sprite;*/
-
     SpriteRenderer* topSprite = nullptr;
     SpriteRenderer* bottomSprite = nullptr;
     SpriteRenderer* whipSprite = nullptr;
@@ -109,6 +106,7 @@ public:
     void updateColliderPosiotions();
     void drawPlayer();
     void updateDirection();
+    void updateAnimation();
 
     void betweenStates(int previous, int current, int future, PlayerState* state);
 };

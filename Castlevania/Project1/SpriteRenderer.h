@@ -40,4 +40,5 @@ public:
     void setFlipX(bool flip) { flipX = flip; }
     void update(float deltaTime);                   // avanza el timer
     void draw(Vector2 position);                    // dibuja el frame actual
+    string getAnimation() { return currentAnimName; }
 };
