@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+
 //REPLACE LATER WHEN I HAVE GAME MANAGER
 const float screenWidth = 800;
 const float screenHeight = 700;
@@ -41,10 +42,12 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
+	
 }
 
 void PlayableScene::start() {
 	player = new Player;
+	spriteAnimation = SpriteRenderer("resources/sprites/simon_sprites.png", 1);
 }
 
 
@@ -65,7 +68,12 @@ void PlayableScene::updateScene() {
 		player->ceilingCollision(solidRects);
 		player->wallCollision(solidRects);
 		player->update();
+
+		spriteAnimation.setAnimation("crouch"); // o lo que corresponda
+		spriteAnimation.setFlipX(false);      // true si el jugador va a la izquierda
+		spriteAnimation.update(GetFrameTime());
 	}
+
 	Scene::updateScene();
 }
 
@@ -78,7 +86,8 @@ void PlayableScene::drawScene() {
 			DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
 		}*/
 		
-		player->drawPlayer();
+	player->drawPlayer();
+	spriteAnimation.draw(Vector2{ 100, 50 });
 	EndMode2D();
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
 	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);

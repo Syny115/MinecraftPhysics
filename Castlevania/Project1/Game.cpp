@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "GameManager.h"
 
+
 void Game::loadScene(Scene* newScene) {
     delete activeScene;
     activeScene = newScene;
@@ -15,6 +16,7 @@ void Game::startGame() {
     InitWindow(screenWidth, screenHeight, "Castlevania");
     activeScene = new PlayableScene("resources/json/Test1.json");
     activeScene->start();
+    
     
 
 
@@ -50,6 +52,7 @@ void Game::startGame() {
         //----------------------------------------------------------------------------------
         BeginDrawing();
         activeScene->drawScene();
+        
 
         // Debug
 
