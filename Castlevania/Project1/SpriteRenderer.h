@@ -16,7 +16,7 @@ private:
         float originX;   // X en el spritesheet donde empieza esta animación
         float originY;   // Y en el spritesheet donde empieza esta animación
         float fps;       // frames por segundo de esta animación
-        // talvez haria falta un offset por si alguna animacion tiene un relieve mayor o menor
+        float offset; // por si alguna animacion tiene un relieve mayor o menor
     };
 
     vector<Animation> animationLibrary;
@@ -30,7 +30,7 @@ private:
     int findAnimation(const string& name) const;
 
 public:
-    enum Type { PLAYER, ZOMBIE, BAT, BOSS, LOOT };
+    enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BOSS, LOOT, WHIP };
 
     SpriteRenderer() : currentFrame(0), frameTimer(0), flipX(false) {}
     SpriteRenderer(const char* path, int spriteType);

@@ -2,8 +2,13 @@
 #include "GameManager.h"
 
 Player::Player() {
-    spriteRenderer = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER);
-    spriteRenderer->setAnimation("idle");
+    topSprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER_TOP);
+    topSprite->setAnimation("idle");
+    bottomSprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER_BOTTOM);
+    bottomSprite->setAnimation("idle");
+    whipSprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::WHIP);
+    whipSprite->setAnimation("hidden");
+
     size = { (float) GameManager::getInstance().getActiveScene()->getTileWidth(), (float) GameManager::getInstance().getActiveScene()->getTileHeight() *2};
     position = { 0, 100 };
     velocity = { 0, 0 };
@@ -19,7 +24,8 @@ Player::Player() {
     whipLevel = &GameManager::getInstance().whipLevel;
 }
 Player::~Player() {
-    delete spriteRenderer;
+    delete topSprite;
+    delete bottomSprite;
 }
 
 Vector2 Player::getPosition() { return position; }
@@ -58,6 +64,9 @@ void Player::updateColliderPosiotions() {
     if (lowerState.current == STUN || lowerState.current == CROUCH) {
         hurtbox = Rectangle{ offsetX, position.y, size.x , size.y / 2 };
         whipCollider.y = position.y;
+    }
+    else if (lowerState.current == JUMP || lowerState.current == FALL) {
+        hurtbox = Rectangle{ offsetX, offsetY, size.x , size.y / 2 };
     }
     else {
         hurtbox = Rectangle{ offsetX, offsetY, size.x, size.y };
@@ -220,10 +229,20 @@ void Player::update() {
         jumpAllowed = true;
     }
 
+    topSprite->setFlipX(direction == -1);
+    bottomSprite->setFlipX(direction == -1);
+    whipSprite->setFlipX(direction == -1);
+    topSprite->update(GetFrameTime());
+    bottomSprite->update(GetFrameTime());
+    whipSprite->update(GetFrameTime());
+
     //Lower Body State Machine
     switch (lowerState.current) {
 
     case IDLE:
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -2;
+        bottomSprite->setAnimation("idle");
         velocity.y = 0;
         moveH(false, true);
         //Transition
@@ -234,6 +253,10 @@ void Player::update() {
         break;
 
     case WALK:
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -2;
+        velocity.y = 0;
+        bottomSprite->setAnimation("walk");
         moveH(true, true);
         updateDirection();
         //Transition
@@ -244,6 +267,9 @@ void Player::update() {
         break;
 
     case JUMP:
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -2;
+        bottomSprite->setAnimation("crouch");
         if (jumpAllowed) 
         {
             someCounter++;
@@ -263,6 +289,9 @@ void Player::update() {
         break;
 
     case FALL:
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -2;
+        bottomSprite->setAnimation("crouch");
         moveH(true, true);
         moveV();
         updateDirection();
@@ -283,14 +312,27 @@ void Player::update() {
         break;
 
     case ATTACK:
-        moveV();
-        if (!(lowerState.previous == WALK && lowerState.previous == IDLE) && !isOnFloor) moveH(false, false);
-        else moveH(false, true);
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -2;
+        
+        if (!isOnFloor) moveV();
+        if (!(lowerState.previous == WALK && lowerState.previous == IDLE) && !isOnFloor) {
+            moveH(false, false);
+            bottomSprite->setAnimation("crouch");
+        }
+        else {
+            moveH(false, true);
+            bottomSprite->setAnimation("idle");
+        }
         //this should only happen if the player attacks from WALK, STAIRS or IDLE
         break;
 
     case CROUCH:
+            bottomAnimOffsetY = 25;
+            bottomAnimOffsetX = -2;
+        bottomSprite->setAnimation("crouch");
         moveH(false, true);
+
         if (IsKeyUp(KEY_DOWN) && !attackTimer.isActive() && !stunTimer.isActive()) lowerState.changeState(IDLE);
     }
 
@@ -298,26 +340,56 @@ void Player::update() {
     switch (upperState.current) {
     
     case IDLE:
+            topAnimOffsetY = - 6;
+            topAnimOffsetX = -2;
+        if (lowerState.current != WALK) topSprite->setAnimation("idle");
+        else topSprite->setAnimation("walk");
+
+        //transition
         if (IsKeyPressed(KEY_D)) upperState.changeState(STARTATTACK);
         break;
     case STARTATTACK:
+            topAnimOffsetY = -6;
+            topAnimOffsetX = -13;
+        topSprite->setAnimation("startAttack");
+        if (*whipLevel > 0) whipSprite->setAnimation("longStart");
+        else whipSprite->setAnimation("shortStart");
         startAttackTimer.updateTimer();
+
+        //transition
         if (startAttackTimer.isTriggerd()) upperState.changeState(ATTACK);
         break;
     case ATTACK:
-        //Transition
+            topAnimOffsetY = -6;
+            topAnimOffsetX = -13;
+        topSprite->setAnimation("attack");
+        if (*whipLevel == 2) whipSprite->setAnimation("lv3Attack");
+        else if (*whipLevel == 1) whipSprite->setAnimation("lv2Attack");
+        else whipSprite->setAnimation("lv1Attack");
+
         attackTimer.updateTimer();
+
+        //Transition
         if (attackTimer.isTriggerd()) {
+            whipSprite->setAnimation("hidden");
             upperState.changeState(IDLE);
-            if (lowerState.current != CROUCH) lowerState.changeState(IDLE);
+            if (lowerState.current != CROUCH) {
+                if (!isOnFloor) lowerState.changeState(FALL);
+                else lowerState.changeState(IDLE);
+            }
         }
         break;
     case STUN:
+            topAnimOffsetY = -6;
+            topAnimOffsetX = -2;
+        topSprite->setAnimation("hurt");
         stunTimer.updateTimer();
+
+        //Transition
         if (stunTimer.isTriggerd()) upperState.changeState(IDLE);
     }
-    
-    updateAnimation();
+    if (lowerState.current == CROUCH || lowerState.current == STUN) topAnimOffsetY = 2;
+    //updateAnimation();
 
     lateUpdate(); // For things that need to be done after everything else
 }
@@ -332,13 +404,20 @@ void Player::lateUpdate() {
 
 void Player::drawPlayer() {
     //DrawRectangleRec(hurtbox, DARKGREEN);
-    spriteRenderer->draw(Vector2{ offsetX-2, offsetY-6 });
+    topSprite->draw(Vector2{ offsetX + topAnimOffsetX, offsetY + topAnimOffsetY });
+    bottomSprite->draw(Vector2{ offsetX + bottomAnimOffsetX, offsetY + bottomAnimOffsetY });
     /*DrawRectangleRec(groundCollider, RED);
     DrawRectangleRec(topCollider, RED);
     DrawRectangleRec(leftCollider, RED);
     DrawRectangleRec(rightCollider, RED);*/
-    if (upperState.current == STARTATTACK) DrawRectangle(offsetX- 16*direction, offsetY, 16, 30, WHITE);
-    if (upperState.current == ATTACK) DrawRectangleRec(whipCollider, WHITE);
+    if (upperState.current == STARTATTACK) {
+        whipSprite->draw(Vector2{ offsetX + (topAnimOffsetX * direction)-4, offsetY + topAnimOffsetY + 13 });
+    }
+    if (upperState.current == ATTACK) {
+        //DrawRectangleRec(whipCollider, WHITE);
+        whipSprite->draw(Vector2{ offsetX - 23.5f + 39.5f * direction, offsetY + topAnimOffsetY + 9});
+    }
+    
 }
 
 void Player::betweenStates(int previous, int current, int future, PlayerState* state) {
@@ -369,37 +448,4 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
 
 void Player::updateDirection() {
     if (getInputAxis() != 0) direction = getInputAxis();
-}
-
-void Player::updateAnimation() {
-    // Flip según dirección
-    spriteRenderer->setFlipX(direction == -1);
-
-    // Animación según estado
-    switch (lowerState.current) {
-    case IDLE:
-        spriteRenderer->setAnimation("idle");
-        break;
-    case WALK:
-        spriteRenderer->setAnimation("walk");
-        break;
-    case JUMP:
-        spriteRenderer->setAnimation("jump");
-        break;
-    case FALL:
-        spriteRenderer->setAnimation("fall");
-        break;
-    case CROUCH:
-        spriteRenderer->setAnimation("crouch");
-        break;
-    default:
-        break;
-    }
-
-    // Si el upper body está atacando, sobreescribe
-    if (upperState.current == ATTACK || upperState.current == STARTATTACK) {
-        spriteRenderer->setAnimation("attack");
-    }
-
-    spriteRenderer->update(GetFrameTime());
 }

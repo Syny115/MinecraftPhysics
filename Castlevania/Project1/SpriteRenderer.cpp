@@ -29,7 +29,7 @@ void SpriteRenderer::draw(Vector2 position) {
 
     // Los frames NO son contiguos en todos los casos,
     // por eso guardamos los offsets de cada frame individualmente
-    float fx = anim.originX + currentFrame * anim.frameWidth + currentFrame;
+    float fx = anim.originX + currentFrame * anim.frameWidth + currentFrame * anim.offset;
     float fy = anim.originY;
 
     Rectangle source = {
@@ -50,41 +50,60 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     // Fila superior: y=7, altura=41
     // Fila inferior: y=49, altura=41 (pero los sprites usan y=48 con h=41 -> hasta y=89)
 
+    auto add = [&](string name, int frames, float ox, float oy, float w, float h, float fps) {
+        Animation a;
+        a.name = name;
+        a.totalFrames = frames;
+        a.originX = ox;
+        a.originY = oy;
+        a.frameWidth = w;
+        a.frameHeight = h;
+        a.fps = fps;
+        a.offset = 1;
+        animationLibrary.push_back(a);
+        };
     switch (spriteType) {
-    case PLAYER: { // hay que distinguir entre player TOP y player BOTTOM (así no tenemos que hacer sprites agachadas i atacando)
-        //fila uno de top seria y=7 a y=29 (23 pixels) y de bottom seria y=30 a y = 47 (18 pixels)
-        //Animaciones para TOP: idle, walk, attack, attack start, stun/hurt (hurt y stun tienen la misma aparencia), stair idle, stair walk (da igual la direccion)
-        //Animaciones para BOTTOM: idle, walk, attack, crouch, dead, stair Idle Up, stair walk Up, stair idle down, stair walk down, hurt (reuses stair idle down)
-        auto add = [&](string name, int frames, float ox, float oy, float fps) {
-            Animation a;
-            a.name = name;
-            a.totalFrames = frames;
-            a.originX = ox;
-            a.originY = oy;
-            a.frameWidth = 20;
-            a.frameHeight = 41;
-            a.fps = fps;
-            animationLibrary.push_back(a);
-            };
+    case PLAYER_TOP:          
+        //fila uno de top seria y=7 a y=30 (24 pixels) y de bottom seria y=31 a y = 46 (16 pixels)
 
-        // FILA Y=16 — animaciones principales
-        add("idle", 1, 1, 7, 1);   // x=0,  parado
-        add("walk", 3, 22, 7, 9);   // x=22..64, caminar (3 frames contiguos)
-        //below are not corrected
-        add("attack", 2, 85, 7, 10);  // x=192..208, látigo extendido
-        //Deberia haber un start attack y un attack. asi podemos tocar los timers TODO: hacer un set fps para que los timers siempre estan sincronizados
-        add("hurt", 2, 224, 16, 6);   // x=224..240, recibir daño
-        add("dead", 1, 272, 16, 1);   // x=272, muerto
-
-        // FILA Y=48 — estados especiales
-        add("crouch", 1, 22, 49, 1);   // x=32, agachado
-        add("jump", 1, 22, 49, 1);   // x=80, salto
-        add("land", 1, 128, 48, 1);   // x=128, aterrizaje
-        add("stairs", 4, 160, 48, 6);   // x=160..224, subir escaleras
+        add("idle", 1, 1, 7, 20, 24, 1);   // x=0,  parado
+        add("walk", 3, 22, 7, 20, 24, 9);   // x=22..64, caminar (3 frames contiguos)
+        add("startAttack", 2, 85, 7, 41, 23, 4);
+        add("attack", 1, 169, 7, 41, 24, 1); 
+        //TODO: hacer un set fps para que los timers siempre estan sincronizados
+        add("hurt", 1, 211, 7, 20, 24, 1);
+        add("stairsIdle", 1, 320, 7, 20, 24, 1);
+        add("stairsWalk", 2, 341, 7, 20, 24, 10);
 
         currentAnimName = "idle";
         break;
-    }
+    case PLAYER_BOTTOM:
+        //fila uno de top seria y=7 a y=30 (24 pixels) y de bottom seria y=31 a y = 46 (16 pixels)
+        
+
+        add("idle", 1, 1, 31, 20, 16, 1);   // x=0,  parado
+        add("walk", 3, 22, 31, 20, 16, 9);   // x=22..64, caminar (3 frames contiguos)
+        add("attack", 1, 85, 31, 41, 16, 1);
+        //TODO: hacer un set fps para que los timers siempre estan sincronizados
+        add("dead", 1, 211, 70, 41, 19, 1);   // x=211
+        add("crouch", 1, 22, 79, 20, 8, 1);   // x=22, agachado // Jump uses this also
+        add("stairsIdleUp", 1, 320, 31, 20, 16, 1);
+        add("stairsWalkUp", 2, 341, 31, 20, 16, 10);
+        add("stairsIdleDown", 1, 320, 73, 20, 16, 1); // Hurt also uses this
+        add("stairsWalkDown", 2, 341, 73, 20, 16, 10);
+
+        currentAnimName = "idle";
+        break;
+    case WHIP:
+        add("hidden", 1, 0, 0, 0, 0, 1);
+        add("shortStart", 2, 1, 91, 20, 26, 4);
+        add("longStart", 2, 43, 91, 20, 26, 4);
+        add("lv1Attack", 1, 85, 91, 62, 20, 1);
+        add("lv2Attack", 1, 85, 112, 62, 20, 1);
+        add("lv3Attack", 1, 85, 133, 62, 20, 1);
+
+        currentAnimName = "hidden";
+        break;
     case ZOMBIE:
         // TODO
         break;

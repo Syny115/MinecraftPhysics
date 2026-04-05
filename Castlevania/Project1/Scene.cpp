@@ -47,7 +47,7 @@ PlayableScene::PlayableScene(const char* path) {
 
 void PlayableScene::start() {
 	player = new Player;
-	spriteAnimation = SpriteRenderer("resources/sprites/simon_sprites.png", 0);
+	spriteAnimation = SpriteRenderer("resources/sprites/simon_sprites.png", 1);
 }
 
 
@@ -69,7 +69,7 @@ void PlayableScene::updateScene() {
 		player->wallCollision(solidRects);
 		player->update();
 
-		spriteAnimation.setAnimation("walk"); // o lo que corresponda
+		spriteAnimation.setAnimation("crouch"); // o lo que corresponda
 		spriteAnimation.setFlipX(false);      // true si el jugador va a la izquierda
 		spriteAnimation.update(GetFrameTime());
 	}
