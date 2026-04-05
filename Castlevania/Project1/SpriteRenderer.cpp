@@ -44,7 +44,12 @@ void SpriteRenderer::draw(Vector2 position) {
 SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     : currentFrame(0), frameTimer(0), flipX(false)
 {
-    sprite = LoadTexture(path);
+    rawSprite = LoadImage(path);
+    Color target = { 119, 51, 153, 255 };
+    ImageColorReplace(&rawSprite, target, BLANK);
+
+    sprite = LoadTextureFromImage(rawSprite);
+    UnloadImage(rawSprite);
 
     // Todos los sprites de Simon son 16x32 pero el frame en si es 20x41 (dentro del relieve lila)
     // Fila superior: y=7, altura=41

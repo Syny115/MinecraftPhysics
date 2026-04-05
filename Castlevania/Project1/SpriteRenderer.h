@@ -6,6 +6,7 @@ using namespace std;
 
 class SpriteRenderer {
 private:
+    Image rawSprite;
     Texture2D sprite;
 
     struct Animation {
