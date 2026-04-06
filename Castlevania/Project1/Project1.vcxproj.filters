@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Classes">
+      <UniqueIdentifier>{caba59a6-e130-4495-9783-aba9be05b062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Player">
+      <UniqueIdentifier>{03cc2d54-124f-4014-bff8-0d2a4776bcd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Scene">
+      <UniqueIdentifier>{35397faa-c750-4ac7-8617-acc3d2571524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Game">
+      <UniqueIdentifier>{205872ff-6adc-4f6b-9e19-b168ab69f21c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Entity">
+      <UniqueIdentifier>{69a1bb46-9740-4ce5-a52e-4d233ac6b888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\GameManager">
+      <UniqueIdentifier>{5b7f3023-3008-469c-aa8a-bef7b309113d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\SpriteRenderer">
+      <UniqueIdentifier>{d7ae6849-fef3-45de-ae8a-6374c2dddfbe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Classes\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Classes\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Classes\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="tileParse.cpp">
+      <Filter>Source Files\Classes\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Classes\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Classes\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files\Classes\SpriteRenderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libraries\raylib\include\raylib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\raylib\include\raymath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\raylib\include\rlgl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Classes\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Source Files\Classes\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files\Classes\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Source Files\Classes\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Source Files\Classes\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes.h">
+      <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Source Files\Classes\SpriteRenderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

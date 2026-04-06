@@ -1,30 +1,22 @@
-# Please don't make us do Tomb of the Mask
+# Minecraft Physics' Castlevania
 
 TODO: Write a project description
 
 ## Installation
 
-TODO: Describe the installation process
+TODO: Describe the installation 
 
 ## Usage
 
-TODO: Write usage instructions
+Have fun IG?
 
 ## Contributing
 
-1\. Fork it!
-
-2\. Create your feature branch: `git checkout -b my-newfeature`
-
-3\. Commit your changes: `git commit -am 'Add some feature'`
-
-4\. Push to the branch: `git push origin my-new-feature`
-
-5\. Submit a pull request :D
+Do you really wanna tho?
 
 ## History
 
-TODO: Write history
+This is Project 1 of a game design course, in which we must recreate a classic / arcade game with the raylib library.
 
 ## Credits
 
