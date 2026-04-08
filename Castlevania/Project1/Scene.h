@@ -13,6 +13,19 @@
 using json = nlohmann::json;
 using namespace std;
 
+struct damageRect
+{
+	Rectangle* rect;
+	unsigned short damage;
+};
+
+struct staircase
+{
+	Rectangle start;
+	Rectangle end;
+	bool up;
+};
+
 class Scene {
 protected:
 	Camera2D camera = { 0 };
@@ -55,6 +68,9 @@ private:
 	vector<Rectangle> destructableRects;
 	vector<Rectangle*> playerHitBoxes;
 
+	vector<Vector2> checkpoints;
+	vector<staircase> stairs;
+
 	float worldWidth;
 	float worldHeight;
 	int tileHeight;
@@ -79,6 +95,7 @@ public:
 	void drawScene() override;
 	void drawTiles();
 	void parseTiles(const char* path);
+	void parseStairs(vector<vector<int>> mat);
 
 	void setDebugMessage(string message, int count) override {
 		if (count == 1) debug_text1 = message;
