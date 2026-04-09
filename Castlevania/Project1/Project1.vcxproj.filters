@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Classes\SpriteRenderer">
       <UniqueIdentifier>{d7ae6849-fef3-45de-ae8a-6374c2dddfbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Classes\Enemies">
+      <UniqueIdentifier>{04e193cc-0b7d-4c3d-923f-0fba9334d8e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -59,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="SpriteRenderer.cpp">
       <Filter>Source Files\Classes\SpriteRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>Source Files\Classes\SpriteRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
