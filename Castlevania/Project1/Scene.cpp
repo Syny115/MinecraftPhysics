@@ -44,9 +44,9 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
 
-	
-	test = LoadTexture("resources/sprites/fly.png");
-	lootitems.push_back(new Loot(Vector2{16,16},Vector2{100,100},Vector2{0,0}, test, timertest));
+	// Creating test loot 
+	test = LoadTexture("resources/sprites/heart.png");
+	lootitems.push_back(new Loot(Vector2{16,16},Vector2{100,100},Vector2{0,20}, test, timertest));
 }
 
 void PlayableScene::start() {
@@ -77,8 +77,17 @@ void PlayableScene::updateScene() {
 		player->update();
 	}
 	if (!lootitems.empty()) {
-		lootitems[0]->update();
+		for (int i = 0; i < lootitems.size(); i++) {
+			if (CheckCollisionRecs(player->getHurtbox(), lootitems[i]->getHurtbox())) {
+				// Add pickup code here
+				lootitems[i]->queueDeletion();
+			}
+			lootitems[i]->groundCollision(solidRects);
+			lootitems[i]->update();
+		}
 	}
+	
+		
 	Scene::updateScene();
 }
 

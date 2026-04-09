@@ -2,6 +2,8 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <vector>
+using namespace std;
+
 class Entity {
 protected:
 	bool isLoaded = false;
@@ -13,8 +15,13 @@ protected:
 	float maxFALL = 400;
 	float worldHeight, worldWidth;
 	int health;
+	
+
+	float floorHeight = 256;
 
 	Rectangle hurtbox;
+	
+
 
 public:
 	Entity() {}
@@ -29,9 +36,8 @@ public:
 	Vector2 getVelocity() {
 		return velocity;
 	}
-
-	int checkSelfCollisionPointRecArr(Rectangle* recs, int len); //moved to entity.cpp
-
+	virtual int checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len);
+	virtual void groundCollision(vector<Rectangle> floorRec);
 	void load() {isLoaded = true;}
 	void unload() {isLoaded = false;}
 	void queueDeletion();
@@ -40,4 +46,5 @@ public:
 	virtual void lateUpdate();
 	virtual void update();
 	virtual void moveV(); // moved to entity.cpp
+	Rectangle getHurtbox() { return hurtbox; };
 };

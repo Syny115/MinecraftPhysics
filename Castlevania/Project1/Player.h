@@ -3,7 +3,6 @@
 #include "raymath.h"
 #include "Classes.h"
 #include "Entity.h"
-#include <vector>
 #include <iostream>
 #include <string>
 using namespace std;
@@ -46,7 +45,6 @@ private:
     float maxFALL = 400;
     int normalizedVelocity = 0;
     int direction = 1;
-    bool isOnFloor = true;
     bool wasOnFloor = true;
     bool isOnCeiling = true;
 
@@ -57,7 +55,6 @@ private:
     
     float stunHeight = 100;
     float maxHeight = 256;
-    float floorHeight = 256;
 
     float offsetY; //Top left of the player, 
     float offsetX; //now that position is at center
@@ -65,10 +62,10 @@ private:
     const char* imageName = "HOUSE_MD.png";
     Texture2D sprite;
 
-    Rectangle groundCollider;
     Rectangle topCollider;
     Rectangle leftCollider;
     Rectangle rightCollider;
+    Rectangle groundCollider;
 
     Rectangle whipCollider = {0, 0, 32, 16};
 
@@ -82,7 +79,6 @@ public:
     Vector2 getVelocity();
     int getInputAxis();
     int checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len);
-    int checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len);
     void groundCollision(Rectangle floorRec);
     void groundCollision(vector<Rectangle> floorRec);
     void ceilingCollision(vector<Rectangle> ceilingRec);

@@ -9,7 +9,6 @@ class Loot : public Entity {
 private:
 	Texture texture;
 	Timer despawntime;
-	Rectangle rect;
 	int lootType;
 public:
 	Loot() {}
