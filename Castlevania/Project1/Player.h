@@ -61,13 +61,12 @@ private:
     float maxHeight = 256;
     float floorHeight = 256;
 
-    float offsetY; //Top left of the player, 
-    float offsetX; //now that position is at center
     float bottomAnimOffsetY;
     float bottomAnimOffsetX;
     float topAnimOffsetY;
     float topAnimOffsetX;
     short isOnStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
+    float stairPos;
     SpriteRenderer* topSprite = nullptr;
     SpriteRenderer* bottomSprite = nullptr;
     SpriteRenderer* whipSprite = nullptr;
@@ -105,7 +104,7 @@ public:
     void moveV() override;
     int getNormalizedVelocity();
     void increaseHalfOfVelocity(bool accelerate, bool decelerate);
-    void updateColliderPosiotions();
+    void updateColliderPosiotions() override;
     void drawPlayer();
     void updateDirection();
     void updateAnimation();

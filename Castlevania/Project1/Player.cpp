@@ -158,8 +158,14 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
 
 void Player::stairCollision(vector<staircase>& stairs) { // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
     for (int i = 0; i < stairs.size(); i++) {
-        if (CheckCollisionRecs(stairs[i].start, groundCollider)) isOnStair = 1;
-        else if (CheckCollisionRecs(stairs[i].end, groundCollider)) isOnStair = 2;
+        if (CheckCollisionRecs(stairs[i].start, groundCollider)) {
+            isOnStair = 1;
+            stairPos =  stairs[i].start.x + stairs[i].start.width / 2;
+        }
+        else if (CheckCollisionRecs(stairs[i].end, groundCollider)) {
+            isOnStair = 2;
+            stairPos = stairs[i].end.x + stairs[i].end.width / 2;
+        }
         else isOnStair = 0;
         if (!stairs[i].up) isOnStair *= -1;
     }
@@ -311,8 +317,23 @@ void Player::update() {
         break;
 
     case STAIRS:
+        if (abs(stairPos - position.x) > 0.5f ) {
+            if ((isOnStair == -1 || isOnStair == 2) && IsKeyDown(KEY_DOWN) || (isOnStair == 1 || isOnStair == -2) && IsKeyDown(KEY_UP)) {
+                topSprite->setAnimation("walk");
+                bottomSprite->setAnimation("walk");
+                if (stairPos - position.x > 0) {
+                    moveHLinear(maxSPD);
+                    direction = 1;
+                }
+                else {
+                    direction = -1;
+                    moveHLinear(-maxSPD);
+                }
+                
+            }
+            else lowerState.changeState(IDLE);
+        }
 
-        if (IsKeyDown(KEY_DOWN)) position.y--;
         break;
     case DIE:
         break;

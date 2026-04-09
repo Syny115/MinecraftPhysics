@@ -14,6 +14,8 @@ protected:
 	float worldHeight, worldWidth;
 	int health;
 
+	float offsetX, offsetY;
+
 	Rectangle hurtbox;
 
 public:
@@ -40,4 +42,6 @@ public:
 	virtual void lateUpdate();
 	virtual void update();
 	virtual void moveV(); // moved to entity.cpp
+	void moveHLinear(const int speed);
+	virtual void updateColliderPosiotions();
 };

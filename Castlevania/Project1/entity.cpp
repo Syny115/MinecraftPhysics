@@ -50,3 +50,14 @@ void Entity::lateUpdate() {
 void Entity::update() {
 	// Things here are done right AFTER the update code
 }
+
+void Entity::moveHLinear(const int speed) {
+	position.x += speed * GetFrameTime();
+	offsetX = position.x - size.x / 2;
+	updateColliderPosiotions();
+}
+
+void Entity::updateColliderPosiotions() {
+	hurtbox.x = position.x;
+	hurtbox.y = position.y;
+}
