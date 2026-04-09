@@ -156,6 +156,16 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
     }
 }
 
+void Player::stairCollision(vector<staircase>& stairs) { // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
+    for (int i = 0; i < stairs.size(); i++) {
+        if (CheckCollisionRecs(stairs[i].start, groundCollider)) isOnStair = 1;
+        else if (CheckCollisionRecs(stairs[i].end, groundCollider)) isOnStair = 2;
+        else isOnStair = 0;
+        if (!stairs[i].up) isOnStair *= -1;
+    }
+}
+
+
 void Player::moveH(bool accelerate, bool decelerate) {
     normalizedVelocity = getNormalizedVelocity();
     //Limit velocity
@@ -242,7 +252,10 @@ void Player::update() {
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
         else if (!isOnFloor) lowerState.changeState(FALL);
         else if (getInputAxis()) lowerState.changeState(WALK);
-        if (IsKeyDown(KEY_DOWN)) lowerState.changeState(CROUCH);
+        if (IsKeyDown(KEY_DOWN)) {
+            if (isOnStair == 0) lowerState.changeState(CROUCH);
+            else lowerState.changeState(STAIRS);
+        }
         break;
 
     case WALK:
@@ -298,6 +311,8 @@ void Player::update() {
         break;
 
     case STAIRS:
+
+        if (IsKeyDown(KEY_DOWN)) position.y--;
         break;
     case DIE:
         break;
@@ -389,7 +404,7 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(upperState.current), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(isOnStair), 1);
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
     
     if (IsKeyPressed(KEY_A)) position.y = 0;

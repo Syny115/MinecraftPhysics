@@ -1,4 +1,17 @@
 #pragma once
+#include "raylib.h"
+struct damageRect
+{
+    Rectangle* rect;
+    unsigned short damage;
+};
+
+struct staircase
+{
+    Rectangle start;
+    Rectangle end;
+    bool up;
+};
 
 class Timer
 {

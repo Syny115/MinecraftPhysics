@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include "SpriteRenderer.h"
+
 using namespace std;
 
 class Player : public Entity
@@ -66,7 +67,7 @@ private:
     float bottomAnimOffsetX;
     float topAnimOffsetY;
     float topAnimOffsetX;
-
+    short isOnStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
     SpriteRenderer* topSprite = nullptr;
     SpriteRenderer* bottomSprite = nullptr;
     SpriteRenderer* whipSprite = nullptr;
@@ -95,6 +96,7 @@ public:
     void groundCollision(vector<Rectangle> floorRec);
     void ceilingCollision(vector<Rectangle> ceilingRec);
     void wallCollision(vector<Rectangle> wallRec);
+    void stairCollision(vector<staircase>& stairs);
     void update();
     void lateUpdate() override;
     void earlyUpdate() override;

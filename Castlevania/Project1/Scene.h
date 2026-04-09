@@ -9,28 +9,17 @@
 #include <fstream>
 #include "libraries/json.hpp"
 #include "SpriteRenderer.h"
+#include "Classes.h"
 
 using json = nlohmann::json;
 using namespace std;
-
-struct damageRect
-{
-	Rectangle* rect;
-	unsigned short damage;
-};
-
-struct staircase
-{
-	Rectangle start;
-	Rectangle end;
-	bool up;
-};
 
 class Scene {
 protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
 public:
+	
 	Scene();
 	//virtual ~Scene();
 	virtual void start();
