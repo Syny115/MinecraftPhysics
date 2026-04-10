@@ -66,6 +66,7 @@ private:
     float topAnimOffsetY;
     float topAnimOffsetX;
     short isOnStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
+    short lockStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
     float stairPos;
     SpriteRenderer* topSprite = nullptr;
     SpriteRenderer* bottomSprite = nullptr;

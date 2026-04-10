@@ -110,7 +110,7 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
         isOnFloor = true;
-        position.y = floorRec[i].y - size.y/2;
+        if (lockStair == 0) position.y = floorRec[i].y - size.y/2;
         floorHeight = position.y;
         if (velocity.y > 0) {
             velocity.y = 0;
@@ -259,9 +259,10 @@ void Player::update() {
         else if (!isOnFloor) lowerState.changeState(FALL);
         else if (getInputAxis()) lowerState.changeState(WALK);
         if (IsKeyDown(KEY_DOWN)) {
-            if (isOnStair == 0) lowerState.changeState(CROUCH);
-            else lowerState.changeState(STAIRS);
+            if (isOnStair == -1 || isOnStair == 2) lowerState.changeState(STAIRS);
+            else lowerState.changeState(CROUCH);
         }
+        if (IsKeyDown(KEY_UP) && (isOnStair == 1 || isOnStair == -2)) lowerState.changeState(STAIRS);
         break;
 
     case WALK:
@@ -274,7 +275,10 @@ void Player::update() {
         //Transition
         if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
         else if (!isOnFloor) lowerState.changeState(FALL);
-        else if (IsKeyDown(KEY_DOWN)) lowerState.changeState(CROUCH);
+        else if (IsKeyDown(KEY_DOWN)) {
+            if (isOnStair == -1 || isOnStair == 2) lowerState.changeState(STAIRS);
+            else lowerState.changeState(CROUCH);
+        }
         else if (abs(velocity.x) < minSPD && !getInputAxis()) lowerState.changeState(IDLE);
         break;
 
@@ -317,7 +321,13 @@ void Player::update() {
         break;
 
     case STAIRS:
-        if (abs(stairPos - position.x) > 0.5f ) {
+        if (IsKeyPressed(KEY_SPACE)) lowerState.changeState(JUMP);
+        velocity = Vector2{ 0, 0 };
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -2;
+            topAnimOffsetY = -6;
+            topAnimOffsetX = -2;
+        if (abs(stairPos - position.x) > 0.5f  && lockStair == 0) {
             if ((isOnStair == -1 || isOnStair == 2) && IsKeyDown(KEY_DOWN) || (isOnStair == 1 || isOnStair == -2) && IsKeyDown(KEY_UP)) {
                 topSprite->setAnimation("walk");
                 bottomSprite->setAnimation("walk");
@@ -332,6 +342,54 @@ void Player::update() {
                 
             }
             else lowerState.changeState(IDLE);
+        }
+        else {
+            float x = GameManager::getInstance().getActiveScene()->getTileWidth() / 2;
+            if (isOnStair != 0) lockStair = isOnStair;
+            if ((position.x < stairPos - 0.5f && (lockStair == -1 || lockStair == 2))
+            || (position.x > stairPos + 0.5f && (lockStair == 1 || lockStair == -2))) lockStair = 0;
+            if (lockStair < 0) {
+                if (IsKeyDown(KEY_UP) || direction == -1 && abs(position.x / x - (int)(position.x / x)) > 0.1 ) {
+                    moveVLinear(-maxSPD * 0.7);
+                    moveHLinear(-maxSPD * 0.7);
+                    direction = -1;
+                    bottomSprite->setAnimation("stairsWalkUp");
+                } 
+                else if (IsKeyDown(KEY_DOWN) || direction == 1 && abs(position.x / x - (int)(position.x / x)) > 0.1) {
+                    moveVLinear(maxSPD * 0.7);
+                    moveHLinear(maxSPD * 0.7);
+                    direction = 1;
+                    bottomSprite->setAnimation("stairsWalkDown");
+                }
+                else {
+                    direction > 0 ? bottomSprite->setAnimation("stairsIdleDown") : bottomSprite->setAnimation("stairsIdleUp");
+                }
+            }
+            else if (lockStair > 0) {
+                if (IsKeyDown(KEY_UP) || direction == -1 && abs(position.x / x - (int)(position.x / x)) > 0.1) {
+                    moveVLinear(-maxSPD * 0.7);
+                    moveHLinear(maxSPD * 0.7);
+                    direction = 1;
+                    bottomSprite->setAnimation("stairsWalkUp");
+                }
+                else if (IsKeyDown(KEY_DOWN) || direction == 1 && abs(position.x / x - (int)(position.x / x)) > 0.1) {
+                    moveVLinear(maxSPD * 0.7);
+                    moveHLinear(-maxSPD * 0.7);
+                    direction = -1;
+                    bottomSprite->setAnimation("stairsWalkDown");
+                }
+            }
+            if (bottomSprite->getAnimation() == "stairsIdleDown" || bottomSprite->getAnimation() == "stairsIdleUp") topSprite->setAnimation("stairsIdle");
+            else topSprite->setAnimation("stairsWalk");
+
+            //if (IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_DOWN)) {
+            //    float x = GameManager::getInstance().getActiveScene()->getTileWidth() / 2;
+            //    float y = GameManager::getInstance().getActiveScene()->getTileHeight() / 2;
+            //    position.x = ((int)(position.x / x)) * x;
+            //    position.y = ((int)(position.y / y)) * y;
+            //    
+            //}
+
         }
 
         break;
@@ -371,8 +429,8 @@ void Player::update() {
     case IDLE:
             topAnimOffsetY = - 6;
             topAnimOffsetX = -2;
-        if (lowerState.current != WALK) topSprite->setAnimation("idle");
-        else topSprite->setAnimation("walk");
+        if (lowerState.current != WALK && lowerState.current != STAIRS) topSprite->setAnimation("idle");
+        else if (lowerState.current != STAIRS) topSprite->setAnimation("walk");
 
         //transition
         if (IsKeyPressed(KEY_D)) upperState.changeState(STARTATTACK);
@@ -402,9 +460,10 @@ void Player::update() {
         if (attackTimer.isTriggerd()) {
             whipSprite->setAnimation("hidden");
             upperState.changeState(IDLE);
-            if (lowerState.current != CROUCH) {
+            if (lowerState.current != CROUCH && lowerState.current != STAIRS) {
                 if (!isOnFloor) lowerState.changeState(FALL);
-                else lowerState.changeState(IDLE);
+                else if (isOnStair == 0) lowerState.changeState(IDLE);
+                else lowerState.changeState(STAIRS);
             }
         }
         break;
@@ -426,7 +485,7 @@ void Player::update() {
 void Player::lateUpdate() {
     updateColliderPosiotions();
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(isOnStair), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lowerState.current), 2);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(stairPos - position.x), 2);
     
     if (IsKeyPressed(KEY_A)) position.y = 0;
 }
@@ -455,7 +514,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             whipCollider.width = GameManager::getInstance().whipLevel < 2 ? 32 : 48;
             GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(&whipCollider);
             startAttackTimer.startTimer();
-            if (lowerState.current != CROUCH) lowerState.changeState(ATTACK);
+            if (lowerState.current != CROUCH && lowerState.current != STAIRS) lowerState.changeState(ATTACK);
         }
         else if (current == STARTATTACK && future == ATTACK) {
             GameManager::getInstance().getGamePointer()->publicPlaySound(0);
@@ -471,6 +530,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
     }
     else {
         if (current == FALL) maxHeight = 256;
+        if (current == STAIRS) lockStair = 0;
     }
     
 }

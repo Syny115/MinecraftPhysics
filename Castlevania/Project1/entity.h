@@ -43,5 +43,6 @@ public:
 	virtual void update();
 	virtual void moveV(); // moved to entity.cpp
 	void moveHLinear(const int speed);
+	void moveVLinear(const int speed);
 	virtual void updateColliderPosiotions();
 };
