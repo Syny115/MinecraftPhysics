@@ -36,8 +36,6 @@ void Scene::updateScene() {
 }
 
 //----------- PLAYABLE SCENE -------------//
-Texture test;
-Timer timertest(10);
 
 PlayableScene::PlayableScene(const char* path) {
 	camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
@@ -46,8 +44,11 @@ PlayableScene::PlayableScene(const char* path) {
 	parseTiles(path);
 
 	// Creating test loot 
-	test = LoadTexture("resources/sprites/heart.png");
-	lootitems.push_back(new Loot(Vector2{16,16},Vector2{100,100},Vector2{0,20}, test, timertest));
+	lootitems.push_back(new Loot(Vector2{ 150,100 }, 3));
+
+	lootitems.push_back(new Loot(Vector2{ 175,75 }, 2));
+
+	lootitems.push_back(new Loot(Vector2{ 150,100 }, 1));
 }
 
 void PlayableScene::start() {
@@ -59,8 +60,8 @@ void PlayableScene::start() {
 PlayableScene::~PlayableScene() {
 	delete player;
 	UnloadTexture(tileAtlas);
-	UnloadTexture(test);
-	for (int i = 0; lootitems.empty(); i++) {
+	for (int i = 0; i < lootitems.size(); i++) {
+		lootitems.erase(lootitems.begin() + i);
 		delete lootitems[i];
 	}
 }

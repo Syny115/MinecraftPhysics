@@ -115,10 +115,32 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     case BAT:
         // TODO
         break;
+    case LOOT:
+        add("hidden", 1, 0, 0, 0, 0, 1); //Does nothing but im scared to remove it
+        add("whip", 1, 1, 1, 16, 16, 1); //Whip upgrade loot item
+        add("smallheart", 1, 18, 1, 8, 8, 1);
+        add("bigheart", 1, 27, 1, 16, 16, 1);
+        add("moneybag", 3, 44, 1, 16, 16, 12);
+        add("orb", 2, 95, 1, 16, 16, 8);
+        add("dagger", 1, 1, 18, 16, 16, 1);
+        add("axe", 1, 18, 18, 16, 16, 1);
+        add("holywater", 1, 35, 18, 16, 16, 1);
+        add("boomerang", 3, 52, 18, 16, 16, 12);
+        add("stopwatch", 1, 103, 18, 16, 16, 1);
+        add("twoupgrade", 1, 120, 18, 16, 16, 1);
+        add("threeupgrade", 1, 137, 18, 16, 16, 1);
+        add("chicken", 1, 1, 35, 16, 16, 1);
+        add("jar", 1, 18, 35, 16, 16, 1);
+        add("invincibilitycross", 1, 35, 35, 16, 16, 1);
+        add("1up", 1, 52, 35, 16, 16, 1); //Probably delete this ngl im not sure about it being a loot item
+        add("crown", 4, 69, 35, 16, 16, 12);
+        add("chest", 4, 137, 35, 16, 16, 12);
+        currentAnimName = "hidden";
     default:
         break;
     }
 }
+
 
 SpriteRenderer::~SpriteRenderer() {
     UnloadTexture(sprite);

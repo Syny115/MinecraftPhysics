@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <vector>
+
 using namespace std;
 
 class Entity {
@@ -15,7 +16,7 @@ protected:
 	float maxFALL = 400;
 	float worldHeight, worldWidth;
 	int health;
-	
+
 
 	float floorHeight = 256;
 
