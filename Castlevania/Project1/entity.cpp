@@ -52,7 +52,7 @@ void Entity::queueDeletion() { //Doesn't work just yet
 
 void Entity::earlyUpdate() {}
 
-void Entity::lateUpdate() {}
+void Entity::lateUpdate() { updateColliderPosiotions(); }
 
 void Entity::update() {
 	// Things here are done right AFTER the update code
