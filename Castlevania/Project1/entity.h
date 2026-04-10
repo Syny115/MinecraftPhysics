@@ -21,7 +21,7 @@ protected:
 public:
 	Entity() {}
 	Entity(Vector2 s, Vector2 p, Vector2 v) { size = s; position = p; velocity = v; }
-	~Entity() {} // No delete this;
+	virtual ~Entity() {} // No delete this;
 	Vector2 getSize() {
 		return size;
 	}

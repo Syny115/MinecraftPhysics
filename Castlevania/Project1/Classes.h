@@ -3,7 +3,7 @@
 struct damageRect
 {
     Rectangle* rect;
-    unsigned short damage;
+    short damage;
 };
 
 struct staircase

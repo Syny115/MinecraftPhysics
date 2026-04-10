@@ -44,12 +44,19 @@ void SpriteRenderer::draw(Vector2 position) {
 SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     : currentFrame(0), frameTimer(0), flipX(false)
 {
+    if (!FileExists(path)) {
+        TraceLog(LOG_ERROR, "File does not exist: %s", path);
+    }
     rawSprite = LoadImage(path);
     Color target = { 119, 51, 153, 255 };
     ImageColorReplace(&rawSprite, target, BLANK);
 
     sprite = LoadTextureFromImage(rawSprite);
     UnloadImage(rawSprite);
+
+    if (sprite.id == 0) {
+        TraceLog(LOG_ERROR, "Failed to load texture: %s", path);
+    }
 
     // Todos los sprites de Simon son 16x32 pero el frame en si es 20x41 (dentro del relieve lila)
     // Fila superior: y=7, altura=41
@@ -114,6 +121,13 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         break;
     case BAT:
         // TODO
+        break;
+    case BREAKABLES:
+        add("ground", 1, 32, 96, 16, 16, 1);
+        add("candle", 2, 157, 1, 8, 16, 10); //needs offset!!
+        add("torch", 2, 175, 1, 16, 32, 10); //needs offset!!
+        currentAnimName = "torch";
+
         break;
     default:
         break;

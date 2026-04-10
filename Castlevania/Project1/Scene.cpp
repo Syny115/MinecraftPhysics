@@ -47,13 +47,17 @@ PlayableScene::PlayableScene(const char* path) {
 
 void PlayableScene::start() {
 	player = new Player;
-	spriteAnimation = SpriteRenderer("resources/sprites/simon_sprites.png", 1);
+	spriteAnimation = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::BREAKABLES);
 }
 
 
 PlayableScene::~PlayableScene() {
 	delete player;
 	UnloadTexture(tileAtlas);
+	for (int i = 0; i < destructables.size(); i++) {
+		delete destructables[i];
+	}
+
 }
 
 void PlayableScene::updateCamera() {
@@ -70,9 +74,14 @@ void PlayableScene::updateScene() {
 		player->stairCollision(stairs);
 		player->update();
 
-		spriteAnimation.setAnimation("crouch"); // o lo que corresponda
-		spriteAnimation.setFlipX(false);      // true si el jugador va a la izquierda
-		spriteAnimation.update(GetFrameTime());
+		for (int i = 0; i < destructables.size(); i++) {
+			destructables[i]->update();
+			destructables[i]->hitCollision(playerHitBoxes);
+		}
+
+		spriteAnimation->setAnimation("ground"); // o lo que corresponda
+		spriteAnimation->setFlipX(false);      // true si el jugador va a la izquierda
+		spriteAnimation->update(GetFrameTime());
 	}
 
 	Scene::updateScene();
@@ -82,7 +91,7 @@ void PlayableScene::drawScene() {
 	ClearBackground(/*{0xA0, 0xF0, 0xFF, 0xFF}*/BLACK);
 	BeginMode2D(camera);
 		drawTiles();
-	/*	for (int i = 0; i < solidRects.size(); i++) {
+		/*for (int i = 0; i < solidRects.size(); i++) {
 			DrawRectangleRec(solidRects[i], WHITE);
 			DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
 		}*/
@@ -96,7 +105,7 @@ void PlayableScene::drawScene() {
 	DrawRectangleRec(stairs[2].end, GREEN);*/
 	//DrawRectangleRec(stairs[0].start, BLUE);
 	//DrawRectangleRec(stairs[0].end, BLUE);
-	spriteAnimation.draw(Vector2{ 100, 50 });
+	spriteAnimation->draw(Vector2{ 100, 50 });
 	EndMode2D();
 	
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
@@ -119,10 +128,25 @@ void PlayableScene::drawTiles() {
 			}
 		}
 	}
+	for (int i = 0; i < destructables.size(); i++) {
+		destructables[i]->draw();
+	}
 }
 
 void PlayableScene::removePlayerHitBoxes(Rectangle* hitBox) {
 	for (int i = 0; i < playerHitBoxes.size(); i++) {
-		if (playerHitBoxes[i] == hitBox) playerHitBoxes.erase(playerHitBoxes.begin() + i);
+		if (playerHitBoxes[i].rect == hitBox) playerHitBoxes.erase(playerHitBoxes.begin() + i);
+	}
+}
+
+void PlayableScene::removeDestructables(DestructableObject* d) {
+	for (int i = 0; i < destructables.size(); i++) {
+		if (destructables[i] == d) destructables.erase(destructables.begin() + i);
+	}
+}
+
+void PlayableScene::removeSolidRects(Rectangle rect) {
+	for (int i = 0; i < solidRects.size(); i++) {
+		if (solidRects[i].x == rect.x && solidRects[i].y == rect.y && solidRects[i].width == rect.width && solidRects[i].height == rect.height) solidRects.erase(solidRects.begin() + i);
 	}
 }

@@ -10,6 +10,7 @@
 #include "libraries/json.hpp"
 #include "SpriteRenderer.h"
 #include "Classes.h"
+#include "DestructableObject.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -39,8 +40,11 @@ public:
 	virtual int getTileHeight() { return 0; }
 	virtual int getTileWidth() { return 0; }
 
-	virtual void pushPlayerHitBoxes(Rectangle* hitBox) { /* I | Ii | II | I- */ };
+	virtual void pushPlayerHitBoxes(damageRect hitBox) { /* I | Ii | II | I- */ }
 	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
+	virtual void removeDestructables(DestructableObject* d) {}
+	virtual void pushSolidRects(Rectangle rect) {}
+	virtual void removeSolidRects(Rectangle rect) {}
 };
 
 
@@ -49,16 +53,17 @@ public:
 
 class PlayableScene : public Scene {
 private:
-	SpriteRenderer spriteAnimation;
+	SpriteRenderer* spriteAnimation = nullptr;
 	Player* player;
 	vector<Rectangle> solidRects;
 	vector<Rectangle> enemyRects;
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
-	vector<Rectangle*> playerHitBoxes;
+	vector<damageRect> playerHitBoxes;
 
 	vector<Vector2> checkpoints;
 	vector<staircase> stairs;
+	vector<DestructableObject*> destructables;
 
 	float worldWidth;
 	float worldHeight;
@@ -95,6 +100,9 @@ public:
 	int getTileHeight() override { return tileHeight; }
 	int getTileWidth() override { return tileWidth; }
 
-	void pushPlayerHitBoxes(Rectangle* hitBox) override { playerHitBoxes.push_back(hitBox); }
+	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); }
 	void removePlayerHitBoxes(Rectangle* hitBox) override;
+	void removeDestructables(DestructableObject* d) override;
+	void pushSolidRects(Rectangle hitBox) override { solidRects.push_back(hitBox); }
+	void removeSolidRects(Rectangle hitBox) override;
 };
