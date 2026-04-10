@@ -11,6 +11,7 @@
 #include "SpriteRenderer.h"
 #include "Classes.h"
 
+#include "Loot.h"
 using json = nlohmann::json;
 using namespace std;
 
@@ -41,6 +42,7 @@ public:
 
 	virtual void pushPlayerHitBoxes(Rectangle* hitBox) { /* I | Ii | II | I- */ };
 	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
+	virtual void removeLoot(Loot* l) {}
 };
 
 
@@ -56,6 +58,7 @@ private:
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
 	vector<Rectangle*> playerHitBoxes;
+	vector<Loot*> lootitems;
 
 	vector<Vector2> checkpoints;
 	vector<staircase> stairs;
@@ -73,10 +76,10 @@ private:
 	string debug_text1;
 	string debug_text2;
 public:
-	
+
 	PlayableScene(const char* path);
 	~PlayableScene();
-	
+
 	void start() override;
 
 	void updateScene() override;
@@ -97,4 +100,6 @@ public:
 
 	void pushPlayerHitBoxes(Rectangle* hitBox) override { playerHitBoxes.push_back(hitBox); }
 	void removePlayerHitBoxes(Rectangle* hitBox) override;
+
+	void removeLoot(Loot *l) override;
 };

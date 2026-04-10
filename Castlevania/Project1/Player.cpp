@@ -81,12 +81,7 @@ int Player::checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
     return -1;
 }
 
-int Player::checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len) {
-    for (int i = 0; i < len; i++) {
-        if (CheckCollisionRecs(rec1, recs2[i])) return i;
-    }
-    return -1;
-}
+
 
 void Player::groundCollision(Rectangle floorRec) {
     wasOnFloor = isOnFloor;

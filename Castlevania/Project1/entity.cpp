@@ -1,14 +1,25 @@
 #include "GameManager.h"
 #include "Entity.h"
-using namespace std;
 
-
-
-int Entity::checkSelfCollisionPointRecArr(Rectangle* recs, int len) {
+int Entity::checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len) {
 	for (int i = 0; i < len; i++) {
-		if (CheckCollisionPointRec(position, recs[i])) return i;
+		if (CheckCollisionRecs(rec1, recs2[i])) return i;
 	}
 	return -1;
+}
+
+void Entity::groundCollision(vector<Rectangle> floorRec) {
+	int len = floorRec.size();
+	Rectangle predictedRec = hurtbox;
+	predictedRec.y += velocity.y * GetFrameTime();
+	int i = checkCollisionRecsArr(predictedRec, floorRec, len);
+	if (i != -1) {
+		isOnFloor = true;
+		position.y = floorRec[i].y - size.y / 2;
+		floorHeight = position.y;
+		if (velocity.y > 0) velocity.y = 0;
+	}
+	else isOnFloor = false;
 }
 
 void Entity::increaseHalfOfGravity() {
@@ -39,13 +50,9 @@ void Entity::queueDeletion() { //Doesn't work just yet
 	GameManager::getInstance().getActiveScene()->deleteMe(this);
 }
 
-void Entity::earlyUpdate() {
-	// Things here are done right BEFORE the update code
-}
+void Entity::earlyUpdate() {}
 
-void Entity::lateUpdate() {
-	// Things here are done right AFTER the update code
-}
+void Entity::lateUpdate() {}
 
 void Entity::update() {
 	// Things here are done right AFTER the update code

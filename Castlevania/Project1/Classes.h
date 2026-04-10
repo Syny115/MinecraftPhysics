@@ -22,7 +22,7 @@ private:
 public:
     float getTime() { return time; }
     float getLifeTime() { return lifeTime; }
-
+    Timer() { lifeTime = 10; time = 10; };
     Timer(float _lifeTime) : lifeTime(_lifeTime) { time = _lifeTime; }
 
     void startTimer() {
