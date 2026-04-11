@@ -11,6 +11,7 @@
 #include "SpriteRenderer.h"
 #include "Classes.h"
 #include "DestructableObject.h"
+#include "Loot.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -20,7 +21,7 @@ protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
 public:
-	
+
 	Scene();
 	//virtual ~Scene();
 	virtual void start();
@@ -42,6 +43,7 @@ public:
 
 	virtual void pushPlayerHitBoxes(damageRect hitBox) { /* I | Ii | II | I- */ }
 	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
+	virtual void removeLoot(Loot* l) {}
 	virtual void removeDestructables(DestructableObject* d) {}
 	virtual void pushSolidRects(Rectangle rect) {}
 	virtual void removeSolidRects(Rectangle rect) {}
@@ -60,6 +62,8 @@ private:
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
 	vector<damageRect> playerHitBoxes;
+	vector<Rectangle*> playerHitBoxes;
+	vector<Loot*> lootitems;
 
 	vector<Vector2> checkpoints;
 	vector<staircase> stairs;
@@ -78,10 +82,10 @@ private:
 	string debug_text1;
 	string debug_text2;
 public:
-	
+
 	PlayableScene(const char* path);
 	~PlayableScene();
-	
+
 	void start() override;
 
 	void updateScene() override;
@@ -105,4 +109,6 @@ public:
 	void removeDestructables(DestructableObject* d) override;
 	void pushSolidRects(Rectangle hitBox) override { solidRects.push_back(hitBox); }
 	void removeSolidRects(Rectangle hitBox) override;
+
+	void removeLoot(Loot* l) override;
 };

@@ -44,19 +44,12 @@ void SpriteRenderer::draw(Vector2 position) {
 SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     : currentFrame(0), frameTimer(0), flipX(false)
 {
-    if (!FileExists(path)) {
-        TraceLog(LOG_ERROR, "File does not exist: %s", path);
-    }
     rawSprite = LoadImage(path);
     Color target = { 119, 51, 153, 255 };
     ImageColorReplace(&rawSprite, target, BLANK);
 
     sprite = LoadTextureFromImage(rawSprite);
     UnloadImage(rawSprite);
-
-    if (sprite.id == 0) {
-        TraceLog(LOG_ERROR, "Failed to load texture: %s", path);
-    }
 
     // Todos los sprites de Simon son 16x32 pero el frame en si es 20x41 (dentro del relieve lila)
     // Fila superior: y=7, altura=41
@@ -75,13 +68,13 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         animationLibrary.push_back(a);
         };
     switch (spriteType) {
-    case PLAYER_TOP:          
+    case PLAYER_TOP:
         //fila uno de top seria y=7 a y=30 (24 pixels) y de bottom seria y=31 a y = 46 (16 pixels)
 
         add("idle", 1, 1, 7, 20, 24, 1);   // x=0,  parado
         add("walk", 3, 22, 7, 20, 24, 9);   // x=22..64, caminar (3 frames contiguos)
         add("startAttack", 2, 85, 7, 41, 23, 7);
-        add("attack", 1, 169, 7, 41, 24, 1); 
+        add("attack", 1, 169, 7, 41, 24, 1);
         //TODO: hacer un set fps para que los timers siempre estan sincronizados
         add("hurt", 1, 211, 7, 20, 24, 1);
         add("stairsIdle", 1, 320, 7, 20, 24, 1);
@@ -91,7 +84,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         break;
     case PLAYER_BOTTOM:
         //fila uno de top seria y=7 a y=30 (24 pixels) y de bottom seria y=31 a y = 46 (16 pixels)
-        
+
 
         add("idle", 1, 1, 31, 20, 16, 1);   // x=0,  parado
         add("walk", 3, 22, 31, 20, 16, 9);   // x=22..64, caminar (3 frames contiguos)
@@ -122,6 +115,27 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     case BAT:
         // TODO
         break;
+    case LOOT:
+
+        add("whip", 1, 1, 1, 16, 16, 1); //Whip upgrade loot item
+        add("smallheart", 1, 18, 1, 8, 8, 1);
+        add("bigheart", 1, 27, 1, 16, 16, 1);
+        add("moneybag", 3, 44, 1, 16, 16, 12);
+        add("orb", 2, 95, 1, 16, 16, 8);
+        add("dagger", 1, 1, 18, 16, 16, 1);
+        add("axe", 1, 18, 18, 16, 16, 1);
+        add("holywater", 1, 35, 18, 16, 16, 1);
+        add("boomerang", 3, 52, 18, 16, 16, 12);
+        add("stopwatch", 1, 103, 18, 16, 16, 1);
+        add("twoupgrade", 1, 120, 18, 16, 16, 1);
+        add("threeupgrade", 1, 137, 18, 16, 16, 1);
+        add("chicken", 1, 1, 35, 16, 16, 1);
+        add("jar", 1, 18, 35, 16, 16, 1);
+        add("invincibilitycross", 1, 35, 35, 16, 16, 1);
+        add("1up", 1, 52, 35, 16, 16, 1); //Probably delete this ngl im not sure about it being a loot item
+        add("crown", 4, 69, 35, 16, 16, 12);
+        add("chest", 4, 137, 35, 16, 16, 12);
+        currentAnimName = "whip";
     case BREAKABLES:
         add("ground", 1, 32, 96, 16, 16, 1);
         add("candle", 2, 157, 1, 8, 16, 10); //needs offset!!
@@ -133,6 +147,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         break;
     }
 }
+
 
 SpriteRenderer::~SpriteRenderer() {
     UnloadTexture(sprite);
