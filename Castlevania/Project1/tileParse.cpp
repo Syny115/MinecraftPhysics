@@ -156,11 +156,11 @@ void PlayableScene::parseTiles(const char* path) {
 		}
 		else collisionMat[j / col][j % col] = 0;
         //Breakables Data
-        if (bkData == 213) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, false));
-        if (bkData == 214) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, true));
+        if (bkData == 216) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, false)); //breakable block
+        if (bkData == 217) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, true)); //WITH CHICKEN!!
 
         //Level Data
-        if (lData == 209) checkpoints.push_back(Vector2{ (float) (j % col) * tileWidth, tileHeight * (float) (j / col) }); //CHECKPOINT 
+        if (lData == 210) checkpoints.push_back(Vector2{ (float) (j % col) * tileWidth, tileHeight * (float) (j / col) }); //CHECKPOINT 
         else if (lData == 225) dVec.push_back(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
         else if (lData == 228) upVec.push_back(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
 

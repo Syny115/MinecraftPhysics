@@ -51,7 +51,7 @@ DestructableLoot::~DestructableLoot() {
 DestructableWall::~DestructableWall() {
 	GameManager::getInstance().getActiveScene()->removeSolidRects(hurtbox);
 	if (chicken) {
-		//Create new loot CHICKEN!
+		GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 12));
 	}
 }
 
@@ -63,7 +63,7 @@ void DestructableObject::hitCollision(vector<damageRect>& dmgRect) {
 	for (int i = 0; i < dmgRect.size(); i++) {
 		if (CheckCollisionRecs(hurtbox, *dmgRect[i].rect)) {
 			GameManager::getInstance().getActiveScene()->removeDestructables(this);
-			GameManager::getInstance().getActiveScene()->deleteMe(this);
+			queueDeletion();
 		}
 	}
 }

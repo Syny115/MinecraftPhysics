@@ -42,17 +42,6 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
-
-	// Creating test loot 
-	lootitems.push_back(new Loot(Vector2{ 150,100 }, 0));
-
-	lootitems.push_back(new Loot(Vector2{ 175,75 }, 2));
-
-	lootitems.push_back(new Loot(Vector2{ 100,100 }, 1));
-	lootitems.push_back(new Loot(Vector2{ 200,100 }, 6));
-	lootitems.push_back(new Loot(Vector2{ 250,100 }, 5));
-	lootitems.push_back(new Loot(Vector2{ 275,100 }, 10));
-
 }
 
 void PlayableScene::start() {
