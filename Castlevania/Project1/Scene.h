@@ -62,7 +62,6 @@ private:
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
 	vector<damageRect> playerHitBoxes;
-	vector<Rectangle*> playerHitBoxes;
 	vector<Loot*> lootitems;
 
 	vector<Vector2> checkpoints;

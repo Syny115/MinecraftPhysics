@@ -68,7 +68,7 @@ PlayableScene::~PlayableScene() {
 	lootitems.clear();
 }
 
-}
+
 
 void PlayableScene::updateCamera() {
 	camera.target = player->getPosition();
@@ -126,7 +126,7 @@ void PlayableScene::drawScene() {
 	DrawRectangleRec(stairs[2].end, GREEN);*/
 	//DrawRectangleRec(stairs[0].start, BLUE);
 	//DrawRectangleRec(stairs[0].end, BLUE);
-	spriteAnimation.draw(Vector2{ 100, 50 });
+	spriteAnimation->draw(Vector2{ 100, 50 });
 
 	if (!lootitems.empty()) {
 		for (int i = 0; i < lootitems.size(); i++) {
