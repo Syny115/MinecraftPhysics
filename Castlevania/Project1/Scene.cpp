@@ -107,11 +107,12 @@ void PlayableScene::drawScene() {
 		}*/
 
 	player->drawPlayer();
+	
 	/*DrawRectangleRec(stairs[0].start, BLUE);
 	DrawRectangleRec(stairs[0].end, BLUE);
 	DrawRectangleRec(stairs[1].start, RED);
-	DrawRectangleRec(stairs[1].end, RED);
-	DrawRectangleRec(stairs[2].start, GREEN);
+	DrawRectangleRec(stairs[1].end, RED);*/
+	/*DrawRectangleRec(stairs[2].start, GREEN);
 	DrawRectangleRec(stairs[2].end, GREEN);*/
 	//DrawRectangleRec(stairs[0].start, BLUE);
 	//DrawRectangleRec(stairs[0].end, BLUE);
