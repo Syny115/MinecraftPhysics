@@ -69,7 +69,7 @@ private:
     SpriteRenderer* bottomSprite = nullptr;
     SpriteRenderer* whipSprite = nullptr;
 
-    Rectangle hurtbox;
+    
 
     Rectangle topCollider;
     Rectangle leftCollider;

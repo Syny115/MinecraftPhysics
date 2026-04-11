@@ -28,8 +28,8 @@ void Scene::drawScene() {
 }
 
 void Scene::updateScene() {
-	if (!deletionQueue.empty()) {
-		delete deletionQueue.back();
+	while (!deletionQueue.empty()) {
+		delete deletionQueue.front();
 		deletionQueue.pop();
 	}
 	updateCamera();
@@ -44,11 +44,15 @@ PlayableScene::PlayableScene(const char* path) {
 	parseTiles(path);
 
 	// Creating test loot 
-	lootitems.push_back(new Loot(Vector2{ 150,100 }, 3));
+	lootitems.push_back(new Loot(Vector2{ 150,100 }, 0));
 
 	lootitems.push_back(new Loot(Vector2{ 175,75 }, 2));
 
-	lootitems.push_back(new Loot(Vector2{ 150,100 }, 1));
+	lootitems.push_back(new Loot(Vector2{ 100,100 }, 1));
+	lootitems.push_back(new Loot(Vector2{ 200,100 }, 6));
+	lootitems.push_back(new Loot(Vector2{ 250,100 }, 5));
+	lootitems.push_back(new Loot(Vector2{ 275,100 }, 10));
+
 }
 
 void PlayableScene::start() {
@@ -60,10 +64,8 @@ void PlayableScene::start() {
 PlayableScene::~PlayableScene() {
 	delete player;
 	UnloadTexture(tileAtlas);
-	for (int i = 0; i < lootitems.size(); i++) {
-		lootitems.erase(lootitems.begin() + i);
-		delete lootitems[i];
-	}
+	for (Loot* loot : lootitems) delete loot;
+	lootitems.clear();
 }
 
 void PlayableScene::updateCamera() {
@@ -85,13 +87,11 @@ void PlayableScene::updateScene() {
 		spriteAnimation.update(GetFrameTime());
 	}
 	if (!lootitems.empty()) {
-		for (int i = 0; i < lootitems.size(); i++) {
-			if (CheckCollisionRecs(player->getHurtbox(), lootitems[i]->getHurtbox())) {
-				// Add pickup code here
-				lootitems[i]->queueDeletion();
+		for (int i = (int) lootitems.size() -1; i >= 0; i--) { //si se sacan con player collision se puede saltar algun update, por eso iteramos al reves
+			if (!lootitems[i]->playerCollision(player->getHurtbox())) {
+				lootitems[i]->groundCollision(solidRects);
+				lootitems[i]->update();
 			}
-			lootitems[i]->groundCollision(solidRects);
-			lootitems[i]->update();
 		}
 	}
 	
@@ -107,7 +107,7 @@ void PlayableScene::drawScene() {
 			DrawRectangleRec(solidRects[i], WHITE);
 			DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
 		}*/
-		
+		DrawRectangleRec(player->getHurtbox(), WHITE);
 	player->drawPlayer();
 	/*DrawRectangleRec(stairs[0].start, BLUE);
 	DrawRectangleRec(stairs[0].end, BLUE);
@@ -118,10 +118,12 @@ void PlayableScene::drawScene() {
 	//DrawRectangleRec(stairs[0].start, BLUE);
 	//DrawRectangleRec(stairs[0].end, BLUE);
 	spriteAnimation.draw(Vector2{ 100, 50 });
-		player->drawPlayer();
-		if (!lootitems.empty()) {
-			lootitems[0]->Draw();
+	
+	if (!lootitems.empty()) {
+		for (int i = 0; i < lootitems.size(); i++) {
+			lootitems[i]->Draw();
 		}
+	}
 	EndMode2D();
 	
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);

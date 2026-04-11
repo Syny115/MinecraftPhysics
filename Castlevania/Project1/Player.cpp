@@ -479,8 +479,7 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(isOnStair), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(stairPos - position.x), 2);
+    
     
     if (IsKeyPressed(KEY_A)) position.y = 0;
 }

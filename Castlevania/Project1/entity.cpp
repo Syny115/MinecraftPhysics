@@ -47,6 +47,8 @@ void Entity::moveV() {
 
 void Entity::queueDeletion() { //Doesn't work just yet
 	// Wait for Game Manager to be added for this:
+	if (queuedForDeletion) return;
+	queuedForDeletion = true;
 	GameManager::getInstance().getActiveScene()->deleteMe(this);
 }
 

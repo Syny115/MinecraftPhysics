@@ -30,6 +30,12 @@ public:
         active = true;
     }
 
+    void startTimer(int t) {
+        time = t;
+        lifeTime = t;
+        active = true;
+    }
+
     void updateTimer() {
         if (!active) return;
         time -= GetFrameTime();

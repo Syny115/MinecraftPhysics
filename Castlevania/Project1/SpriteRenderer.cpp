@@ -116,7 +116,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         // TODO
         break;
     case LOOT:
-        add("hidden", 1, 0, 0, 0, 0, 1); //Does nothing but im scared to remove it
+        
         add("whip", 1, 1, 1, 16, 16, 1); //Whip upgrade loot item
         add("smallheart", 1, 18, 1, 8, 8, 1);
         add("bigheart", 1, 27, 1, 16, 16, 1);
@@ -135,7 +135,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("1up", 1, 52, 35, 16, 16, 1); //Probably delete this ngl im not sure about it being a loot item
         add("crown", 4, 69, 35, 16, 16, 12);
         add("chest", 4, 137, 35, 16, 16, 12);
-        currentAnimName = "hidden";
+        currentAnimName = "whip";
     default:
         break;
     }
