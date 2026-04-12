@@ -14,7 +14,7 @@ class GameManager {
 public:
 	static GameManager& getInstance()
 	{
-		static GameManager    instance; // Guaranteed to be destroyed.
+		static GameManager instance; // Guaranteed to be destroyed.
 		// Instantiated on first use.
 		return instance;
 	}
@@ -35,7 +35,7 @@ private:
 		EMPTY, DAGGER, AXE, CROSS, HOLYWATER, STOPWATCH
 	};
 
-	int playerHealth = 2;
+	int playerHealth = 12;
 	int enemyHealth;
 	int score;
 	int whipLevel;
@@ -75,6 +75,26 @@ public:
 	}
 
 	int getWhipLevel() { return whipLevel; }
+
+	int getHealth() { return playerHealth; }
+
+	void addHealth(int h) { playerHealth += h; }
+
+	void maximizeHealth() { playerHealth = 12; }
+
+	void changeWhipLevel(int wl) { whipLevel = wl; }
+
+	void changeSubWeapon(int sw) { subWeapon = sw; }
+
+	void addScore(int sc) { score+=sc; }
+
+	void resetScore() { score = 0; }
+
+	void addProjectiles(int projcount) { projectileCount += projcount; }
+
+	void queryProjectiles(int projcount) { projectileCount -= projcount; }
+
+	void resetProjectiles() { projectileCount = 0; }
 
 	int getProjectileCount() { return projectileCount; }
 
