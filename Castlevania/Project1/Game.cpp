@@ -44,7 +44,10 @@ void Game::startGame() {
         //----------------------------------------------------------------------------------
         //if (IsKeyPressed(KEY_SPACE)) publicPlaySound(0);      // Play WAV sound
         activeScene->updateScene();
-
+        if (IsKeyPressed(KEY_F1)) GameManager::getInstance().setTimeScale(0.5f);
+        else if (IsKeyPressed(KEY_F2)) GameManager::getInstance().setTimeScale(1.0f);
+        else if (IsKeyPressed(KEY_F3)) GameManager::getInstance().setTimeScale(2.0f);
+        else if (IsKeyPressed(KEY_F4)) GameManager::getInstance().setTimeScale(4.0f);
         UpdateMusicStream(musicArray[0]);
         //----------------------------------------------------------------------------------
 

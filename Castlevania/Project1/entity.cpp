@@ -11,7 +11,7 @@ int Entity::checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int l
 void Entity::groundCollision(vector<Rectangle> floorRec) {
 	int len = floorRec.size();
 	Rectangle predictedRec = hurtbox;
-	predictedRec.y += velocity.y * GetFrameTime();
+	predictedRec.y += velocity.y * deltaTime;
 	int i = checkCollisionRecsArr(predictedRec, floorRec, len);
 	if (i != -1) {
 		isOnFloor = true;
@@ -24,7 +24,7 @@ void Entity::groundCollision(vector<Rectangle> floorRec) {
 
 void Entity::increaseHalfOfGravity() {
 	if (!isOnFloor && velocity.y < maxFALL && GetTime()/GetFrameTime() > 15) {
-		velocity.y += grav * GetFrameTime() * 0.5f;
+		velocity.y += grav * deltaTime * 0.5f;
 	}
 }
 
@@ -36,7 +36,7 @@ void Entity::moveV() {
 	increaseHalfOfGravity();
 
 	//Apply Vertical Movement
-	position.y += velocity.y * GetFrameTime();
+	position.y += velocity.y * deltaTime;
 
 	//Apply other half of gravity
 	increaseHalfOfGravity();
@@ -52,7 +52,7 @@ void Entity::queueDeletion() { //Doesn't work just yet
 	GameManager::getInstance().getActiveScene()->deleteMe(this);
 }
 
-void Entity::earlyUpdate() {}
+void Entity::earlyUpdate() { deltaTime = GetFrameTime() * GameManager::getInstance().getTimeScale(); }
 
 void Entity::lateUpdate() { updateColliderPosiotions(); }
 
@@ -61,13 +61,13 @@ void Entity::update() {
 }
 
 void Entity::moveHLinear(const int speed) {
-	position.x += speed * GetFrameTime();
+	position.x += speed * deltaTime;
 	offsetX = position.x - size.x / 2;
 	updateColliderPosiotions();
 }
 
 void Entity::moveVLinear(const int speed) {
-	position.y += speed * GetFrameTime();
+	position.y += speed * deltaTime;
 	offsetY = position.y - size.y / 2;
 	updateColliderPosiotions();
 }
