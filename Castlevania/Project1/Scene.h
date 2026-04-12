@@ -11,6 +11,7 @@
 #include "SpriteRenderer.h"
 #include "Classes.h"
 #include "DestructableObject.h"
+#include "Enemy.h"
 #include "Loot.h"
 
 using json = nlohmann::json;
@@ -48,6 +49,8 @@ public:
 	virtual void removeDestructables(DestructableObject* d) {}
 	virtual void pushSolidRects(Rectangle rect) {}
 	virtual void removeSolidRects(Rectangle rect) {}
+	virtual void pushEnemyRects(damageRect hitBox) {}
+	virtual void removeEnemy(Enemy* e) {}
 };
 
 
@@ -68,6 +71,7 @@ private:
 	vector<Vector2> checkpoints;
 	vector<staircase> stairs;
 	vector<DestructableObject*> destructables;
+	vector<Enemy*> enemies;
 
 	float worldWidth;
 	float worldHeight;
@@ -111,4 +115,6 @@ public:
 	void removeSolidRects(Rectangle hitBox) override;
 	void pushLoot(Loot* l) override { lootitems.push_back(l); }
 	void removeLoot(Loot* l) override;
+	void pushEnemyRects(damageRect hitBox) override { enemyRects.push_back(hitBox); }
+	void removeEnemy(Enemy* e) override;
 };

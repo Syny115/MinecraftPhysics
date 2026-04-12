@@ -73,7 +73,7 @@ DestructableLoot::~DestructableLoot() {
 		GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 14));
 	}
 	else { // random
-		int rand = GetRandomValue(1, 200);
+		int rand = GetRandomValue(1, 100);
 		if (GameManager::getInstance().getWhipLevel() == 0 && rand <= 75 || GameManager::getInstance().getWhipLevel() == 1 && rand <= 50) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 0));
 		else {
 			rand = GetRandomValue(1, 100);

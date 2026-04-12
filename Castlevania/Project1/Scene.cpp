@@ -42,12 +42,12 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
+	enemies.push_back(new Zombie(Vector2{ 100, 180 }));
 }
 
 void PlayableScene::start() {
 	player = new Player;
 	spriteAnimation = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::BREAKABLES);
-	enemyRects.push_back(damageRect{ new Rectangle{100, 180, 16, 16}, 2 });
 }
 
 
@@ -56,6 +56,10 @@ PlayableScene::~PlayableScene() {
 	UnloadTexture(tileAtlas);
 	for (Loot* loot : lootitems) delete loot;
 	lootitems.clear();
+	for (Enemy* enemy : enemies) delete enemy;
+	enemies.clear();
+	for (DestructableObject* dest : destructables) delete dest;
+	destructables.clear();
 }
 
 
@@ -95,7 +99,14 @@ void PlayableScene::updateScene() {
 		}
 	}
 
-
+	if (!enemies.empty()) {
+		for (int i = (int)enemies.size() - 1; i >= 0; i--) {
+			enemies[i]->hitCollision(playerHitBoxes);
+			enemies[i]->groundCollision(solidRects);
+			enemies[i]->update();
+			
+		}
+	}
 	Scene::updateScene();
 }
 
@@ -109,7 +120,7 @@ void PlayableScene::drawScene() {
 		}*/
 
 	player->drawPlayer();
-	DrawRectangleRec(*enemyRects[0].rect, RED);
+	
 	/*DrawRectangleRec(stairs[0].start, BLUE);
 	DrawRectangleRec(stairs[0].end, BLUE);
 	DrawRectangleRec(stairs[1].start, RED);
@@ -123,6 +134,12 @@ void PlayableScene::drawScene() {
 	if (!lootitems.empty()) {
 		for (int i = 0; i < lootitems.size(); i++) {
 			lootitems[i]->Draw();
+		}
+	}
+	if (!enemies.empty()) {
+		for (int i = 0; i < enemies.size(); i++) {
+			//DrawRectangleRec(enemies[i]->getHurtbox(), RED);
+			enemies[i]->draw();
 		}
 	}
 	EndMode2D();
@@ -173,5 +190,15 @@ void PlayableScene::removeSolidRects(Rectangle rect) {
 void PlayableScene::removeLoot(Loot* l) {
 	for (int i = 0; i < lootitems.size(); i++) {
 		if (lootitems[i] == l) lootitems.erase(lootitems.begin() + i);
+	}
+}
+
+void PlayableScene::removeEnemy(Enemy* e) {
+	Rectangle rec = e->getHurtbox();
+	for (int i = 0; i < enemyRects.size(); i++) {
+		if (enemyRects[i].rect == &rec) enemyRects.erase(enemyRects.begin() + i);
+	}
+	for (int i = 0; i < enemies.size(); i++) {
+		if (enemies[i] == e) enemies.erase(enemies.begin() + i);
 	}
 }
