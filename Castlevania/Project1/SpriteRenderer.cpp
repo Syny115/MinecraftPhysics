@@ -80,6 +80,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("hurt", 1, 211, 7, 20, 24, 1, 1);
         add("stairsIdle", 1, 320, 7, 20, 24, 1, 1);
         add("stairsWalk", 2, 341, 7, 20, 24, 1, 10);
+        add("dead", 1, 0, 0, 0, 0, 1, 0);
 
         currentAnimName = "idle";
         break;
