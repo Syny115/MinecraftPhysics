@@ -35,12 +35,14 @@ private:
 		EMPTY, DAGGER, AXE, CROSS, HOLYWATER, STOPWATCH
 	};
 
-	int playerHealth;
+	int playerHealth = 12;
 	int enemyHealth;
 	int score;
 	int whipLevel;
 	int subWeapon;
 	int projectileCount = 0; // 0 is un-upgraded, 1 is two projectiles and so on
+
+	float timeScale = 1.0f;
 
 public:
 
@@ -75,6 +77,9 @@ public:
 	int getWhipLevel() { return whipLevel; }
 
 	int getProjectileCount() { return projectileCount; }
+
+	void setTimeScale(float f) { timeScale = f; }
+	float getTimeScale() { return timeScale; }
 
 	friend class Player;
 };

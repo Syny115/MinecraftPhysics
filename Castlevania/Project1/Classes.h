@@ -42,6 +42,12 @@ public:
         if (time <= 0) active = false;
     }
 
+    void updateTimer(float delta) {
+        if (!active) return;
+        time -= delta;
+        if (time <= 0) active = false;
+    }
+
     bool isTriggerd() {
         return time <= 0;
     }

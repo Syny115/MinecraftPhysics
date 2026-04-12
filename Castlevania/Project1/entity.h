@@ -7,6 +7,7 @@ using namespace std;
 
 class Entity {
 protected:
+	float deltaTime;
 	bool isLoaded = false;
 	bool isOnFloor;
 	Vector2 size;
