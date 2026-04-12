@@ -5,6 +5,8 @@
 #include "Entity.h"
 #include <iostream>
 #include <string>
+#include "SpriteRenderer.h"
+
 using namespace std;
 
 class Player : public Entity
@@ -56,11 +58,18 @@ private:
     float stunHeight = 100;
     float maxHeight = 256;
 
-    float offsetY; //Top left of the player, 
-    float offsetX; //now that position is at center
+    float bottomAnimOffsetY;
+    float bottomAnimOffsetX;
+    float topAnimOffsetY;
+    float topAnimOffsetX;
+    short isOnStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
+    short lockStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
+    float stairPos;
+    SpriteRenderer* topSprite = nullptr;
+    SpriteRenderer* bottomSprite = nullptr;
+    SpriteRenderer* whipSprite = nullptr;
 
-    const char* imageName = "HOUSE_MD.png";
-    Texture2D sprite;
+    
 
     Rectangle topCollider;
     Rectangle leftCollider;
@@ -83,6 +92,7 @@ public:
     void groundCollision(vector<Rectangle> floorRec);
     void ceilingCollision(vector<Rectangle> ceilingRec);
     void wallCollision(vector<Rectangle> wallRec);
+    void stairCollision(vector<staircase>& stairs);
     void update();
     void lateUpdate() override;
     void earlyUpdate() override;
@@ -91,9 +101,10 @@ public:
     void moveV() override;
     int getNormalizedVelocity();
     void increaseHalfOfVelocity(bool accelerate, bool decelerate);
-    void updateColliderPosiotions();
+    void updateColliderPosiotions() override;
     void drawPlayer();
     void updateDirection();
+    void updateAnimation();
 
     void betweenStates(int previous, int current, int future, PlayerState* state);
 };

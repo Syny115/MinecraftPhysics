@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+
 //REPLACE LATER WHEN I HAVE GAME MANAGER
 const float screenWidth = 800;
 const float screenHeight = 700;
@@ -27,41 +28,36 @@ void Scene::drawScene() {
 }
 
 void Scene::updateScene() {
-	if (!deletionQueue.empty()) {
-		delete deletionQueue.back();
+	while (!deletionQueue.empty()) {
+		delete deletionQueue.front();
 		deletionQueue.pop();
 	}
 	updateCamera();
 }
 
 //----------- PLAYABLE SCENE -------------//
-Texture test;
-Timer timertest(10);
 
 PlayableScene::PlayableScene(const char* path) {
 	camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
-
-	// Creating test loot 
-	test = LoadTexture("resources/sprites/heart.png");
-	lootitems.push_back(new Loot(Vector2{16,16},Vector2{100,100},Vector2{0,20}, test, timertest));
 }
 
 void PlayableScene::start() {
 	player = new Player;
+	spriteAnimation = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::BREAKABLES);
 }
 
 
 PlayableScene::~PlayableScene() {
 	delete player;
 	UnloadTexture(tileAtlas);
-	UnloadTexture(test);
-	for (int i = 0; lootitems.empty(); i++) {
-		delete lootitems[i];
-	}
+	for (Loot* loot : lootitems) delete loot;
+	lootitems.clear();
 }
+
+
 
 void PlayableScene::updateCamera() {
 	camera.target = player->getPosition();
@@ -74,40 +70,63 @@ void PlayableScene::updateScene() {
 		player->groundCollision(solidRects);
 		player->ceilingCollision(solidRects);
 		player->wallCollision(solidRects);
+		player->stairCollision(stairs);
 		player->update();
+
+		for (int i = 0; i < destructables.size(); i++) {
+			destructables[i]->update();
+			destructables[i]->hitCollision(playerHitBoxes);
+		}
+
+		spriteAnimation->setAnimation("ground"); // o lo que corresponda
+		spriteAnimation->setFlipX(false);      // true si el jugador va a la izquierda
+		spriteAnimation->update(GetFrameTime());
 	}
+
+
 	if (!lootitems.empty()) {
-		for (int i = 0; i < lootitems.size(); i++) {
-			if (CheckCollisionRecs(player->getHurtbox(), lootitems[i]->getHurtbox())) {
-				// Add pickup code here
-				lootitems[i]->queueDeletion();
+		for (int i = (int)lootitems.size() - 1; i >= 0; i--) { //si se sacan con player collision se puede saltar algun update, por eso iteramos al reves
+			if (!lootitems[i]->playerCollision(player->getHurtbox())) {
+				lootitems[i]->groundCollision(solidRects);
+				lootitems[i]->update();
 			}
-			lootitems[i]->groundCollision(solidRects);
-			lootitems[i]->update();
 		}
 	}
-	
-		
+
+
 	Scene::updateScene();
 }
 
 void PlayableScene::drawScene() {
 	ClearBackground(/*{0xA0, 0xF0, 0xFF, 0xFF}*/BLACK);
 	BeginMode2D(camera);
-		drawTiles();
+	drawTiles();
 	/*	for (int i = 0; i < solidRects.size(); i++) {
 			DrawRectangleRec(solidRects[i], WHITE);
 			DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
 		}*/
-		
-		player->drawPlayer();
-		if (!lootitems.empty()) {
-			lootitems[0]->Draw();
+
+	player->drawPlayer();
+	
+	/*DrawRectangleRec(stairs[0].start, BLUE);
+	DrawRectangleRec(stairs[0].end, BLUE);
+	DrawRectangleRec(stairs[1].start, RED);
+	DrawRectangleRec(stairs[1].end, RED);*/
+	/*DrawRectangleRec(stairs[2].start, GREEN);
+	DrawRectangleRec(stairs[2].end, GREEN);*/
+	//DrawRectangleRec(stairs[0].start, BLUE);
+	//DrawRectangleRec(stairs[0].end, BLUE);
+	spriteAnimation->draw(Vector2{ 100, 50 });
+
+	if (!lootitems.empty()) {
+		for (int i = 0; i < lootitems.size(); i++) {
+			lootitems[i]->Draw();
 		}
+	}
 	EndMode2D();
+
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
 	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
-	
 }
 
 void PlayableScene::drawTiles() {
@@ -126,11 +145,26 @@ void PlayableScene::drawTiles() {
 			}
 		}
 	}
+	for (int i = 0; i < destructables.size(); i++) {
+		destructables[i]->draw();
+	}
 }
 
 void PlayableScene::removePlayerHitBoxes(Rectangle* hitBox) {
 	for (int i = 0; i < playerHitBoxes.size(); i++) {
-		if (playerHitBoxes[i] == hitBox) playerHitBoxes.erase(playerHitBoxes.begin() + i);
+		if (playerHitBoxes[i].rect == hitBox) playerHitBoxes.erase(playerHitBoxes.begin() + i);
+	}
+}
+
+void PlayableScene::removeDestructables(DestructableObject* d) {
+	for (int i = 0; i < destructables.size(); i++) {
+		if (destructables[i] == d) destructables.erase(destructables.begin() + i);
+	}
+}
+
+void PlayableScene::removeSolidRects(Rectangle rect) {
+	for (int i = 0; i < solidRects.size(); i++) {
+		if (solidRects[i].x == rect.x && solidRects[i].y == rect.y && solidRects[i].width == rect.width && solidRects[i].height == rect.height) solidRects.erase(solidRects.begin() + i);
 	}
 }
 

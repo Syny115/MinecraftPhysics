@@ -8,7 +8,11 @@
 #include <vector>
 #include <fstream>
 #include "libraries/json.hpp"
+#include "SpriteRenderer.h"
+#include "Classes.h"
+#include "DestructableObject.h"
 #include "Loot.h"
+
 using json = nlohmann::json;
 using namespace std;
 
@@ -17,6 +21,7 @@ protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
 public:
+
 	Scene();
 	//virtual ~Scene();
 	virtual void start();
@@ -36,9 +41,13 @@ public:
 	virtual int getTileHeight() { return 0; }
 	virtual int getTileWidth() { return 0; }
 
-	virtual void pushPlayerHitBoxes(Rectangle* hitBox) { /* I | Ii | II | I- */ };
+	virtual void pushPlayerHitBoxes(damageRect hitBox) { /* I | Ii | II | I- */ }
 	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
+	virtual void pushLoot(Loot* l) {}
 	virtual void removeLoot(Loot* l) {}
+	virtual void removeDestructables(DestructableObject* d) {}
+	virtual void pushSolidRects(Rectangle rect) {}
+	virtual void removeSolidRects(Rectangle rect) {}
 };
 
 
@@ -47,13 +56,18 @@ public:
 
 class PlayableScene : public Scene {
 private:
+	SpriteRenderer* spriteAnimation = nullptr;
 	Player* player;
 	vector<Rectangle> solidRects;
 	vector<Rectangle> enemyRects;
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
-	vector<Rectangle*> playerHitBoxes;
+	vector<damageRect> playerHitBoxes;
 	vector<Loot*> lootitems;
+
+	vector<Vector2> checkpoints;
+	vector<staircase> stairs;
+	vector<DestructableObject*> destructables;
 
 	float worldWidth;
 	float worldHeight;
@@ -79,6 +93,7 @@ public:
 	void drawScene() override;
 	void drawTiles();
 	void parseTiles(const char* path);
+	void parseStairs(vector<vector<int>> mat);
 
 	void setDebugMessage(string message, int count) override {
 		if (count == 1) debug_text1 = message;
@@ -89,8 +104,11 @@ public:
 	int getTileHeight() override { return tileHeight; }
 	int getTileWidth() override { return tileWidth; }
 
-	void pushPlayerHitBoxes(Rectangle* hitBox) override { playerHitBoxes.push_back(hitBox); }
+	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); }
 	void removePlayerHitBoxes(Rectangle* hitBox) override;
-
-	void removeLoot(Loot *l) override;
+	void removeDestructables(DestructableObject* d) override;
+	void pushSolidRects(Rectangle hitBox) override { solidRects.push_back(hitBox); }
+	void removeSolidRects(Rectangle hitBox) override;
+	void pushLoot(Loot* l) override { lootitems.push_back(l); }
+	void removeLoot(Loot* l) override;
 };

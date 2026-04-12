@@ -131,29 +131,100 @@ void PlayableScene::parseTiles(const char* path) {
 	worldHeight = row * tileHeight;
 	worldWidth = col * tileWidth;
 
+    vector<Vector2> upVec;
+    vector<Vector2> dVec;
 
-	int background = 0; int foreground = 0;
+	int background = 0, foreground = 0, breakables = 0, level = 0;
 	int len = doc["layers"].size();
 	for (int i = 0; i < len; i++) {
 		if (doc["layers"][i]["name"] == "BackGround") background = i;
 		if (doc["layers"][i]["name"] == "ForeGround") foreground = i;
+		if (doc["layers"][i]["name"] == "Breakables") breakables = i;
+		if (doc["layers"][i]["name"] == "Level") level = i;
 	}
 	len = row * col;
-	int bData, fData;
+	int bData, fData, lData, bkData;
 	for (int j = 0; j < len; j++) {
 		bData = doc["layers"][background]["data"][j];
 		fData = doc["layers"][foreground]["data"][j];
+        bkData = doc["layers"][breakables]["data"][j];
+        lData = doc["layers"][level]["data"][j];
 		tileMat[j / col][j % col] = bData;
 		if (fData != 0) {
 			collisionMat[j / col][j % col] = 1;
 			tileMat[j / col][j % col] = fData;
 		}
 		else collisionMat[j / col][j % col] = 0;
+        //Breakables Data
+        if (bkData == 216) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 0)); //breakable block
+        if (bkData == 217) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 1)); //WITH CHICKEN!!
+        if (bkData == 218) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 2)); //projectile upgrade!!
 
+        if (bkData == 214) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth/2, tileHeight * (float)(j / col) }, true, 0)); //Candle with random
+        if (bkData == 215) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) - tileHeight }, false, 0)); //Torch with random
+        if (bkData == 229) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 1)); //Candle with axe
+        if (bkData == 230) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 2)); //Candle with dagger
+        if (bkData == 231) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 3)); //Candle with Holy Water
+        if (bkData == 232) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 4)); //Candle with Stopwatch
+        if (bkData == 233) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 5)); //Candle with Boomerang
+        if (bkData == 234) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 6)); //Candle with jar
+        if (bkData == 235) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 7)); //Candle with cross
+
+        //Level Data
+        if (lData == 210) checkpoints.push_back(Vector2{ (float) (j % col) * tileWidth, tileHeight * (float) (j / col) }); //CHECKPOINT 
+        else if (lData == 225) dVec.push_back(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
+        else if (lData == 228) upVec.push_back(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
+
+        else if (lData == 226 && !dVec.empty()) { //STAIR END DOWN
+            int i = -1;
+            float adX, adY;
+            do {
+                i++;
+                adX = dVec[i].x - ((float)(j % col) * tileWidth);
+                adY = dVec[i].y - ((float)(j / col) * tileHeight);
+                
+            } while (adX != adY && i < dVec.size() && adX < 0 && adY < 0);
+            
+
+            staircase s = {
+                Rectangle{ dVec[i].x, dVec[i].y, 2.0f * tileWidth, 1.0f * tileHeight},
+                Rectangle{ (float)(j % col) * tileWidth, (float)(j / col) * tileHeight, 2.0f * tileWidth, 1.0f * tileHeight},
+                false
+            };
+            dVec.erase(dVec.begin() + i);
+            stairs.push_back(s);
+        }
+
+        else if (lData == 227 && !upVec.empty()) { //STAIR START UP
+            int i = -1;
+            float adX, adY;
+            do {
+                i++;
+                adX = upVec[i].x - ((float)(j % col) * tileWidth);
+                adY = upVec[i].y - ((float)(j / col) * tileHeight);
+
+            } while (adX != adY * -1 && i < upVec.size());
+            
+
+            staircase s = {
+                Rectangle{ upVec[i].x, upVec[i].y- tileHeight, 2.0f * tileWidth, 1.0f * tileHeight},
+                Rectangle{ (float)(j % col) * tileWidth - tileWidth, (float)(j / col) * tileHeight, 2.0f * tileWidth, 1.0f * tileHeight},
+                true
+            };
+            upVec.erase(upVec.begin() + i);
+            stairs.push_back(s);
+        }
+
+        
 	}
+
+   
+
 
     matrixToRects(&solidRects, collisionMat, tileWidth, tileHeight);
 
 	data.close();
 }
+
+
 

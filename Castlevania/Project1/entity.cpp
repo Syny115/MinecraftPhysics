@@ -47,11 +47,32 @@ void Entity::moveV() {
 
 void Entity::queueDeletion() { //Doesn't work just yet
 	// Wait for Game Manager to be added for this:
+	if (queuedForDeletion) return;
+	queuedForDeletion = true;
 	GameManager::getInstance().getActiveScene()->deleteMe(this);
 }
 
 void Entity::earlyUpdate() {}
 
-void Entity::lateUpdate() {}
+void Entity::lateUpdate() { updateColliderPosiotions(); }
 
-void Entity::update() {}
+void Entity::update() {
+	// Things here are done right AFTER the update code
+}
+
+void Entity::moveHLinear(const int speed) {
+	position.x += speed * GetFrameTime();
+	offsetX = position.x - size.x / 2;
+	updateColliderPosiotions();
+}
+
+void Entity::moveVLinear(const int speed) {
+	position.y += speed * GetFrameTime();
+	offsetY = position.y - size.y / 2;
+	updateColliderPosiotions();
+}
+
+void Entity::updateColliderPosiotions() {
+	hurtbox.x = position.x;
+	hurtbox.y = position.y;
+}

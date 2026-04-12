@@ -1,5 +1,18 @@
 #pragma once
-    
+#include "raylib.h"
+struct damageRect
+{
+    Rectangle* rect;
+    short damage;
+};
+
+struct staircase
+{
+    Rectangle start;
+    Rectangle end;
+    bool up;
+};
+
 class Timer
 {
 private:
@@ -14,6 +27,12 @@ public:
 
     void startTimer() {
         time = lifeTime;
+        active = true;
+    }
+
+    void startTimer(int t) {
+        time = t;
+        lifeTime = t;
         active = true;
     }
 

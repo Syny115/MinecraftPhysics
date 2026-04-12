@@ -31,6 +31,8 @@
     <Filter Include="Source Files\Classes\GameManager">
       <UniqueIdentifier>{5b7f3023-3008-469c-aa8a-bef7b309113d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Classes\SpriteRenderer">
+      <UniqueIdentifier>{d7ae6849-fef3-45de-ae8a-6374c2dddfbe}</UniqueIdentifier>
     <Filter Include="Source Files\Classes\Entity\Loot">
       <UniqueIdentifier>{283897b7-7aa0-4855-9caf-c50dc38e6674}</UniqueIdentifier>
     </Filter>
@@ -57,6 +59,8 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files\Classes\GameManager</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files\Classes\SpriteRenderer</Filter>
     <ClCompile Include="Loot.cpp">
       <Filter>Source Files\Classes\Entity\Loot</Filter>
     </ClCompile>
@@ -89,6 +93,8 @@
     <ClInclude Include="Classes.h">
       <Filter>Source Files\Classes</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Source Files\Classes\SpriteRenderer</Filter>
     <ClInclude Include="Loot.h">
       <Filter>Source Files\Classes\Entity\Loot</Filter>
     </ClInclude>
