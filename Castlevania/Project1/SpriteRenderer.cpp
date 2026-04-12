@@ -67,6 +67,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         a.offset = off;
         animationLibrary.push_back(a);
         };
+
     switch (spriteType) {
     case PLAYER_TOP:
         //fila uno de top seria y=7 a y=30 (24 pixels) y de bottom seria y=31 a y = 46 (16 pixels)
@@ -118,29 +119,29 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         break;
     case LOOT:
 
-        add("whip", 1, 1, 1, 16, 16, 1); //Whip upgrade loot item
-        add("smallheart", 1, 18, 1, 8, 8, 1);
-        add("bigheart", 1, 27, 1, 16, 16, 1);
-        add("moneybag", 3, 44, 1, 16, 16, 12);
-        add("orb", 2, 95, 1, 16, 16, 8);
-        add("dagger", 1, 1, 18, 16, 16, 1);
-        add("axe", 1, 18, 18, 16, 16, 1);
-        add("holywater", 1, 35, 18, 16, 16, 1);
-        add("boomerang", 3, 52, 18, 16, 16, 12);
-        add("stopwatch", 1, 103, 18, 16, 16, 1);
-        add("twoupgrade", 1, 120, 18, 16, 16, 1);
-        add("threeupgrade", 1, 137, 18, 16, 16, 1);
-        add("chicken", 1, 1, 35, 16, 16, 1);
-        add("jar", 1, 18, 35, 16, 16, 1);
-        add("invincibilitycross", 1, 35, 35, 16, 16, 1);
-        add("1up", 1, 52, 35, 16, 16, 1); //Probably delete this ngl im not sure about it being a loot item
-        add("crown", 4, 69, 35, 16, 16, 12);
-        add("chest", 4, 137, 35, 16, 16, 12);
+        add("whip", 1, 1, 1, 16, 16, 1, 1); //Whip upgrade loot item
+        add("smallheart", 1, 18, 1, 8, 8, 1, 1);
+        add("bigheart", 1, 27, 1, 16, 16, 1, 1);
+        add("moneybag", 3, 44, 1, 16, 16, 1, 12);
+        add("orb", 2, 95, 1, 16, 16, 1, 8);
+        add("dagger", 1, 1, 18, 16, 16, 1, 1);
+        add("axe", 1, 18, 18, 16, 16, 1, 1);
+        add("holywater", 1, 35, 18, 16, 16, 1, 1);
+        add("boomerang", 3, 52, 18, 16, 16, 1, 12);
+        add("stopwatch", 1, 103, 18, 16, 16, 1, 1);
+        add("twoupgrade", 1, 120, 18, 16, 16, 1, 1);
+        add("threeupgrade", 1, 137, 18, 16, 16, 1, 1);
+        add("chicken", 1, 1, 35, 16, 16, 1, 1);
+        add("jar", 1, 18, 35, 16, 16, 1, 1);
+        add("invincibilitycross", 1, 35, 35, 16, 16, 1, 1);
+        add("1up", 1, 52, 35, 16, 16, 1, 1); //Probably delete this ngl im not sure about it being a loot item
+        add("crown", 4, 69, 35, 16, 16, 1, 12);
+        add("chest", 4, 137, 35, 16, 16, 1, 12);
         currentAnimName = "whip";
     case BREAKABLES:
-        add("ground", 1, 32, 96, 16, 16, 1);
-        add("candle", 2, 157, 1, 8, 16, 10); //needs offset!!
-        add("torch", 2, 175, 1, 16, 32, 10); //needs offset!!
+        add("ground", 1, 32, 96, 16, 16, 1, 1);
+        add("candle", 2, 157, 1, 8, 16, 1, 10); //needs offset!!
+        add("torch", 2, 175, 1, 16, 32, 1, 10); //needs offset!!
         currentAnimName = "torch";
 
         break;
