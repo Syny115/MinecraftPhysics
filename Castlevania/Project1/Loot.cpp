@@ -33,7 +33,6 @@ bool Loot::playerCollision(Rectangle rec) {
 
 void Loot::update () {	
 	despawntime.updateTimer();
-	GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(despawntime.getTime()), 1);
 	
 	
 	Loot::earlyUpdate();

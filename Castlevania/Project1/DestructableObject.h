@@ -19,19 +19,20 @@ protected:
 class DestructableWall : public DestructableObject
 {
 public:
-	DestructableWall(Vector2 p, bool c);
+	DestructableWall(Vector2 p, int l);
 	~DestructableWall();
 	void update() override;
 private:
-	bool chicken;
+	int loot;
 	bool setup;
 };
 
 class DestructableLoot : public DestructableObject
 {
 public:
-	DestructableLoot(Vector2 p, bool c);
+	DestructableLoot(Vector2 p, bool c, int l);
 	~DestructableLoot();
 private:
+	int loot;
 	bool candle;
 };

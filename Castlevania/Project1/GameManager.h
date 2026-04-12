@@ -40,6 +40,7 @@ private:
 	int score;
 	int whipLevel;
 	int subWeapon;
+	int projectileCount = 0; // 0 is un-upgraded, 1 is two projectiles and so on
 
 public:
 
@@ -71,6 +72,9 @@ public:
 		return gamePointer;
 	}
 
+	int getWhipLevel() { return whipLevel; }
+
+	int getProjectileCount() { return projectileCount; }
 
 	friend class Player;
 };

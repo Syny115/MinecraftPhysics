@@ -43,6 +43,7 @@ public:
 
 	virtual void pushPlayerHitBoxes(damageRect hitBox) { /* I | Ii | II | I- */ }
 	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
+	virtual void pushLoot(Loot* l) {}
 	virtual void removeLoot(Loot* l) {}
 	virtual void removeDestructables(DestructableObject* d) {}
 	virtual void pushSolidRects(Rectangle rect) {}
@@ -108,6 +109,6 @@ public:
 	void removeDestructables(DestructableObject* d) override;
 	void pushSolidRects(Rectangle hitBox) override { solidRects.push_back(hitBox); }
 	void removeSolidRects(Rectangle hitBox) override;
-
+	void pushLoot(Loot* l) override { lootitems.push_back(l); }
 	void removeLoot(Loot* l) override;
 };
