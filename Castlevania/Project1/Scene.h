@@ -59,7 +59,7 @@ private:
 	SpriteRenderer* spriteAnimation = nullptr;
 	Player* player;
 	vector<Rectangle> solidRects;
-	vector<Rectangle> enemyRects;
+	vector<damageRect> enemyRects;
 	vector<Rectangle> lootRects;
 	vector<Rectangle> destructableRects;
 	vector<damageRect> playerHitBoxes;

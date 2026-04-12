@@ -167,6 +167,14 @@ void Player::stairCollision(vector<staircase>& stairs) { // 0 = no stair; 1 = st
     }
 }
 
+void Player::enemyCollision(vector<damageRect>& dmgRect) {
+    for (int i = 0; i < dmgRect.size(); i++) {
+        if (CheckCollisionRecs(*dmgRect[i].rect, hurtbox)) {
+            isDamaged = dmgRect[i].damage;
+        }
+    }
+}
+
 
 void Player::moveH(bool accelerate, bool decelerate) {
     normalizedVelocity = getNormalizedVelocity();
@@ -236,7 +244,7 @@ void Player::earlyUpdate() {
 void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
-    
+    invincibilityTimer.updateTimer(deltaTime);
     if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
@@ -484,7 +492,7 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lockStair), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*health), 1);
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(stairPos), 2);
     
     if (IsKeyPressed(KEY_A)) position.y = 0;

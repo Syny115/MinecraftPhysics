@@ -47,6 +47,7 @@ PlayableScene::PlayableScene(const char* path) {
 void PlayableScene::start() {
 	player = new Player;
 	spriteAnimation = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::BREAKABLES);
+	enemyRects.push_back(damageRect{ new Rectangle{100, 180, 16, 16}, 2 });
 }
 
 
@@ -107,7 +108,7 @@ void PlayableScene::drawScene() {
 		}*/
 
 	player->drawPlayer();
-	
+	DrawRectangleRec(*enemyRects[0].rect, RED);
 	/*DrawRectangleRec(stairs[0].start, BLUE);
 	DrawRectangleRec(stairs[0].end, BLUE);
 	DrawRectangleRec(stairs[1].start, RED);

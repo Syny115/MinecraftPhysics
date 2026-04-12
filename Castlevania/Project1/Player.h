@@ -15,6 +15,7 @@ private:
     Timer startAttackTimer{ 0.25 };
     Timer attackTimer{ 0.25 };
     Timer stunTimer{ 0.5 };
+    Timer invincibilityTimer{ 3.0 };
 
     enum playerStates
     {
@@ -62,6 +63,7 @@ private:
     float bottomAnimOffsetX;
     float topAnimOffsetY;
     float topAnimOffsetX;
+    short isDamaged;
     short isOnStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
     short lockStair; // 0 = no stair; 1 = stair up start; 2 = stair up end; -1 = stair down start; -2 = stair down end;
     float stairPos;
@@ -93,6 +95,8 @@ public:
     void ceilingCollision(vector<Rectangle> ceilingRec);
     void wallCollision(vector<Rectangle> wallRec);
     void stairCollision(vector<staircase>& stairs);
+    void enemyCollision(vector<damageRect>& dmgRects);
+
     void update();
     void lateUpdate() override;
     void earlyUpdate() override;
