@@ -72,6 +72,7 @@ void PlayableScene::updateScene() {
 		player->ceilingCollision(solidRects);
 		player->wallCollision(solidRects);
 		player->stairCollision(stairs);
+		player->enemyCollision(enemyRects);
 		player->update();
 
 		for (int i = 0; i < destructables.size(); i++) {
