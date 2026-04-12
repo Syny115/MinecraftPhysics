@@ -2,6 +2,9 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <vector>
+
+using namespace std;
+
 class Entity {
 protected:
 	bool isLoaded = false;
@@ -14,12 +17,19 @@ protected:
 	float worldHeight, worldWidth;
 	int health;
 
+
+	float floorHeight = 256;
+
+	float offsetX, offsetY;
+
 	Rectangle hurtbox;
+	
+	bool queuedForDeletion = false;
 
 public:
 	Entity() {}
 	Entity(Vector2 s, Vector2 p, Vector2 v) { size = s; position = p; velocity = v; }
-	~Entity() {} // No delete this;
+	virtual ~Entity() {} // No delete this;
 	Vector2 getSize() {
 		return size;
 	}
@@ -29,9 +39,8 @@ public:
 	Vector2 getVelocity() {
 		return velocity;
 	}
-
-	int checkSelfCollisionPointRecArr(Rectangle* recs, int len); //moved to entity.cpp
-
+	virtual int checkCollisionRecsArr(Rectangle rec1, vector<Rectangle> recs2, int len);
+	virtual void groundCollision(vector<Rectangle> floorRec);
 	void load() {isLoaded = true;}
 	void unload() {isLoaded = false;}
 	void queueDeletion();
@@ -40,4 +49,8 @@ public:
 	virtual void lateUpdate();
 	virtual void update();
 	virtual void moveV(); // moved to entity.cpp
+	void moveHLinear(const int speed);
+	void moveVLinear(const int speed);
+	virtual void updateColliderPosiotions();
+	Rectangle getHurtbox() { return hurtbox; };
 };

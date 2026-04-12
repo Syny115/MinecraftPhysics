@@ -31,7 +31,7 @@ private:
     int findAnimation(const string& name) const;
 
 public:
-    enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BOSS, LOOT, WHIP };
+    enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BOSS, LOOT, WHIP, BREAKABLES };
 
     SpriteRenderer() : currentFrame(0), frameTimer(0), flipX(false) {}
     SpriteRenderer(const char* path, int spriteType);
@@ -42,4 +42,6 @@ public:
     void update(float deltaTime);                   // avanza el timer
     void draw(Vector2 position);                    // dibuja el frame actual
     string getAnimation() { return currentAnimName; }
+    Animation getAnimationFromName(string can) { return animationLibrary[findAnimation(can)]; }
+
 };

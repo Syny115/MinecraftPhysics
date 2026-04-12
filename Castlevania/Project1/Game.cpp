@@ -14,7 +14,7 @@ void Game::startGame() {
     const float screenWidth = 800;
     const float screenHeight = 700;
     InitWindow(screenWidth, screenHeight, "Castlevania");
-    activeScene = new PlayableScene("resources/json/Test1.json");
+    activeScene = new PlayableScene("resources/json/Test3.json");
     activeScene->start();
     
     

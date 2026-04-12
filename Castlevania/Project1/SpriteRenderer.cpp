@@ -68,7 +68,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         animationLibrary.push_back(a);
         };
     switch (spriteType) {
-    case PLAYER_TOP:          
+    case PLAYER_TOP:
         //fila uno de top seria y=7 a y=30 (24 pixels) y de bottom seria y=31 a y = 46 (16 pixels)
 
         add("idle", 1, 1, 7, 20, 24, 1, 1);   // x=0,  parado
@@ -84,7 +84,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         break;
     case PLAYER_BOTTOM:
         //fila uno de top seria y=7 a y=30 (24 pixels) y de bottom seria y=31 a y = 46 (16 pixels)
-        
+
 
         add("idle", 1, 1, 31, 20, 16, 1, 1);   // x=0,  parado
         add("walk", 3, 22, 31, 20, 16, 1, 9);   // x=22..64, caminar (3 frames contiguos)
@@ -116,10 +116,39 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     case BAT:
         add("fly", 1, 0, 0, 0, 0, 0, 1);
         break;
+    case LOOT:
+
+        add("whip", 1, 1, 1, 16, 16, 1); //Whip upgrade loot item
+        add("smallheart", 1, 18, 1, 8, 8, 1);
+        add("bigheart", 1, 27, 1, 16, 16, 1);
+        add("moneybag", 3, 44, 1, 16, 16, 12);
+        add("orb", 2, 95, 1, 16, 16, 8);
+        add("dagger", 1, 1, 18, 16, 16, 1);
+        add("axe", 1, 18, 18, 16, 16, 1);
+        add("holywater", 1, 35, 18, 16, 16, 1);
+        add("boomerang", 3, 52, 18, 16, 16, 12);
+        add("stopwatch", 1, 103, 18, 16, 16, 1);
+        add("twoupgrade", 1, 120, 18, 16, 16, 1);
+        add("threeupgrade", 1, 137, 18, 16, 16, 1);
+        add("chicken", 1, 1, 35, 16, 16, 1);
+        add("jar", 1, 18, 35, 16, 16, 1);
+        add("invincibilitycross", 1, 35, 35, 16, 16, 1);
+        add("1up", 1, 52, 35, 16, 16, 1); //Probably delete this ngl im not sure about it being a loot item
+        add("crown", 4, 69, 35, 16, 16, 12);
+        add("chest", 4, 137, 35, 16, 16, 12);
+        currentAnimName = "whip";
+    case BREAKABLES:
+        add("ground", 1, 32, 96, 16, 16, 1);
+        add("candle", 2, 157, 1, 8, 16, 10); //needs offset!!
+        add("torch", 2, 175, 1, 16, 32, 10); //needs offset!!
+        currentAnimName = "torch";
+
+        break;
     default:
         break;
     }
 }
+
 
 SpriteRenderer::~SpriteRenderer() {
     UnloadTexture(sprite);
