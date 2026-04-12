@@ -35,7 +35,7 @@ private:
 		EMPTY, DAGGER, AXE, CROSS, HOLYWATER, STOPWATCH
 	};
 
-	int playerHealth = 12;
+	int playerHealth = 2;
 	int enemyHealth;
 	int score;
 	int whipLevel;

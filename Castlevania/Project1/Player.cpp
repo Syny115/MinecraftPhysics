@@ -405,6 +405,9 @@ void Player::update() {
 
         break;
     case DIE:
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -13;
+        bottomSprite->setAnimation("dead");
         break;
     case KNOCKBACK:
             bottomAnimOffsetY = 17;
@@ -501,12 +504,18 @@ void Player::update() {
         stunTimer.updateTimer(deltaTime);
 
         //Transition
+        if (*health <= 0) lowerState.changeState(DIE);
         if (stunTimer.isTriggerd()) upperState.changeState(IDLE);
         break;
     case KNOCKBACK:
         topAnimOffsetY = -6;
         topAnimOffsetX = -2;
         topSprite->setAnimation("hurt");
+        break;
+    case DIE:
+        topAnimOffsetY = -6;
+        topAnimOffsetX = -13;
+        topSprite->setAnimation("dead");
         break;
 
     }
@@ -526,7 +535,7 @@ void Player::lateUpdate() {
 
 void Player::drawPlayer() {
     //DrawRectangleRec(hurtbox, DARKGREEN);
-    if (!invincibilityTimer.isActive() || (int) (GetTime()/GetFrameTime()) % 8 > 0)
+    if (!invincibilityTimer.isActive() || (int) (GetTime()/GetFrameTime()) % 8 > 0 || lowerState.current == DIE)
     {
         topSprite->draw(Vector2{ offsetX + topAnimOffsetX, offsetY + topAnimOffsetY });
         bottomSprite->draw(Vector2{ offsetX + bottomAnimOffsetX, offsetY + bottomAnimOffsetY });
@@ -568,10 +577,8 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
     else {
         if (current == FALL) maxHeight = 256;
         if (current == STAIRS) lockStair = 0;
-        if (future == KNOCKBACK) 
-        {
-            upperState.changeState(KNOCKBACK);
-        }
+        if (future == KNOCKBACK) upperState.changeState(KNOCKBACK);
+        if (future == DIE) upperState.changeState(DIE);
     }
     
 }
