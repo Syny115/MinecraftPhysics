@@ -98,7 +98,9 @@ DestructableWall::~DestructableWall() {
 }
 
 void DestructableObject::update() {
-	sprite->update(GetFrameTime());
+	earlyUpdate();
+	sprite->update(deltaTime);
+	lateUpdate();
 }
 
 void DestructableObject::hitCollision(vector<damageRect>& dmgRect) {

@@ -101,7 +101,7 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     wasOnFloor = isOnFloor;
     int len = floorRec.size();
     Rectangle predictedRec = groundCollider;
-    predictedRec.y += velocity.y * GetFrameTime();
+    predictedRec.y += velocity.y * deltaTime;
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
         isOnFloor = true;
@@ -127,7 +127,7 @@ void Player::ceilingCollision(vector<Rectangle> ceilingRec) {
 void Player::wallCollision(vector<Rectangle> wallRec) {
     int len = wallRec.size();
     Rectangle predictedRec = leftCollider;
-    predictedRec.x += velocity.x * GetFrameTime();
+    predictedRec.x += velocity.x * deltaTime;
 
     int i = checkCollisionRecsArr(predictedRec, wallRec, len);
     if (i != -1) {
@@ -139,7 +139,7 @@ void Player::wallCollision(vector<Rectangle> wallRec) {
     }
 
     predictedRec = rightCollider;
-    predictedRec.x += velocity.x * GetFrameTime();
+    predictedRec.x += velocity.x * deltaTime;
 
     int j = checkCollisionRecsArr(predictedRec, wallRec, len);
     if (j != -1) {
@@ -167,6 +167,15 @@ void Player::stairCollision(vector<staircase>& stairs) { // 0 = no stair; 1 = st
     }
 }
 
+void Player::enemyCollision(vector<damageRect>& dmgRect) {
+    for (int i = 0; i < dmgRect.size(); i++) {
+        if (CheckCollisionRecs(*dmgRect[i].rect, hurtbox) && !invincibilityTimer.isActive()) {
+            isDamaged = dmgRect[i].damage;
+            invincibilityTimer.startTimer();
+        }
+    }
+}
+
 
 void Player::moveH(bool accelerate, bool decelerate) {
     normalizedVelocity = getNormalizedVelocity();
@@ -186,7 +195,7 @@ void Player::moveH(bool accelerate, bool decelerate) {
         velocity.x = 0;
     }
     else {
-        position.x += velocity.x * GetFrameTime();
+        position.x += velocity.x * deltaTime;
     }
     //Limit velocity
     if (abs(velocity.x) > maxSPD) {
@@ -217,29 +226,31 @@ void Player::moveV() {
 }
 
 void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
-    if (accelerate) velocity.x += getInputAxis() * GetFrameTime() * acc * 0.5f;
+    if (accelerate) velocity.x += getInputAxis() * deltaTime * acc * 0.5f;
     if (!decelerate) return;
     float _dec = dec;
     if (!isOnFloor) {
         _dec = airDec;
     }
     
-    if ((normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD) || !accelerate) velocity.x -= _dec * GetFrameTime() * normalizedVelocity * 0.5f;
+    if ((normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD) || !accelerate) velocity.x -= _dec * deltaTime * normalizedVelocity * 0.5f;
 }
 
 int someCounter = 0;
 
 void Player::earlyUpdate() {
-
+    Entity::earlyUpdate();
 }
 
 void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
-    
-    if (isOnFloor && lowerState.current != JUMP) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
+    invincibilityTimer.updateTimer(deltaTime);
+    if (isOnFloor && lowerState.current != JUMP && lowerState.current != KNOCKBACK) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
+
+    if (isDamaged != 0) lowerState.changeState(KNOCKBACK);
 
     //Lower Body State Machine
     switch (lowerState.current) {
@@ -394,8 +405,27 @@ void Player::update() {
 
         break;
     case DIE:
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -13;
+        bottomSprite->setAnimation("dead");
         break;
     case KNOCKBACK:
+            bottomAnimOffsetY = 17;
+            bottomAnimOffsetX = -2;
+        bottomSprite->setAnimation("stairsIdleDown");
+        if (lowerState.previous != STAIRS && jumpAllowed) {
+            jumpAllowed = false;
+            velocity.x = -50 * direction;
+            velocity.y = -180;
+        }
+        *health -= isDamaged;
+        isDamaged = 0;
+
+        moveH(false, false);
+        moveV();
+        
+        //Transition
+        if (isOnFloor && velocity.y >= 0) upperState.changeState(STUN);
         break;
 
     case ATTACK:
@@ -441,7 +471,7 @@ void Player::update() {
         topSprite->setAnimation("startAttack");
         if (*whipLevel > 0) whipSprite->setAnimation("longStart");
         else whipSprite->setAnimation("shortStart");
-        startAttackTimer.updateTimer();
+        startAttackTimer.updateTimer(deltaTime);
 
         //transition
         if (startAttackTimer.isTriggerd()) upperState.changeState(ATTACK);
@@ -454,7 +484,7 @@ void Player::update() {
         else if (*whipLevel == 1) whipSprite->setAnimation("lv2Attack");
         else whipSprite->setAnimation("lv1Attack");
 
-        attackTimer.updateTimer();
+        attackTimer.updateTimer(deltaTime);
 
         //Transition
         if (attackTimer.isTriggerd()) {
@@ -471,10 +501,23 @@ void Player::update() {
             topAnimOffsetY = -6;
             topAnimOffsetX = -2;
         topSprite->setAnimation("hurt");
-        stunTimer.updateTimer();
+        stunTimer.updateTimer(deltaTime);
 
         //Transition
+        if (*health <= 0) lowerState.changeState(DIE);
         if (stunTimer.isTriggerd()) upperState.changeState(IDLE);
+        break;
+    case KNOCKBACK:
+        topAnimOffsetY = -6;
+        topAnimOffsetX = -2;
+        topSprite->setAnimation("hurt");
+        break;
+    case DIE:
+        topAnimOffsetY = -6;
+        topAnimOffsetX = -13;
+        topSprite->setAnimation("dead");
+        break;
+
     }
     if (lowerState.current == CROUCH || lowerState.current == STUN) topAnimOffsetY = 2;
     updateAnimation();
@@ -484,16 +527,19 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(lockStair), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(stairPos), 2);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*health), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(invincibilityTimer.getTime()), 2);
     
     if (IsKeyPressed(KEY_A)) position.y = 0;
 }
 
 void Player::drawPlayer() {
     //DrawRectangleRec(hurtbox, DARKGREEN);
-    topSprite->draw(Vector2{ offsetX + topAnimOffsetX, offsetY + topAnimOffsetY });
-    bottomSprite->draw(Vector2{ offsetX + bottomAnimOffsetX, offsetY + bottomAnimOffsetY });
+    if (!invincibilityTimer.isActive() || (int) (GetTime()/GetFrameTime()) % 8 > 0 || lowerState.current == DIE)
+    {
+        topSprite->draw(Vector2{ offsetX + topAnimOffsetX, offsetY + topAnimOffsetY });
+        bottomSprite->draw(Vector2{ offsetX + bottomAnimOffsetX, offsetY + bottomAnimOffsetY });
+    }
     /*DrawRectangleRec(groundCollider, RED);
     DrawRectangleRec(topCollider, RED);
     DrawRectangleRec(leftCollider, RED);
@@ -531,6 +577,8 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
     else {
         if (current == FALL) maxHeight = 256;
         if (current == STAIRS) lockStair = 0;
+        if (future == KNOCKBACK) upperState.changeState(KNOCKBACK);
+        if (future == DIE) upperState.changeState(DIE);
     }
     
 }
@@ -543,7 +591,7 @@ void Player::updateAnimation() {
     topSprite->setFlipX(direction == -1);
     bottomSprite->setFlipX(direction == -1);
     whipSprite->setFlipX(direction == -1);
-    topSprite->update(GetFrameTime());
-    bottomSprite->update(GetFrameTime());
-    whipSprite->update(GetFrameTime());
+    topSprite->update(deltaTime);
+    bottomSprite->update(deltaTime);
+    whipSprite->update(deltaTime);
 }

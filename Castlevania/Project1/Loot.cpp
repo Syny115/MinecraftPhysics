@@ -32,15 +32,16 @@ bool Loot::playerCollision(Rectangle rec) {
 }
 
 void Loot::update () {	
-	despawntime.updateTimer();
+	earlyUpdate();
+	despawntime.updateTimer(deltaTime);
 	
 	
-	Loot::earlyUpdate();
+	
 	if (!isOnFloor) { moveV(); }
 
-	sprite->update(GetFrameTime());
+	sprite->update(deltaTime);
 
-	Loot::lateUpdate();
+	lateUpdate();
 	if (despawntime.isTriggerd()) {
 		GameManager::getInstance().getActiveScene()->removeLoot(this);
 		queueDeletion();
