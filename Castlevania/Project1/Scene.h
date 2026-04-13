@@ -29,6 +29,7 @@ public:
 	virtual void updateScene();
 	virtual void updateCamera();
 	virtual void drawScene();
+	Camera2D getCamera() { return camera; }
 
 	void deleteMe(Entity* e) {
 		deletionQueue.push(e);
@@ -51,6 +52,7 @@ public:
 	virtual void removeSolidRects(Rectangle rect) {}
 	virtual void pushEnemyRects(damageRect hitBox) {}
 	virtual void removeEnemy(Enemy* e) {}
+	virtual Player* getPlayer() { return nullptr; }
 };
 
 
@@ -117,4 +119,5 @@ public:
 	void removeLoot(Loot* l) override;
 	void pushEnemyRects(damageRect hitBox) override { enemyRects.push_back(hitBox); }
 	void removeEnemy(Enemy* e) override;
+	Player* getPlayer() override { return player; }
 };

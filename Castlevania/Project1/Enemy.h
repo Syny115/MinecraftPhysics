@@ -20,6 +20,9 @@ protected:
 	short damage;
 	bool setup = false;
 	SpriteRenderer* sprite = nullptr;
+	int points;
+	int direction;
+	bool offCamera;
 };
 
 
