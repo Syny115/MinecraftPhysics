@@ -48,6 +48,13 @@ void Enemy::update() {
 			direction = -1;
 		}
 	}
+
+	if (GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera()).x < -128 || GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera()).x > GetScreenWidth() + 128)
+	{
+		health = 0;
+		offCamera = true;
+	}
+
 	setup = true;
 
 	sprite->setFlipX(direction);
@@ -86,12 +93,6 @@ void Zombie::update() {
 	earlyUpdate();
 
 	moveHLinear(60 * direction);
-
-	if (GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera()).x < -128 || GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera()).x > GetScreenWidth() + 128)
-	{
-		health = 0; 
-		offCamera = true;
-	}
 
 	Enemy::update();
 	lateUpdate();
