@@ -11,7 +11,7 @@ Loot::Loot(Vector2 p, int lt) {
 	sprite->setAnimation(lootnames[lt]);
 	hurtbox.width = sprite->getAnimationFromName(lootnames[lt]).frameWidth;
 	hurtbox.height = sprite->getAnimationFromName(lootnames[lt]).frameHeight;
-	size = Vector2{hurtbox.width * 2, hurtbox.height * 2}; // Has to be double the sprite's width/height or else collisions won't be accurate
+	size = Vector2{hurtbox.width, hurtbox.height};
 	position = p;
 	velocity = Vector2{ 0,20 }; //v.x = 0, v.y = 20
 	despawntime.startTimer();

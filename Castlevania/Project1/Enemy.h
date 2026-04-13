@@ -13,7 +13,7 @@ public:
 	void hitCollision(vector<damageRect>& dmgRect);
 	virtual void update() override;
 	void draw() {
-		sprite->draw(position);
+		sprite->draw({offsetX, offsetY});
 	}
 
 protected:
