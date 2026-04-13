@@ -45,6 +45,17 @@ void Entity::moveV() {
 	position.y = Clamp(position.y, 0, GameManager::getInstance().getActiveScene()->getWorldHeight());
 }
 
+void Entity::moveH() {
+
+	/*if(sin(deltaTime) > 0) {
+		position.x += velocity.x * deltaTime;
+	}
+	else {
+		position.x += velocity.x * deltaTime;
+	}*/
+}
+
+
 void Entity::queueDeletion() { //Doesn't work just yet
 	// Wait for Game Manager to be added for this:
 	if (queuedForDeletion) return;
