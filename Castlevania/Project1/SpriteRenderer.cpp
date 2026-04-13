@@ -112,7 +112,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "hidden";
         break;
     case ZOMBIE:
-        add("walk", 2, 0, 0, 16, 32, 0, 1);
+        add("walk", 2, 0, 0, 16, 32, 0, 6);
         currentAnimName = "walk";
         break;
     case BAT:
@@ -121,7 +121,8 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "batIdle";
         break;
     case MEDUSA:
-        add("medusaFly", 1, 0, 0, 0 ,0, 0, 1);
+        add("medusaFly", 2, 0, 32, 16 ,16, 0, 6);
+		currentAnimName = "medusaFly";
         break;
     case PANTHER:
         add("pantherWalk", 2, 0, 0, 16, 16, 0, 1);

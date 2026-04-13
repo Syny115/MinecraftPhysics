@@ -113,6 +113,7 @@ Bat::Bat(Vector2 pos)
 	health = 1;
 	damage = 1;
 	points = 200;
+
 }
 
 void Bat::update() {
@@ -130,8 +131,8 @@ void Bat::update() {
 			}
 		}
 		else if (state == BatState::CHASE) {
-			moveHLinear(speedH * direction);
-			moveVLinear(speedV * sin(GetTime() * sinFrequency));
+			moveHLinear(velocity.x * direction);
+			moveVLinear(velocity.y * sin(GetTime() * sinFrequency));
 		}
 	}
 
@@ -164,5 +165,34 @@ void Panther::update() {
 }
 
 Panther::~Panther() {}
+
+//MEDUSA
+
+Medusa::Medusa(Vector2 pos)
+{
+	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::MEDUSA);
+	size.x = sprite->getAnimationFromName("medusaFly").frameWidth;
+	size.y = sprite->getAnimationFromName("medusaFly").frameHeight;
+	hurtbox.width = size.x;
+	hurtbox.height = size.y;
+	position = pos;
+	health = 1;
+	damage = 1;
+	points = 400;
+}
+
+void Medusa::update() {
+	earlyUpdate();
+
+	if (setup) {
+		moveHLinear(velocity.x * direction);
+		moveVLinear(velocity.y * sin(GetTime() * sinFrequency));
+	}
+
+	Enemy::update();
+	lateUpdate();
+}
+
+Medusa::~Medusa() {}
 
 

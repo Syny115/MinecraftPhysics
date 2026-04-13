@@ -21,13 +21,12 @@ protected:
 	bool setup = false;
 	SpriteRenderer* sprite = nullptr;
 	int points;
-	int direction;
+	int direction = 1;
 	bool offCamera;
 };
 
 
 // ZOMBIE
-
 class Zombie : public Enemy
 {
 public:
@@ -37,7 +36,6 @@ public:
 };
 
 // BAT
-
 class Bat : public Enemy {
 public:
 	Bat(Vector2 pos);
@@ -50,21 +48,23 @@ private:
 	BatState state = BatState::IDLE;
 
 	const float detectionRange = 100.0f;
-	const float speedH = 80.0f;
-	const float speedV = 40.0;
 	const float sinFrequency = 4.0f;
+	Vector2 velocity = { 80.0f, 40.0f };
 };
 
 // MEDUSA
-
 class Medusa : public Enemy
 {
 public:
 	void update() override;
 	Medusa(Vector2 pos);
 	~Medusa();
+private:
+	const float sinFrequency = 2.0f;
+	Vector2 velocity = { 50.0f, 40.0f };
 };
 
+// PANTHER
 class Panther : public Enemy
 {
 	public:
