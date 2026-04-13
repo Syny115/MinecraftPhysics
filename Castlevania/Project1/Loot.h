@@ -19,7 +19,7 @@ public:
 	bool playerCollision(Rectangle rec);
 	void update() override;
 	void Draw() {
-		sprite->draw(position);
+		sprite->draw(Vector2{offsetX, offsetY});
 		//DrawRectangleRec(hurtbox, WHITE);
 	}
 };

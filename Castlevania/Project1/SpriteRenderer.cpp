@@ -144,7 +144,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("threeupgrade", 1, 137, 18, 16, 16, 1, 1);
         add("chicken", 1, 1, 35, 16, 16, 1, 1);
         add("jar", 1, 18, 35, 16, 16, 1, 1);
-        add("invincibilitycross", 1, 35, 35, 16, 16, 1, 1);
+        add("rosary", 1, 35, 35, 16, 16, 1, 1);
         add("1up", 1, 52, 35, 16, 16, 1, 1); //Probably delete this ngl im not sure about it being a loot item
         add("crown", 4, 69, 35, 16, 16, 1, 12);
         add("chest", 4, 137, 35, 16, 16, 1, 12);
