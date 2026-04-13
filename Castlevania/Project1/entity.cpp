@@ -84,6 +84,8 @@ void Entity::moveVLinear(const int speed) {
 }
 
 void Entity::updateColliderPosiotions() {
-	hurtbox.x = position.x;
-	hurtbox.y = position.y;
+	offsetY = position.y - size.y / 2;
+	offsetX = position.x - size.x / 2;
+	hurtbox.x = offsetX;
+	hurtbox.y = offsetY;
 }

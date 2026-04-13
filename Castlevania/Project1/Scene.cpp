@@ -42,7 +42,6 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
-	enemies.push_back(new Zombie(Vector2{ 100, 180 }));
 }
 
 void PlayableScene::start() {
@@ -99,6 +98,17 @@ void PlayableScene::updateScene() {
 		}
 	}
 
+	spawnCoolDown.updateTimer();
+
+	if (!zombieSpawners.empty()) 
+	{
+		for (int i = 0; i < zombieSpawners.size();i ++)
+		if (player->getPos().x > zombieSpawners[i].x && player->getPos().x < zombieSpawners[i].y && enemies.size() < 10 && !spawnCoolDown.isActive()) {
+			spawnCoolDown.startTimer();
+			enemies.push_back(new Zombie(GetScreenToWorld2D(Vector2{ screenWidth, screenHeight-300 }, camera)));
+		}
+	}
+
 	if (!enemies.empty()) {
 		for (int i = (int)enemies.size() - 1; i >= 0; i--) {
 			enemies[i]->hitCollision(playerHitBoxes);
@@ -121,9 +131,9 @@ void PlayableScene::drawScene() {
 
 	player->drawPlayer();
 	
-	/*DrawRectangleRec(stairs[0].start, BLUE);
-	DrawRectangleRec(stairs[0].end, BLUE);
-	DrawRectangleRec(stairs[1].start, RED);
+	DrawRectangle(zombieSpawners[0].x, 180, 16, 16, BLUE);
+	DrawRectangle(zombieSpawners[0].y, 180, 16, 16, BLUE);
+	/*DrawRectangleRec(stairs[1].start, RED);
 	DrawRectangleRec(stairs[1].end, RED);*/
 	/*DrawRectangleRec(stairs[2].start, GREEN);
 	DrawRectangleRec(stairs[2].end, GREEN);*/
