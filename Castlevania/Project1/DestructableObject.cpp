@@ -22,22 +22,30 @@ DestructableObject::DestructableObject(Vector2 p)
 }
 
 DestructableLoot::DestructableLoot(Vector2 p, bool c, int l) {
-	position = p;
-	hurtbox.x = p.x;
-	hurtbox.y = p.y;
+	
 	sprite = new SpriteRenderer("resources/sprites/misc_sprites.png", SpriteRenderer::BREAKABLES);
 	if (c) sprite->setAnimation("candle");
-	else sprite->setAnimation("torch");
+	else {
+		sprite->setAnimation("torch");
+		size.x = sprite->getAnimationFromName("torch").frameWidth;
+		size.y = sprite->getAnimationFromName("torch").frameHeight;
+		hurtbox.width = size.x;
+		hurtbox.height = size.y;
+	}
 	loot = l;
+
+	position = { p.x+ size.x /2, p.y + size.y /2};
+	hurtbox.x = p.x;
+	hurtbox.y = p.y;
 }
 
 DestructableWall::DestructableWall(Vector2 p, int l) {
-	position = p;
-	hurtbox.x = p.x;
-	hurtbox.y = p.y;
 	sprite = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::BREAKABLES);
 	sprite->setAnimation("ground");
 	loot = l;
+	position = { p.x + size.x / 2, p.y + size.y / 2 };
+	hurtbox.x = p.x;
+	hurtbox.y = p.y;
 }
 
 void DestructableWall::update() {
@@ -114,5 +122,6 @@ void DestructableObject::hitCollision(vector<damageRect>& dmgRect) {
 
 void DestructableObject::draw() {
 	//DrawRectangleV(position, size, GREEN);
-	sprite->draw(position);
+	//DrawRectangleRec(hurtbox, GREEN);
+	sprite->draw({offsetX, offsetY});
 }
