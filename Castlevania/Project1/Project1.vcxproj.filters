@@ -12,6 +12,7 @@
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="tileParse.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes.h" />
@@ -27,6 +28,6 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="projectile.h" />
+    <ClInclude Include="Projectile.h" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include "SpriteRenderer.h"
+#include "Projectile.h"
 
 using namespace std;
 

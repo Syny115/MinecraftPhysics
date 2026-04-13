@@ -480,6 +480,7 @@ void Player::update() {
             topAnimOffsetY = -6;
             topAnimOffsetX = -13;
         topSprite->setAnimation("attack");
+        GameManager::getInstance().getActiveScene()->pushProjectile(new Dagger(position, direction, Projectile::PLAYER));
         if (*whipLevel == 2) whipSprite->setAnimation("lv3Attack");
         else if (*whipLevel == 1) whipSprite->setAnimation("lv2Attack");
         else whipSprite->setAnimation("lv1Attack");

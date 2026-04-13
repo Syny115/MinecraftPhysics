@@ -13,6 +13,7 @@
 #include "DestructableObject.h"
 #include "Enemy.h"
 #include "Loot.h"
+#include "Projectile.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -51,6 +52,9 @@ public:
 	virtual void removeSolidRects(Rectangle rect) {}
 	virtual void pushEnemyRects(damageRect hitBox) {}
 	virtual void removeEnemy(Enemy* e) {}
+
+	virtual void pushProjectile(Projectile* p) {}
+	virtual void removeProjectile(Projectile* p) {}
 };
 
 
@@ -77,6 +81,8 @@ private:
 	vector<Vector2> medusaSpawners;
 	vector<Vector2> batSpawners;
 	Vector2 bossSpawner;
+
+	vector<Projectile*> projectiles;
 
 	Timer spawnCoolDown{ 3 };
 
@@ -124,4 +130,6 @@ public:
 	void removeLoot(Loot* l) override;
 	void pushEnemyRects(damageRect hitBox) override { enemyRects.push_back(hitBox); }
 	void removeEnemy(Enemy* e) override;
+	virtual void pushProjectile(Projectile* p) override;
+	virtual void removeProjectile(Projectile* p) override;
 };
