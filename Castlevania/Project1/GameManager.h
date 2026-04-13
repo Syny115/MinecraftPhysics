@@ -41,6 +41,7 @@ private:
 	int whipLevel;
 	int subWeapon;
 	int projectileCount = 0; // 0 is un-upgraded, 1 is two projectiles and so on
+	int ammo;
 
 	float timeScale = 1.0f;
 
@@ -82,7 +83,7 @@ public:
 
 	void maximizeHealth() { playerHealth = 12; }
 
-	void changeWhipLevel(int wl) { whipLevel = wl; }
+	void addWhipLevel(int wl) { if (whipLevel < 2) whipLevel+=wl; }
 
 	void changeSubWeapon(int sw) { subWeapon = sw; }
 
@@ -90,13 +91,13 @@ public:
 
 	void resetScore() { score = 0; }
 
-	void addProjectiles(int projcount) { projectileCount += projcount; }
-
-	void queryProjectiles(int projcount) { projectileCount -= projcount; }
+	void setProjectileCount(int projcount) { projectileCount = projcount; }
 
 	void resetProjectiles() { projectileCount = 0; }
 
 	int getProjectileCount() { return projectileCount; }
+
+	void addAmmo(int a) { ammo = a; }
 
 	void setTimeScale(float f) { timeScale = f; }
 	float getTimeScale() { return timeScale; }

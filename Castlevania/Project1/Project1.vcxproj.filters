@@ -27,5 +27,6 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="projectile.h" />
   </ItemGroup>
 </Project>

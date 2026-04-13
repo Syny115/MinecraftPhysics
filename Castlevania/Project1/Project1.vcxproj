@@ -164,6 +164,7 @@
     <ClInclude Include="libraries\raylib\include\rlgl.h" />
     <ClInclude Include="Loot.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="projectile.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpriteRenderer.h" />
   </ItemGroup>
