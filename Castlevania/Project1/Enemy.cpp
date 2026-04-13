@@ -37,6 +37,7 @@ Enemy::~Enemy()
 
 void Enemy::update() {
 	sprite->update(deltaTime);
+
 	if (!setup) {
 		GameManager::getInstance().getActiveScene()->pushEnemyRects(damageRect{ &hurtbox, damage });
 		if (GameManager::getInstance().getActiveScene()->getPlayer()->getPos().x - position.x > 0)
@@ -57,7 +58,7 @@ void Enemy::update() {
 
 	setup = true;
 
-	sprite->setFlipX(direction);
+	sprite->setFlipX(direction > 0);
 
 	if (health <= 0) {
 		GameManager::getInstance().getActiveScene()->removeEnemy(this);
@@ -99,4 +100,69 @@ void Zombie::update() {
 }
 
 Zombie::~Zombie() {}
+
+// BAT
+Bat::Bat(Vector2 pos)
+{
+	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::BAT);
+	size.x = sprite->getAnimationFromName("batIdle").frameWidth;
+	size.y = sprite->getAnimationFromName("batIdle").frameHeight;
+	hurtbox.width = size.x;
+	hurtbox.height = size.y;
+	position = pos;
+	health = 1;
+	damage = 1;
+	points = 200;
+}
+
+void Bat::update() {
+	earlyUpdate();
+
+	if (setup) { // setup se vuelve true después del primer Enemy::update()
+		if (state == BatState::IDLE) {
+			Vector2 playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+			float distX = playerPos.x - position.x;
+			float distance = sqrtf(distX * distX + (playerPos.y - position.y) * (playerPos.y - position.y));
+
+			if (distance <= detectionRange) {
+				state = BatState::CHASE;
+				sprite->setAnimation("batFly");
+			}
+		}
+		else if (state == BatState::CHASE) {
+			moveHLinear(speedH * direction);
+			moveVLinear(speedV * sin(GetTime() * sinFrequency));
+		}
+	}
+
+	Enemy::update();
+	lateUpdate();
+}
+
+Bat::~Bat() {}
+
+// PANTHER
+
+Panther::Panther(Vector2 pos)
+{
+	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::PANTHER);
+	size.x = sprite->getAnimationFromName("pantherIdle").frameWidth;
+	size.y = sprite->getAnimationFromName("pantherIdle").frameHeight;
+	hurtbox.width = size.x;
+	hurtbox.height = size.y;
+	position = pos;
+	health = 1;
+	damage = 1;
+	points = 300;
+}
+
+void Panther::update() {
+	earlyUpdate();
+	moveHLinear(80 * direction);
+	Enemy::update();
+	lateUpdate();
+}
+
+Panther::~Panther() {}
+
 

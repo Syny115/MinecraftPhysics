@@ -102,7 +102,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "idle";
         break;
     case WHIP:
-        add("hidden", 1, 0, 0, 0, 0, 1, 1);
+        add("hidden", 3, 0, 0, 0, 0, 1, 1);
         add("shortStart", 2, 1, 91, 20, 26, 1, 7);
         add("longStart", 2, 43, 91, 20, 26, 1, 7);
         add("lv1Attack", 1, 85, 91, 62, 20, 1, 1);
@@ -112,12 +112,22 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "hidden";
         break;
     case ZOMBIE:
-        add("walk", 2, 0, 0, 15, 31, 0, 1);
+        add("walk", 2, 0, 0, 16, 32, 0, 1);
         currentAnimName = "walk";
         break;
     case BAT:
-        add("fly", 1, 0, 0, 0, 0, 0, 1);
+        add("batFly", 3, 32, 32, 16, 16, 0, 6);
+        add("batIdle", 1, 80, 32, 16, 16, 0, 1);
+        currentAnimName = "batIdle";
         break;
+    case MEDUSA:
+        add("medusaFly", 1, 0, 0, 0 ,0, 0, 1);
+        break;
+    case PANTHER:
+        add("pantherWalk", 2, 0, 0, 16, 16, 0, 1);
+		add("panterIdle", 1, 32, 0, 16, 16, 0, 1);
+        currentAnimName = "pantherIdle";
+		break;
     case LOOT:
 
         add("whip", 1, 1, 1, 16, 16, 1, 1); //Whip upgrade loot item

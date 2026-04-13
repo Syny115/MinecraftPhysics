@@ -42,6 +42,8 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
+	enemies.push_back(new Panther(Vector2{ 225,50 }));
+	enemies.push_back(new Bat(Vector2{ 150,150 }));
 	enemies.push_back(new Zombie(Vector2{ 0, 180 }));
 }
 
