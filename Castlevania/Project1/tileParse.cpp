@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include <stack>
+#include <queue>
 
 
 struct maxRect {
@@ -133,8 +134,9 @@ void PlayableScene::parseTiles(const char* path) {
 
     vector<Vector2> upVec;
     vector<Vector2> dVec;
-    float zombX;
-    float meduX;
+    queue<Vector2> zombQ;
+    queue<Vector2> meduQ;
+
 	int background = 0, foreground = 0, breakables = 0, level = 0;
 	int len = doc["layers"].size();
 	for (int i = 0; i < len; i++) {
@@ -172,15 +174,13 @@ void PlayableScene::parseTiles(const char* path) {
         if (bkData == 235) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 7)); //Candle with cross
 
         //Level Data
-        if (lData == 210) checkpoints.push_back(Vector2{ (float) (j % col) * tileWidth, tileHeight * (float) (j / col) }); //CHECKPOINT 
-        else if (lData == 225) dVec.push_back(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
-        else if (lData == 228) upVec.push_back(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
+        if (lData == 210) checkpoints.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //CHECKPOINT 
+        else if (lData == 225) dVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
+        else if (lData == 228) upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
 
-        else if (lData == 241) zombX = (float)(j % col) * tileWidth;                                    //START ZOMBER
-        else if (lData == 242) zombieSpawners.push_back(Vector2{ zombX, (float)(j % col) * tileWidth }); //END ZOMBER
-        else if (lData == 243) meduX = (float)(j % col) * tileWidth;                                    //START MEDUSA
-        else if (lData == 244) medusaSpawners.push_back(Vector2{ meduX, (float)(j % col) * tileWidth }); //END MEDUSA
-        else if (lData == 245) batSpawners.push_back(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // BAT
+        else if (lData == 241) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START ZOMBER
+        else if (lData == 243) meduQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START MEDUSA
+        else if (lData == 245) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // BAT
         else if (lData == 246) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
 
         else if (lData == 226 && !dVec.empty()) { //STAIR END DOWN
@@ -223,7 +223,27 @@ void PlayableScene::parseTiles(const char* path) {
             stairs.push_back(s);
         }
 
-        
+        else if (lData == 242) { //ZOMBER END
+            Rectangle r = {
+                zombQ.front().x,
+                zombQ.front().y,
+                (((float)(j % col)+1) * tileWidth) - zombQ.front().x,
+                (((float)(j / col)+1) * tileHeight) - zombQ.front().y
+            };
+            zombQ.pop();
+            zombieSpawners.push_back(r);
+        }
+
+        else if (lData == 244 && !meduQ.empty()) { //MEDUSA END
+            Rectangle r = {
+                meduQ.front().x,
+                meduQ.front().y,
+                (((float)(j % col) + 1) * tileWidth) - meduQ.front().x,
+                (((float)(j / col) + 1) * tileHeight) - meduQ.front().y
+            };
+            meduQ.pop();
+            medusaSpawners.push_back(r);
+        }
 	}
 
    

@@ -80,8 +80,8 @@ private:
 	vector<DestructableObject*> destructables;
 	vector<Enemy*> enemies;
 
-	vector<Vector2> zombieSpawners;
-	vector<Vector2> medusaSpawners;
+	vector<Rectangle> zombieSpawners;
+	vector<Rectangle> medusaSpawners;
 	vector<Vector2> batSpawners;
 	Vector2 bossSpawner;
 

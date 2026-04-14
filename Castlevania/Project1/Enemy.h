@@ -59,6 +59,7 @@ public:
 	void update() override;
 	Medusa(Vector2 pos);
 	~Medusa();
+	void groundCollision(vector<Rectangle> floorRec) override {}
 private:
 	const float sinFrequency = 2.0f;
 	Vector2 velocity = { 50.0f, 40.0f };

@@ -106,9 +106,34 @@ void PlayableScene::updateScene() {
 	if (!zombieSpawners.empty()) 
 	{
 		for (int i = 0; i < zombieSpawners.size();i ++)
-		if (player->getPos().x > zombieSpawners[i].x && player->getPos().x < zombieSpawners[i].y && enemies.size() < 10 && !spawnCoolDown.isActive()) {
+		if (CheckCollisionPointRec(player->getPosition(), zombieSpawners[0])
+			&& enemies.size() < 10 && !spawnCoolDown.isActive()) {
 			spawnCoolDown.startTimer();
-			enemies.push_back(new Zombie(GetScreenToWorld2D(Vector2{ screenWidth, screenHeight-300 }, camera)));
+			enemies.push_back(new Zombie(GetScreenToWorld2D(Vector2{ screenWidth+100, screenHeight }, camera)));
+		}
+	}
+	if (!medusaSpawners.empty())
+	{
+		for (int i = 0; i < medusaSpawners.size(); i++)
+		{
+			if (CheckCollisionPointRec(player->getPosition(), medusaSpawners[0])
+				&& enemies.size() < 10 && !spawnCoolDown.isActive()) {
+				spawnCoolDown.startTimer();
+				Vector2 p = GetScreenToWorld2D(Vector2{ screenWidth + 100, 0 }, camera);
+				p.y = player->getPos().y;
+				enemies.push_back(new Medusa(p));
+			}
+		}
+	}
+
+	if (!batSpawners.empty())
+	{
+		for (int i = batSpawners.size()-1; i >= 0; i--) {
+			Vector2 p = GetWorldToScreen2D(batSpawners[i], camera);
+			if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+				enemies.push_back(new Bat(batSpawners[i]));
+				batSpawners.erase(batSpawners.begin() + i);
+			}
 		}
 	}
 
@@ -144,9 +169,9 @@ void PlayableScene::drawScene() {
 		}*/
 
 	player->drawPlayer();
+	if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
+	if (!medusaSpawners.empty()) DrawRectangleLinesEx(medusaSpawners[0], 1, BLUE);
 	
-	/*DrawRectangle(zombieSpawners[0].x, 180, 16, 16, BLUE);
-	DrawRectangle(zombieSpawners[0].y, 180, 16, 16, BLUE);*/
 	/*DrawRectangleRec(stairs[1].start, RED);
 	DrawRectangleRec(stairs[1].end, RED);*/
 	/*DrawRectangleRec(stairs[2].start, GREEN);

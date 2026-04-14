@@ -92,7 +92,7 @@ Zombie::Zombie(Vector2 pos)
 
 void Zombie::update() {
 	earlyUpdate();
-
+	moveV();
 	moveHLinear(60 * direction);
 
 	Enemy::update();
