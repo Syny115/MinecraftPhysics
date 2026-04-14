@@ -237,6 +237,7 @@ void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
     }
     
     if ((normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD) || !accelerate) velocity.x -= _dec * deltaTime * normalizedVelocity * 0.5f;
+    if (velocity.x * normalizedVelocity < 0) velocity.x = 0;
 }
 
 int someCounter = 0;
