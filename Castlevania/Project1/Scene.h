@@ -53,6 +53,7 @@ public:
 	virtual void removeSolidRects(Rectangle rect) {}
 	virtual void pushEnemyRects(damageRect hitBox) {}
 	virtual void removeEnemy(Enemy* e) {}
+	virtual void removeEnemyRects(Rectangle* hitbox) {}
 
 	virtual void pushProjectile(Projectile* p) {}
 	virtual void removeProjectile(Projectile* p) {}
@@ -134,8 +135,9 @@ public:
 	void removeLoot(Loot* l) override;
 	void pushEnemyRects(damageRect hitBox) override { enemyRects.push_back(hitBox); }
 	void removeEnemy(Enemy* e) override;
-	virtual void pushProjectile(Projectile* p) override;
-	virtual void removeProjectile(Projectile* p) override;
+	void removeEnemyRects(Rectangle* hitbox) override;
+	void pushProjectile(Projectile* p) override;
+	void removeProjectile(Projectile* p) override;
 	Player* getPlayer() override { return player; }
 
 };

@@ -170,26 +170,25 @@ void PlayableScene::drawScene() {
 			projectiles[i]->draw();
 		}
 	}
-	printf("%d", lootRects.size());
-	if (!lootRects.empty()) {
-		for (int i = 0; i < lootRects.size(); i++) {
-			DrawRectangleLinesEx(lootRects[i], 3, GREEN);
-			
-			//DrawRectangleRec();
-		}
-	}
-	if (!enemyRects.empty()) {
-		for (int i = 0; i < enemyRects.size(); i++) {
-			DrawRectangleLinesEx(*enemyRects[i].rect, 2, RED);
-			//DrawRectangleRec();
-		}
-	}
-	if (!playerHitBoxes.empty()) {
-		for (int i = 0; i < playerHitBoxes.size(); i++) {
-			DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, BLUE);
-			//DrawRectangleRec();
-		}
-	}
+	//if (!lootRects.empty()) {
+	//	for (int i = 0; i < lootRects.size(); i++) {
+	//		DrawRectangleLinesEx(lootRects[i], 3, GREEN);
+	//		
+	//		//DrawRectangleRec();
+	//	}
+	//}
+	//if (!enemyRects.empty()) {
+	//	for (int i = 0; i < enemyRects.size(); i++) {
+	//		DrawRectangleLinesEx(*enemyRects[i].rect, 2, RED);
+	//		//DrawRectangleRec();
+	//	}
+	//}
+	//if (!playerHitBoxes.empty()) {
+	//	for (int i = 0; i < playerHitBoxes.size(); i++) {
+	//		DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, BLUE);
+	//		//DrawRectangleRec();
+	//	}
+	//}
 	
 	EndMode2D();
 
@@ -250,12 +249,15 @@ void PlayableScene::removeLoot(Loot* l) {
 }
 
 void PlayableScene::removeEnemy(Enemy* e) {
-	Rectangle rec = e->getHurtbox();
-	for (int i = 0; i < enemyRects.size(); i++) {
-		if (enemyRects[i].rect == &rec) enemyRects.erase(enemyRects.begin() + i);
-	}
+	removeEnemyRects(e->getHurtboxPtr());
 	for (int i = 0; i < enemies.size(); i++) {
 		if (enemies[i] == e) enemies.erase(enemies.begin() + i);
+	}
+}
+
+void PlayableScene::removeEnemyRects(Rectangle* hitbox) {
+	for (int i = 0; i < enemyRects.size(); i++) {
+		if (enemyRects[i].rect == hitbox) enemyRects.erase(enemyRects.begin() + i);
 	}
 }
 
@@ -265,7 +267,8 @@ void PlayableScene::removeProjectile(Projectile* p) {
 		if (playerHitBoxes[i].rect == &rec) playerHitBoxes.erase(playerHitBoxes.begin() + i);
 
 	}*/
-	removePlayerHitBoxes(p->getHurtboxPtr());
+	if (p->getOwner() == Projectile::PLAYER) removePlayerHitBoxes(p->getHurtboxPtr());
+	if (p->getOwner() == Projectile::ENEMY) removeEnemyRects(p->getHurtboxPtr());
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i] == p) projectiles.erase(projectiles.begin() + i);
 	}

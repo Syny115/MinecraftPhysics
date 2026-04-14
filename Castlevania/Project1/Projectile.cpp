@@ -7,7 +7,6 @@ bool Projectile::boolGroundCollision(vector<Rectangle> floorRec) {
 	predictedRec.y += velocity.y * deltaTime;
 	int i = checkCollisionRecsArr(predictedRec, floorRec, len);
 	if (i != -1) {
-		GameManager::getInstance().getActiveScene()->removeProjectile(this);
 		queueDeletion();
 		return true;
 	}
@@ -19,7 +18,7 @@ bool Projectile::enemyCollision(vector<damageRect>& dmgRect) {
 	if (owner == ENEMY) return false;
 	for (int i = 0; i < dmgRect.size(); i++) {
 		if (CheckCollisionRecs(hurtbox, *dmgRect[i].rect)) {
-			GameManager::getInstance().getActiveScene()->removeProjectile(this);
+
 			queueDeletion();
 			return true;
 		}
@@ -30,7 +29,7 @@ bool Projectile::enemyCollision(vector<damageRect>& dmgRect) {
 bool Projectile::playerCollision(Rectangle rec) {
 	if (owner == PLAYER) return false;
 		if (CheckCollisionRecs(hurtbox, rec)) {
-			GameManager::getInstance().getActiveScene()->removeProjectile(this);
+			
 			queueDeletion();
 			return true;
 		}
@@ -52,6 +51,7 @@ Projectile::Projectile()
 
 Projectile::~Projectile()
 {
+	GameManager::getInstance().getActiveScene()->removeProjectile(this);
 	delete sprite;
 }
 

@@ -30,7 +30,9 @@ public:
 	void earlyUpdate() override;
 
 	short getDamage() { return damage; }
-	Rectangle* getHurtboxPtr() { return &hurtbox; }
+	
+
+	int getOwner() { return owner; }
 
 protected:
 	int direction;

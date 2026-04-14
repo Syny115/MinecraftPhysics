@@ -31,7 +31,7 @@ private:
     int findAnimation(const string& name) const;
 
 public:
-    enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BOSS, MEDUSA, LOOT, PANTHER, WHIP, BREAKABLES, PROJECTILES};
+    enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BOSS, MEDUSA, LOOT, PANTHER, MERMAN, WHIP, BREAKABLES, PROJECTILES};
 
     SpriteRenderer() : currentFrame(0), frameTimer(0), flipX(false) {}
     SpriteRenderer(const char* path, int spriteType);

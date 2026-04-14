@@ -31,7 +31,7 @@ Enemy::~Enemy()
 	{
 
 	}
-
+	GameManager::getInstance().getActiveScene()->removeEnemy(this);
 	delete sprite;
 }
 
@@ -61,7 +61,7 @@ void Enemy::update() {
 	sprite->setFlipX(direction > 0);
 
 	if (health <= 0) {
-		GameManager::getInstance().getActiveScene()->removeEnemy(this);
+		
 		queueDeletion();
 	}
 

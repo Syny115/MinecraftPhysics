@@ -135,10 +135,6 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
 		add("mermanShot", 1, 32, 0, 16, 32, 0, 1);
 		currentAnimName = "mermanShot";
         break;
-    case MERMAN_PROJECTILE:
-        add("mermanProjectile", 1, 140, 700, 48, 64, 0, 1);
-        currentAnimName = "mermanProjectile";
-		break;
     case LOOT:
         add("whip", 1, 1, 1, 16, 16, 1, 1); //Whip upgrade loot item
         add("smallheart", 1, 18, 1, 8, 8, 1, 1);
