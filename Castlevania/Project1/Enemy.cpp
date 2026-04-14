@@ -225,4 +225,32 @@ void Medusa::update() {
 
 Medusa::~Medusa() {}
 
+//MERMAN 
+
+Merman::Merman(Vector2 pos)
+{
+	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::MERMAN);
+	size.x = sprite->getAnimationFromName("mermanShot").frameWidth;
+	size.y = sprite->getAnimationFromName("mermanShot").frameHeight;
+	hurtbox.width = size.x;
+	hurtbox.height = size.y;
+	position = pos;
+	health = 1;
+	damage = 1;
+	points = 400;
+}
+
+void Merman::update() {
+	earlyUpdate();
+
+	if (setup) {
+		moveHLinear(velocity.x * direction);
+	}
+
+	Enemy::update();
+	lateUpdate();
+}
+
+Merman::~Merman() {}
+
 

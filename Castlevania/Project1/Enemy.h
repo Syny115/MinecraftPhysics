@@ -80,3 +80,17 @@ private:
 
 };
 
+// MERMAN
+class Merman : public Enemy
+{
+public:
+	void update() override;
+	Merman(Vector2 pos);
+	~Merman();
+private:
+	enum class MermanState { SHOT, WALK };
+	MermanState state = MermanState::SHOT;
+	const float speed = 40.0f;
+};
+
+
