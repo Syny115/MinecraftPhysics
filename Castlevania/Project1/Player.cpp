@@ -22,6 +22,7 @@ Player::Player() {
 
     health = &GameManager::getInstance().playerHealth;
     whipLevel = &GameManager::getInstance().whipLevel;
+    subWeapon = &GameManager::getInstance().subWeapon;
 }
 Player::~Player() {
     delete topSprite;
@@ -86,9 +87,10 @@ int Player::checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
 void Player::groundCollision(Rectangle floorRec) {
     wasOnFloor = isOnFloor;
     if (CheckCollisionRecs(groundCollider, floorRec)) {
-        isOnFloor = true;
-        position.y = floorRec.y - size.y/2;
+        
         if (velocity.y > 0) {
+            isOnFloor = true;
+            position.y = floorRec.y - size.y / 2;
             velocity.y = 0;
         }
     }
@@ -104,11 +106,12 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     predictedRec.y += velocity.y * deltaTime;
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
-        isOnFloor = true;
-        if (lockStair == 0) position.y = floorRec[i].y - size.y/2;
-        floorHeight = position.y;
+        
         if (velocity.y > 0) {
             velocity.y = 0;
+            isOnFloor = true;
+            if (lockStair == 0) position.y = floorRec[i].y - size.y / 2;
+            floorHeight = position.y;
         }
     }
     else {
@@ -457,6 +460,7 @@ void Player::update() {
     switch (upperState.current) {
     
     case IDLE:
+        subAttack = false;
             topAnimOffsetY = - 6;
             topAnimOffsetX = -2;
         if (lowerState.current != WALK && lowerState.current != STAIRS) topSprite->setAnimation("idle");
@@ -464,12 +468,14 @@ void Player::update() {
 
         //transition
         if (IsKeyPressed(KEY_D)) upperState.changeState(STARTATTACK);
+        else if (IsKeyPressed(KEY_A) && *subWeapon != GameManager::EMPTY) { subAttack = true;  upperState.changeState(STARTATTACK); }
         break;
     case STARTATTACK:
             topAnimOffsetY = -6;
             topAnimOffsetX = -13;
         topSprite->setAnimation("startAttack");
-        if (*whipLevel > 0) whipSprite->setAnimation("longStart");
+        if (subAttack) whipSprite->setAnimation("hidden");
+        else if (*whipLevel > 0) whipSprite->setAnimation("longStart");
         else whipSprite->setAnimation("shortStart");
         startAttackTimer.updateTimer(deltaTime);
 
@@ -480,8 +486,8 @@ void Player::update() {
             topAnimOffsetY = -6;
             topAnimOffsetX = -13;
         topSprite->setAnimation("attack");
-        GameManager::getInstance().getActiveScene()->pushProjectile(new Dagger(position, direction, Projectile::PLAYER));
-        if (*whipLevel == 2) whipSprite->setAnimation("lv3Attack");
+        if (subAttack) ;
+        else if (*whipLevel == 2) whipSprite->setAnimation("lv3Attack");
         else if (*whipLevel == 1) whipSprite->setAnimation("lv2Attack");
         else whipSprite->setAnimation("lv1Attack");
 
@@ -530,8 +536,6 @@ void Player::lateUpdate() {
     updateColliderPosiotions();
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*health), 1);
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(invincibilityTimer.getTime()), 2);
-    
-    if (IsKeyPressed(KEY_A)) position.y = 0;
 }
 
 void Player::drawPlayer() {
@@ -563,7 +567,12 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             if (lowerState.current != CROUCH && lowerState.current != STAIRS) lowerState.changeState(ATTACK);
         }
         else if (current == STARTATTACK && future == ATTACK) {
-            GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
+            if (subAttack) {
+                if (*subWeapon == GameManager::DAGGER) GameManager::getInstance().getActiveScene()->pushProjectile(new Dagger({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
+                else if (*subWeapon == GameManager::AXE) GameManager::getInstance().getActiveScene()->pushProjectile(new Axe({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
+
+            }
+            else GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
             GameManager::getInstance().getGamePointer()->publicPlaySound(0);
             attackTimer.startTimer();
         }

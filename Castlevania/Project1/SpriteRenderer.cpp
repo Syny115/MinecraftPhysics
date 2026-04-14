@@ -119,7 +119,6 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("fly", 1, 0, 0, 0, 0, 0, 1);
         break;
     case LOOT:
-
         add("whip", 1, 1, 1, 16, 16, 1, 1); //Whip upgrade loot item
         add("smallheart", 1, 18, 1, 8, 8, 1, 1);
         add("bigheart", 1, 27, 1, 16, 16, 1, 1);
@@ -128,7 +127,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("dagger", 1, 1, 18, 16, 16, 1, 1);
         add("axe", 1, 18, 18, 16, 16, 1, 1);
         add("holywater", 1, 35, 18, 16, 16, 1, 1);
-        add("boomerang", 3, 52, 18, 16, 16, 1, 12);
+        add("boomerang", 1, 52, 18, 16, 16, 1, 12);
         add("stopwatch", 1, 103, 18, 16, 16, 1, 1);
         add("twoupgrade", 1, 120, 18, 16, 16, 1, 1);
         add("threeupgrade", 1, 137, 18, 16, 16, 1, 1);
@@ -144,7 +143,14 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("candle", 2, 157, 1, 8, 16, 1, 10); //needs offset!!
         add("torch", 2, 175, 1, 16, 32, 1, 10); //needs offset!!
         currentAnimName = "torch";
-
+        break;
+    case PROJECTILES:
+        add("dagger", 1, 148, 112, 20, 20, 1, 1);
+        add("axe", 4, 211, 91, 20, 20, 1, 12);
+        add("holywater", 1, 0, 0, 0, 0, 1, 1);
+        add("boomerang", 1, 0, 0, 0, 0, 1, 6);
+        add("fireball", 1, 172, 161, 12, 6, 1, 1);
+        currentAnimName = "dagger";
         break;
     default:
         break;

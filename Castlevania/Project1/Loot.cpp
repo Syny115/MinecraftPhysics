@@ -26,7 +26,7 @@ bool Loot::playerCollision(Rectangle rec) {
 	if (CheckCollisionRecs(rec, hurtbox)) {
 		// Add pickup code here
 		if (lootType == 5 || lootType == 6 || lootType == 7 || lootType == 8 || lootType == 9) {
-			GameManager::getInstance().changeSubWeapon(lootType);
+			GameManager::getInstance().changeSubWeapon(lootType-4);
 		}
 		else if (lootType == 0) GameManager::getInstance().addWhipLevel(1);
 		else if (lootType == 1) GameManager::getInstance().addAmmo(1);

@@ -122,8 +122,9 @@ void PlayableScene::updateScene() {
 
 	if (!projectiles.empty()) {
 		for (int i = (int)projectiles.size() - 1; i >= 0; i--) {
-			if (!projectiles[i]->enemyCollision(enemyRects) && !projectiles[i]->playerCollision(player->getHurtbox())) {
-				projectiles[i]->groundCollision(solidRects);
+			if (!projectiles[i]->boolGroundCollision(solidRects) && 
+				!projectiles[i]->enemyCollision(enemyRects) && 
+				!projectiles[i]->playerCollision(player->getHurtbox())) {
 				projectiles[i]->update();
 			}
 
@@ -171,7 +172,7 @@ void PlayableScene::drawScene() {
 	}
 	if (!playerHitBoxes.empty()) {
 		for (int i = 0; i < playerHitBoxes.size(); i++) {
-			DrawRectangleRec(*playerHitBoxes[i].rect, RED);
+			//DrawRectangleRec(*playerHitBoxes[i].rect, RED);
 		}
 	}
 	EndMode2D();
@@ -246,7 +247,7 @@ void PlayableScene::removeProjectile(Projectile* p) {
 }
 
 void PlayableScene::pushProjectile(Projectile* p) { 
-	Rectangle rect = p->getHurtbox();
+	Rectangle* rec = p->getHurtboxPtr();
 	projectiles.push_back(p); 
-	pushPlayerHitBoxes({ &rect, p->getDamage() }); 
+	pushPlayerHitBoxes({ rec, p->getDamage() }); 
 }

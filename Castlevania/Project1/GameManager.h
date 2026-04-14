@@ -32,7 +32,7 @@ private:
 
 	enum weapons
 	{
-		EMPTY, DAGGER, AXE, CROSS, HOLYWATER, STOPWATCH
+		EMPTY, DAGGER, AXE, HOLYWATER, CROSS, STOPWATCH
 	};
 
 	int playerHealth = 12;

@@ -15,9 +15,9 @@ public:
 	Projectile();
 	virtual ~Projectile();
 
-	void groundCollision(vector<Rectangle> floorRec);
-	bool enemyCollision(vector<damageRect>& dmgRect);
-	bool playerCollision(Rectangle rec);
+	virtual bool boolGroundCollision(vector<Rectangle> floorRec);
+	virtual bool enemyCollision(vector<damageRect>& dmgRect);
+	virtual bool playerCollision(Rectangle rec);
 
 	SpriteRenderer* sprite = nullptr;
 
@@ -30,6 +30,7 @@ public:
 	void earlyUpdate() override;
 
 	short getDamage() { return damage; }
+	Rectangle* getHurtboxPtr() { return &hurtbox; }
 
 protected:
 	int direction;
@@ -46,4 +47,39 @@ public:
 
 	void update() override;
 private:
+};
+
+//AXE
+
+class Axe : public Projectile {
+public:
+	Axe(Vector2 pos, int dir, int own);
+	~Axe();
+
+	void update() override;
+	bool enemyCollision(vector<damageRect>& dmgRect) override { return false; }
+private:
+};
+
+//HORIZONTAL FIREBALL
+
+class Hfire : public Projectile {
+public:
+	Hfire(Vector2 pos, int dir, int own);
+	~Hfire();
+
+	void update() override;
+private:
+};
+
+//SEEKING FIREBALL
+
+class Sfire : public Projectile {
+public:
+	Sfire(Vector2 pos, int dir, int own);
+	~Sfire();
+
+	void update() override;
+private:
+	float sine, cosine;
 };

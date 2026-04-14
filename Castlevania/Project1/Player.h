@@ -20,7 +20,7 @@ private:
 
     enum playerStates
     {
-        IDLE, WALK, JUMP, FALL, ATTACK, STARTATTACK, CROUCH, STUN, STAIRS, KNOCKBACK, DIE
+        IDLE, WALK, JUMP, FALL, ATTACK, SUBATTACK, STARTATTACK, CROUCH, STUN, STAIRS, KNOCKBACK, DIE
     };
 
     struct PlayerState {
@@ -59,6 +59,8 @@ private:
     
     float stunHeight = 100;
     float maxHeight = 256;
+
+    bool subAttack;
 
     float bottomAnimOffsetY;
     float bottomAnimOffsetX;
