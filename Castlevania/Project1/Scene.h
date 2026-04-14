@@ -30,6 +30,7 @@ public:
 	virtual void updateScene();
 	virtual void updateCamera();
 	virtual void drawScene();
+	Camera2D getCamera() { return camera; }
 
 	void deleteMe(Entity* e) {
 		deletionQueue.push(e);
@@ -55,6 +56,7 @@ public:
 
 	virtual void pushProjectile(Projectile* p) {}
 	virtual void removeProjectile(Projectile* p) {}
+	virtual Player* getPlayer() { return nullptr; }
 };
 
 
@@ -132,4 +134,6 @@ public:
 	void removeEnemy(Enemy* e) override;
 	virtual void pushProjectile(Projectile* p) override;
 	virtual void removeProjectile(Projectile* p) override;
+	Player* getPlayer() override { return player; }
+
 };
