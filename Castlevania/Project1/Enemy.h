@@ -67,9 +67,16 @@ private:
 // PANTHER
 class Panther : public Enemy
 {
-	public:
+public:
 	void update() override;
 	Panther(Vector2 pos);
 	~Panther();
+private:
+	enum class PantherState { IDLE, JUMP, WALK };
+	PantherState state = PantherState::IDLE;
+	const float detectionRange = 60.0f;
+	const float speed = 80.0f;
+	bool wasOnFloor = true;
+
 };
 

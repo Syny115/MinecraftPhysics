@@ -42,10 +42,7 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
-	enemies.push_back(new Medusa(Vector2{150,50 }));
-	enemies.push_back(new Panther(Vector2{ 225,50 }));
-	enemies.push_back(new Bat(Vector2{ 150,150 }));
-	enemies.push_back(new Zombie(Vector2{ 0, 180 }));
+	enemies.push_back(new Panther(Vector2{ 150,190 }));
 }
 
 void PlayableScene::start() {
@@ -135,8 +132,8 @@ void PlayableScene::drawScene() {
 
 	player->drawPlayer();
 	
-	DrawRectangle(zombieSpawners[0].x, 180, 16, 16, BLUE);
-	DrawRectangle(zombieSpawners[0].y, 180, 16, 16, BLUE);
+	/*DrawRectangle(zombieSpawners[0].x, 180, 16, 16, BLUE);
+	DrawRectangle(zombieSpawners[0].y, 180, 16, 16, BLUE);*/
 	/*DrawRectangleRec(stairs[1].start, RED);
 	DrawRectangleRec(stairs[1].end, RED);*/
 	/*DrawRectangleRec(stairs[2].start, GREEN);
@@ -160,6 +157,8 @@ void PlayableScene::drawScene() {
 
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
 	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
+
+
 
 }
 

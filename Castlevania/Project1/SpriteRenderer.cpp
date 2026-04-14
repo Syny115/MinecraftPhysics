@@ -125,8 +125,9 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
 		currentAnimName = "medusaFly";
         break;
     case PANTHER:
-        add("pantherWalk", 2, 0, 0, 16, 16, 0, 1);
-		add("panterIdle", 1, 32, 0, 16, 16, 0, 1);
+        add("pantherWalk", 2, 0, 80, 32, 16, 0, 6);
+		add("pantherIdle", 1, 96, 80, 32, 16, 0, 1);
+		add("pantherJump", 1, 64, 80, 32, 16, 0, 1);
         currentAnimName = "pantherIdle";
 		break;
     case LOOT:

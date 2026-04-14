@@ -75,7 +75,7 @@ void Enemy::hitCollision(vector<damageRect>& dmgRect) {
 	}
 }
 
-// ZOMBIE
+// ZOMBIE //por hacer: que cambie de dirección al llegar a un muro
 Zombie::Zombie(Vector2 pos)
 {
 	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::ZOMBIE);
@@ -159,14 +159,44 @@ Panther::Panther(Vector2 pos)
 
 void Panther::update() {
 	earlyUpdate();
-	moveHLinear(80 * direction);
+
+	if (setup) {
+		if (state == PantherState::IDLE) {
+			sprite->setAnimation("pantherIdle"); // fuerza la animación correcta
+
+			Vector2 playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+			float distX = playerPos.x - position.x;
+			float distance = sqrtf(distX * distX + (playerPos.y - position.y) * (playerPos.y - position.y));
+
+			if (distance <= detectionRange) {
+				state = PantherState::JUMP;
+				velocity.y = -400.0f;
+				wasOnFloor = false;
+			}
+		}
+		else if (state == PantherState::JUMP) {
+			moveHLinear(speed * direction);
+			sprite->setAnimation("pantherJump");
+
+			if (isOnFloor && !wasOnFloor) {
+				state = PantherState::WALK;
+			}
+			wasOnFloor = isOnFloor; // solo se actualiza en JUMP
+		}
+		else if (state == PantherState::WALK) {
+			moveHLinear(speed * direction);
+			sprite->setAnimation("pantherWalk");
+		}
+	}
+
+	moveV();
 	Enemy::update();
 	lateUpdate();
 }
 
 Panther::~Panther() {}
 
-//MEDUSA
+//MEDUSA //por hacer: retocar parametros 
 
 Medusa::Medusa(Vector2 pos)
 {
