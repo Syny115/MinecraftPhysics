@@ -127,4 +127,5 @@ public:
 	void pushEnemyRects(damageRect hitBox) override { enemyRects.push_back(hitBox); }
 	void removeEnemy(Enemy* e) override;
 	Player* getPlayer() override { return player; }
+
 };
