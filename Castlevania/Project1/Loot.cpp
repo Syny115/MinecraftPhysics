@@ -19,7 +19,7 @@ Loot::Loot(Vector2 p, int lt) {
 	else grav = 0;
 }
 Loot::~Loot() {
-	//delete sprite;
+	delete sprite;
 }
 
 bool Loot::playerCollision(Rectangle rec) {

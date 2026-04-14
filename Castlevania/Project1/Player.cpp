@@ -460,7 +460,7 @@ void Player::update() {
     switch (upperState.current) {
     
     case IDLE:
-        subAttack = false;
+        
             topAnimOffsetY = - 6;
             topAnimOffsetX = -2;
         if (lowerState.current != WALK && lowerState.current != STAIRS) topSprite->setAnimation("idle");
@@ -576,8 +576,9 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             GameManager::getInstance().getGamePointer()->publicPlaySound(0);
             attackTimer.startTimer();
         }
-        else if (current == ATTACK && future == IDLE) {
-            GameManager::getInstance().getActiveScene()->removePlayerHitBoxes(&whipCollider);
+        else if (current == ATTACK) {
+            if (subAttack == false) GameManager::getInstance().getActiveScene()->removePlayerHitBoxes(&whipCollider);
+            subAttack = false;
         }
         else if (future == STUN) {
             stunTimer.startTimer();

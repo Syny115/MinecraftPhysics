@@ -20,7 +20,7 @@ private:
 
     enum playerStates
     {
-        IDLE, WALK, JUMP, FALL, ATTACK, SUBATTACK, STARTATTACK, CROUCH, STUN, STAIRS, KNOCKBACK, DIE
+        IDLE, WALK, JUMP, FALL, ATTACK, STARTATTACK, CROUCH, STUN, STAIRS, KNOCKBACK, DIE
     };
 
     struct PlayerState {

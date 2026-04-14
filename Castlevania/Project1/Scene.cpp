@@ -162,7 +162,6 @@ void PlayableScene::drawScene() {
 	}
 	if (!enemies.empty()) {
 		for (int i = 0; i < enemies.size(); i++) {
-			//DrawRectangleRec(enemies[i]->getHurtbox(), RED);
 			enemies[i]->draw();
 		}
 	}
@@ -171,11 +170,27 @@ void PlayableScene::drawScene() {
 			projectiles[i]->draw();
 		}
 	}
-	if (!playerHitBoxes.empty()) {
-		for (int i = 0; i < playerHitBoxes.size(); i++) {
-			//DrawRectangleRec(*playerHitBoxes[i].rect, RED);
+	printf("%d", lootRects.size());
+	if (!lootRects.empty()) {
+		for (int i = 0; i < lootRects.size(); i++) {
+			DrawRectangleLinesEx(lootRects[i], 3, GREEN);
+			
+			//DrawRectangleRec();
 		}
 	}
+	if (!enemyRects.empty()) {
+		for (int i = 0; i < enemyRects.size(); i++) {
+			DrawRectangleLinesEx(*enemyRects[i].rect, 2, RED);
+			//DrawRectangleRec();
+		}
+	}
+	if (!playerHitBoxes.empty()) {
+		for (int i = 0; i < playerHitBoxes.size(); i++) {
+			DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, BLUE);
+			//DrawRectangleRec();
+		}
+	}
+	
 	EndMode2D();
 
 	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
@@ -208,8 +223,12 @@ void PlayableScene::drawTiles() {
 
 void PlayableScene::removePlayerHitBoxes(Rectangle* hitBox) {
 	for (int i = 0; i < playerHitBoxes.size(); i++) {
-		if (playerHitBoxes[i].rect == hitBox) playerHitBoxes.erase(playerHitBoxes.begin() + i);
+		if (playerHitBoxes[i].rect == hitBox) {playerHitBoxes.erase(playerHitBoxes.begin() + i);
+		TraceLog(LOG_INFO, "Remove: rect=%p  INDEX: %d", hitBox, i);
 	}
+		else TraceLog(LOG_INFO, "Not Removed: rect=%p  INDEX: -1", hitBox);
+	}
+	
 }
 
 void PlayableScene::removeDestructables(DestructableObject* d) {
@@ -241,10 +260,12 @@ void PlayableScene::removeEnemy(Enemy* e) {
 }
 
 void PlayableScene::removeProjectile(Projectile* p) {
-	Rectangle rec = p->getHurtbox();
+	/*Rectangle rec = p->getHurtbox();
 	for (int i = 0; i < playerHitBoxes.size(); i++) {
 		if (playerHitBoxes[i].rect == &rec) playerHitBoxes.erase(playerHitBoxes.begin() + i);
-	}
+
+	}*/
+	removePlayerHitBoxes(p->getHurtboxPtr());
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i] == p) projectiles.erase(projectiles.begin() + i);
 	}

@@ -123,7 +123,9 @@ public:
 	int getTileHeight() override { return tileHeight; }
 	int getTileWidth() override { return tileWidth; }
 
-	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); }
+	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); 
+	TraceLog(LOG_INFO, "ADD: rect=%p  INDEX: %d", hitBox.rect, playerHitBoxes.size()-1);
+	}
 	void removePlayerHitBoxes(Rectangle* hitBox) override;
 	void removeDestructables(DestructableObject* d) override;
 	void pushSolidRects(Rectangle hitBox) override { solidRects.push_back(hitBox); }
