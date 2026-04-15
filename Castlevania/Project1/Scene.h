@@ -75,6 +75,7 @@ private:
 	vector<Loot*> lootitems;
 
 	Vector2 checkpoints[4];
+	Rectangle nextArea;
 	vector<staircase> stairs;
 	vector<DestructableObject*> destructables;
 	vector<Enemy*> enemies;

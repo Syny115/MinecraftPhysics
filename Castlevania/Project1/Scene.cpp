@@ -80,6 +80,8 @@ void PlayableScene::updateScene() {
 		player->stairCollision(stairs);
 		player->enemyCollision(enemyRects);
 		player->update();
+
+		if (CheckCollisionPointRec(player->getPosition(), nextArea)) GameManager::getInstance().getGamePointer()->requestNextLevel();
 	}
 
 	if (!destructables.empty()) {
@@ -166,8 +168,8 @@ void PlayableScene::drawScene() {
 		}*/
 
 	player->drawPlayer();
-	if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
-	if (!medusaSpawners.empty()) DrawRectangleLinesEx(medusaSpawners[0], 1, BLUE);
+	//if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
+	//if (!medusaSpawners.empty()) DrawRectangleLinesEx(medusaSpawners[0], 1, BLUE);
 	
 	/*DrawRectangleRec(stairs[1].start, RED);
 	DrawRectangleRec(stairs[1].end, RED);*/
@@ -191,9 +193,10 @@ void PlayableScene::drawScene() {
 			projectiles[i]->draw();
 		}
 	}
+	//DrawRectangleLinesEx(nextArea, 3, GREEN);
 	//if (!lootRects.empty()) {
 	//	for (int i = 0; i < lootRects.size(); i++) {
-	//		DrawRectangleLinesEx(lootRects[i], 3, GREEN);
+	//		
 	//		
 	//		//DrawRectangleRec();
 	//	}

@@ -113,6 +113,47 @@ void matrixToRects(vector<Rectangle>* rects, vector<vector<int>> mat, int tW, in
     }
 }
 
+void matrixToRect(Rectangle* rect, vector<vector<int>> mat, int tW, int tH) {
+    int row = mat.size();
+    int col = mat[0].size();
+
+        vector<vector<int>> histMat = mat;
+        for (int i = 1; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                histMat[i][j] = mat[i][j] == 0 ? 0 : histMat[i - 1][j] + mat[i][j];
+            }
+        }
+        maxRect finalRect = { 0, 0, 0, 0 };
+        maxRect currentRec;
+        int rectLevel;
+        for (int i = 0; i < row; i++) {
+            currentRec = maxRectInHist(histMat[i]);
+            if (finalRect.area < currentRec.area) {
+                finalRect = currentRec;
+                rectLevel = i;
+            }
+        }
+        if (finalRect.area == 1) {
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    if (mat[i][j] == 1) *rect = Rectangle{ (float)j * tW, (float)i * tH, (float)tW, (float)tH };
+
+                }
+            }
+        }
+        else if (finalRect.area == 0) {}
+        else {
+            *rect = Rectangle{ (float)finalRect.left * tW, (float)(rectLevel - finalRect.height + 1) * tH, (float)(finalRect.right - finalRect.left + 1) * tW, (float)(finalRect.height) * tH };
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    if ((j >= finalRect.left && j <= finalRect.right) &&
+                        (i >= rectLevel - finalRect.height + 1 && i <= rectLevel))
+                        mat[i][j] = 0;
+                }
+            }
+        }
+    
+}
 
 
 
@@ -137,6 +178,9 @@ void PlayableScene::parseTiles(const char* path) {
     queue<Vector2> zombQ;
     queue<Vector2> meduQ;
 
+    vector<vector<int>> doorMat(row, vector<int>(col));
+
+
 	int background = 0, foreground = 0, breakables = 0, level = 0;
 	int len = doc["layers"].size();
 	for (int i = 0; i < len; i++) {
@@ -159,6 +203,9 @@ void PlayableScene::parseTiles(const char* path) {
 		}
 		else collisionMat[j / col][j % col] = 0;
         //Breakables Data
+        if (lData == 209) doorMat[j / col][j % col] = 1; //Load Next Level
+        else doorMat[j / col][j % col] = 0;
+        
         if (bkData == 216) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 0)); //breakable block
         else if (bkData == 217) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 1)); //WITH CHICKEN!!
         else if (bkData == 218) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 2)); //projectile upgrade!!
@@ -253,6 +300,7 @@ void PlayableScene::parseTiles(const char* path) {
 
 
     matrixToRects(&solidRects, collisionMat, tileWidth, tileHeight);
+    matrixToRect(&nextArea, doorMat, tileWidth, tileHeight);
 
 	data.close();
 }
