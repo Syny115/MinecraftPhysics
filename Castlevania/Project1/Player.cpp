@@ -253,7 +253,7 @@ void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
     if (IsKeyPressed(KEY_F5)) {
-        GameManager::getInstance().getGamePointer()->loadScene(new PlayableScene("resources/json/test2.json"));
+        GameManager::getInstance().getGamePointer()->requestNextLevel();
     }
 
     if (*subWeapon == GameManager::STOPWATCH) projCost = 5;
