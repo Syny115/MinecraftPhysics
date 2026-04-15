@@ -49,9 +49,9 @@ void Enemy::update() {
 			direction = -1;
 		}
 	}
-	Vector2 temp = GetScreenToWorld2D(position, GameManager::getInstance().getActiveScene()->getCamera());
-	Rectangle screen = { temp.x - 128, temp.y, 256 * 2, 224 * 2 };
-	if (!CheckCollisionPointRec(position, screen))
+	Vector2 temp = GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera());
+	Rectangle screen = { -GetScreenWidth() / 2, -GetScreenHeight() / 2, GetScreenWidth() * 2, GetScreenHeight() * 2 };
+	if (!CheckCollisionPointRec(temp, screen))
 	{
 		//TODO implement unloading for monsters that do not infinately despawm
 		health = 0;

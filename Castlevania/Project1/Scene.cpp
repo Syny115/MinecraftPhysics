@@ -168,7 +168,7 @@ void PlayableScene::drawScene() {
 		}*/
 
 	player->drawPlayer();
-	//if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
+	if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
 	//if (!medusaSpawners.empty()) DrawRectangleLinesEx(medusaSpawners[0], 1, BLUE);
 	
 	/*DrawRectangleRec(stairs[1].start, RED);
