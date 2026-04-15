@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "GameManager.h"
 
-Player::Player() {
+Player::Player(Vector2 pos) {
     topSprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER_TOP);
     topSprite->setAnimation("idle");
     bottomSprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER_BOTTOM);
@@ -10,7 +10,7 @@ Player::Player() {
     whipSprite->setAnimation("hidden");
 
     size = { (float) GameManager::getInstance().getActiveScene()->getTileWidth(), (float) GameManager::getInstance().getActiveScene()->getTileHeight() *2};
-    position = { 0, 100 };
+    position = pos;
     velocity = { 0, 0 };
     worldHeight = (float)GameManager::getInstance().getActiveScene()->getWorldHeight();
     worldWidth = (float)GameManager::getInstance().getActiveScene()->getWorldWidth();
@@ -23,6 +23,9 @@ Player::Player() {
     health = &GameManager::getInstance().playerHealth;
     whipLevel = &GameManager::getInstance().whipLevel;
     subWeapon = &GameManager::getInstance().subWeapon;
+    ammo = &GameManager::getInstance().ammo;
+    projectileUpgrade = &GameManager::getInstance().projectileUpgrade;
+    projectileCount = &GameManager::getInstance().projectileCount;
 }
 Player::~Player() {
     delete topSprite;
@@ -249,6 +252,14 @@ void Player::earlyUpdate() {
 void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
+    if (IsKeyPressed(KEY_F5)) {
+        GameManager::getInstance().getGamePointer()->loadScene(new PlayableScene("resources/json/test2.json"));
+    }
+
+    if (*subWeapon == GameManager::STOPWATCH) projCost = 5;
+    else if (*subWeapon == GameManager::HOLYWATER) projCost = 2;
+    else projCost = 1;
+
     invincibilityTimer.updateTimer(deltaTime);
     if (isOnFloor && lowerState.current != JUMP && lowerState.current != KNOCKBACK) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
@@ -469,7 +480,10 @@ void Player::update() {
 
         //transition
         if (IsKeyPressed(KEY_D)) upperState.changeState(STARTATTACK);
-        else if (IsKeyPressed(KEY_A) && *subWeapon != GameManager::EMPTY) { subAttack = true;  upperState.changeState(STARTATTACK); }
+        else if (IsKeyPressed(KEY_A) && 
+            *subWeapon != GameManager::EMPTY &&
+            *projectileCount <= *projectileUpgrade &&
+            *ammo >= projCost) { subAttack = true;  upperState.changeState(STARTATTACK); }
         break;
     case STARTATTACK:
             topAnimOffsetY = -6;
@@ -535,8 +549,8 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*health), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(invincibilityTimer.getTime()), 2);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*ammo), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*projectileCount), 2);
 }
 
 void Player::drawPlayer() {
@@ -571,7 +585,8 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             if (subAttack) {
                 if (*subWeapon == GameManager::DAGGER) GameManager::getInstance().getActiveScene()->pushProjectile(new Dagger({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
                 else if (*subWeapon == GameManager::AXE) GameManager::getInstance().getActiveScene()->pushProjectile(new Axe({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
-
+                *ammo-=projCost;
+                (*projectileCount)++;
             }
             else GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
             GameManager::getInstance().getGamePointer()->publicPlaySound(0);

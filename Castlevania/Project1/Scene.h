@@ -66,7 +66,6 @@ public:
 
 class PlayableScene : public Scene {
 private:
-	SpriteRenderer* spriteAnimation = nullptr;
 	Player* player;
 	vector<Rectangle> solidRects;
 	vector<damageRect> enemyRects;
@@ -75,7 +74,7 @@ private:
 	vector<damageRect> playerHitBoxes;
 	vector<Loot*> lootitems;
 
-	vector<Vector2> checkpoints;
+	Vector2 checkpoints[4];
 	vector<staircase> stairs;
 	vector<DestructableObject*> destructables;
 	vector<Enemy*> enemies;

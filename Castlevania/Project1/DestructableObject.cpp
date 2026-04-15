@@ -100,8 +100,8 @@ DestructableWall::~DestructableWall() {
 	if (loot == 1) {
 		GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 12));
 	}
-	else if (loot == 2 && GameManager::getInstance().getProjectileCount() < 2) {
-		GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 10 + GameManager::getInstance().getProjectileCount()));
+	else if (loot == 2 && GameManager::getInstance().getProjectileUpgrade() < 2) {
+		GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 10 + GameManager::getInstance().getProjectileUpgrade()));
 	}
 }
 

@@ -37,11 +37,14 @@ private:
 
 	int playerHealth = 12;
 	int enemyHealth;
-	int score;
-	int whipLevel;
-	int subWeapon;
-	int projectileCount = 0; // 0 is un-upgraded, 1 is two projectiles and so on
-	int ammo;
+	int score = 0;
+	int whipLevel = 0;
+	int subWeapon = EMPTY;
+	int projectileUpgrade = 0; // 0 is un-upgraded, 1 is two projectiles and so on
+	int projectileCount = 0; // actual amount of projectiles
+	int ammo = 0;
+
+	int cp = 0;
 
 	float timeScale = 1.0f;
 
@@ -91,16 +94,22 @@ public:
 
 	void resetScore() { score = 0; }
 
-	void setProjectileCount(int projcount) { projectileCount = projcount; }
+	void setProjectileUpgrade(int projcount) { projectileUpgrade = projcount; }
 
 	void resetProjectiles() { projectileCount = 0; }
 
-	int getProjectileCount() { return projectileCount; }
+	int getProjectileUpgrade() { return projectileUpgrade; }
 
-	void addAmmo(int a) { ammo = a; }
+	int getProjectileCount() { return projectileCount; }
+	void addProjectileCount(int i) { projectileCount += i; }
+
+	void addAmmo(int a) { ammo += a; }
 
 	void setTimeScale(float f) { timeScale = f; }
 	float getTimeScale() { return timeScale; }
+
+	int getCheck() { return cp; }
+	void addCheck(int i) { cp += i; }
 
 	friend class Player;
 };

@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "GameManager.h"
 
 
 //REPLACE LATER WHEN I HAVE GAME MANAGER
@@ -32,7 +33,7 @@ void Scene::updateScene() {
 		delete deletionQueue.front();
 		deletionQueue.pop();
 	}
-	updateCamera();
+	updateCamera(); 
 }
 
 //----------- PLAYABLE SCENE -------------//
@@ -42,12 +43,11 @@ PlayableScene::PlayableScene(const char* path) {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
-	enemies.push_back(new Panther(Vector2{ 150,190 }));
 }
 
 void PlayableScene::start() {
-	player = new Player;
-	spriteAnimation = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::BREAKABLES);
+	while (checkpoints[0].x == 0 && checkpoints[0].y == 0  && GameManager::getInstance().getCheck() > 0) GameManager::getInstance().addCheck(-1);
+	player = new Player(checkpoints[GameManager::getInstance().getCheck()]);
 }
 
 
@@ -80,17 +80,14 @@ void PlayableScene::updateScene() {
 		player->stairCollision(stairs);
 		player->enemyCollision(enemyRects);
 		player->update();
+	}
 
+	if (!destructables.empty()) {
 		for (int i = 0; i < destructables.size(); i++) {
 			destructables[i]->update();
 			destructables[i]->hitCollision(playerHitBoxes);
 		}
-
-		spriteAnimation->setAnimation("ground"); // o lo que corresponda
-		spriteAnimation->setFlipX(false);      // true si el jugador va a la izquierda
-		spriteAnimation->update(GetFrameTime());
 	}
-
 
 	if (!lootitems.empty()) {
 		for (int i = (int)lootitems.size() - 1; i >= 0; i--) { //si se sacan con player collision se puede saltar algun update, por eso iteramos al reves
@@ -178,7 +175,6 @@ void PlayableScene::drawScene() {
 	DrawRectangleRec(stairs[2].end, GREEN);*/
 	//DrawRectangleRec(stairs[0].start, BLUE);
 	//DrawRectangleRec(stairs[0].end, BLUE);
-	spriteAnimation->draw(Vector2{ 100, 50 });
 
 	if (!lootitems.empty()) {
 		for (int i = 0; i < lootitems.size(); i++) {
@@ -287,15 +283,11 @@ void PlayableScene::removeEnemyRects(Rectangle* hitbox) {
 }
 
 void PlayableScene::removeProjectile(Projectile* p) {
-	/*Rectangle rec = p->getHurtbox();
-	for (int i = 0; i < playerHitBoxes.size(); i++) {
-		if (playerHitBoxes[i].rect == &rec) playerHitBoxes.erase(playerHitBoxes.begin() + i);
-
-	}*/
 	if (p->getOwner() == Projectile::PLAYER) removePlayerHitBoxes(p->getHurtboxPtr());
 	if (p->getOwner() == Projectile::ENEMY) removeEnemyRects(p->getHurtboxPtr());
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i] == p) projectiles.erase(projectiles.begin() + i);
+		GameManager::getInstance().addProjectileCount(-1);
 	}
 }
 

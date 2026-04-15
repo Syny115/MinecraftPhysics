@@ -38,6 +38,11 @@ private:
     int* whipLevel;
     int* subWeapon;
     int* score;
+    int* ammo;
+    int* projectileUpgrade;
+    int* projectileCount;
+    int projCost;
+
 
     float jumpForce = 230;
     float halfGrav = 0.5f * grav;
@@ -87,7 +92,7 @@ private:
     PlayerState lowerState{*this};
 
 public:
-    Player();
+    Player(Vector2 pos);
     ~Player();
     Vector2 getPosition();
     Vector2 getVelocity();

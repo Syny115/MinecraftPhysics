@@ -32,8 +32,8 @@ bool Loot::playerCollision(Rectangle rec) {
 		else if (lootType == 1) GameManager::getInstance().addAmmo(1);
 		else if (lootType == 2) GameManager::getInstance().addAmmo(5);
 		else if (lootType == 3) GameManager::getInstance().addScore(1000);
-		else if (lootType == 10) GameManager::getInstance().setProjectileCount(1);
-		else if (lootType == 11) GameManager::getInstance().setProjectileCount(2);
+		else if (lootType == 10) GameManager::getInstance().setProjectileUpgrade(1);
+		else if (lootType == 11) GameManager::getInstance().setProjectileUpgrade(2);
 		else if (lootType == 12) {
 			if (GameManager::getInstance().getHealth() > 7) {
 				GameManager::getInstance().maximizeHealth();

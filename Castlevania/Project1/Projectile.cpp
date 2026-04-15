@@ -40,6 +40,12 @@ void Projectile::earlyUpdate() {
 	Entity::earlyUpdate();
 	sprite->update(deltaTime);
 	sprite->setFlipX(direction < 0);
+	Vector2 temp = GetScreenToWorld2D(position, GameManager::getInstance().getActiveScene()->getCamera());
+	Rectangle screen = { temp.x - 128, temp.y, 256 * 2, 224 * 2 };
+	if ( !CheckCollisionPointRec(position, screen))
+	{
+		queueDeletion();
+	}
 }
 
 Projectile::Projectile()
