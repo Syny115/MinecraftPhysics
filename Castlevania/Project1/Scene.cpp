@@ -72,6 +72,9 @@ void PlayableScene::updateCamera() {
 		camera.target = player->getPosition();
 		camera.target = { Clamp(camera.target.x, viewportWidth / 2.0f, worldWidth - viewportWidth / 2.0f), Clamp(camera.target.y, viewportHeight / 2.0f, worldHeight - viewportHeight / 2.0f) };
 	}
+	else {
+		GameManager::getInstance().setBossStarted(true);
+	}
 }
 
 void PlayableScene::updateScene() {

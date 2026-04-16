@@ -30,6 +30,8 @@ private:
 	const float viewportWidth = 256;
 	const float viewportHeight = 224;
 
+	bool bossStarted;
+
 	enum weapons
 	{
 		EMPTY, DAGGER, AXE, HOLYWATER, CROSS, STOPWATCH
@@ -110,6 +112,9 @@ public:
 
 	int getCheck() { return cp; }
 	void addCheck(int i) { cp += i; }
+
+	void setBossStarted(bool b) { bossStarted = b; }
+	bool getBossStarted() { return bossStarted; }
 
 	friend class Player;
 };
