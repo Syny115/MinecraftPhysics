@@ -80,7 +80,7 @@ private:
 
 };
 
-// MERMAN
+// MERMAN /work in progress
 class Merman : public Enemy
 {
 public:
@@ -92,5 +92,21 @@ private:
 	MermanState state = MermanState::SHOT;
 	const float speed = 40.0f;
 };
+
+// BAT BOSS
+
+class BatBoss : public Enemy
+{
+public:
+	void update() override;
+	BatBoss(Vector2 pos);
+	~BatBoss();
+private:
+	enum class BatBossState { IDLE, FLY };
+	BatBossState state = BatBossState::IDLE;
+	const float detectionRange = 150.0f;
+	const float speed = 60.0f;
+};
+
 
 
