@@ -229,6 +229,7 @@ void Player::moveV() {
     grav = IsKeyDown(KEY_SPACE) ? halfGrav : halfGrav * 2;
 
     Entity::moveV();
+    if (position.y >= worldHeight) { isDamaged = true; position = lastViablePos; }
 }
 
 void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
@@ -247,6 +248,7 @@ int someCounter = 0;
 
 void Player::earlyUpdate() {
     Entity::earlyUpdate();
+    if (isOnFloor) lastViablePos = position;
 }
 
 void Player::update() {

@@ -91,6 +91,8 @@ private:
     PlayerState upperState{*this};
     PlayerState lowerState{*this};
 
+    Vector2 lastViablePos;
+
 public:
     Player(Vector2 pos);
     ~Player();
