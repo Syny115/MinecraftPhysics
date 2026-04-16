@@ -1,6 +1,5 @@
 #include "Scene.h"
 
-
 //REPLACE LATER WHEN I HAVE GAME MANAGER
 const float screenWidth = 800;
 const float screenHeight = 700;
