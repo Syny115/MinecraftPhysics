@@ -231,7 +231,11 @@ void PlayableScene::parseTiles(const char* path) {
         else if (lData == 241) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START ZOMBER
         else if (lData == 243) meduQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START MEDUSA
         else if (lData == 245) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // BAT
-        else if (lData == 246) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
+        //else if (lData == 246) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // PANTHER
+       // else if (lData == 247) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN START
+        //else if (lData == 248) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN END
+        else if (lData == 249) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
+        else if (lData == 250) bossStart = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS START
 
         else if (lData == 226 && !dVec.empty()) { //STAIR END DOWN
             int i = -1;

@@ -76,6 +76,7 @@ private:
 
 	Vector2 checkpoints[4];
 	Rectangle nextArea;
+	Vector2 bossStart = {-1, 0};
 	vector<staircase> stairs;
 	vector<DestructableObject*> destructables;
 	vector<Enemy*> enemies;

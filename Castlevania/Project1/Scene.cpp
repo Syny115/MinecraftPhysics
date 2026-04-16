@@ -67,8 +67,11 @@ PlayableScene::~PlayableScene() {
 
 
 void PlayableScene::updateCamera() {
-	camera.target = player->getPosition();
-	camera.target = { Clamp(camera.target.x, viewportWidth / 2.0f, worldWidth - viewportWidth / 2.0f), Clamp(camera.target.y, viewportHeight / 2.0f, worldHeight - viewportHeight / 2.0f) };
+	if (GetWorldToScreen2D(bossStart, camera).x > 0 || bossStart.x < 0) 
+	{
+		camera.target = player->getPosition();
+		camera.target = { Clamp(camera.target.x, viewportWidth / 2.0f, worldWidth - viewportWidth / 2.0f), Clamp(camera.target.y, viewportHeight / 2.0f, worldHeight - viewportHeight / 2.0f) };
+	}
 }
 
 void PlayableScene::updateScene() {
