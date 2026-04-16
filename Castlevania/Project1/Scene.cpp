@@ -105,7 +105,7 @@ void PlayableScene::updateScene() {
 	if (!zombieSpawners.empty()) 
 	{
 		for (int i = 0; i < zombieSpawners.size();i ++)
-		if (CheckCollisionPointRec(player->getPosition(), zombieSpawners[0])
+		if (CheckCollisionPointRec(player->getPosition(), zombieSpawners[i])
 			&& enemies.size() < 10 && !spawnCoolDown.isActive()) {
 			spawnCoolDown.startTimer();
 			enemies.push_back(new Zombie(GetScreenToWorld2D(Vector2{ screenWidth+100, screenHeight }, camera)));
@@ -115,7 +115,7 @@ void PlayableScene::updateScene() {
 	{
 		for (int i = 0; i < medusaSpawners.size(); i++)
 		{
-			if (CheckCollisionPointRec(player->getPosition(), medusaSpawners[0])
+			if (CheckCollisionPointRec(player->getPosition(), medusaSpawners[i])
 				&& enemies.size() < 10 && !spawnCoolDown.isActive()) {
 				spawnCoolDown.startTimer();
 				Vector2 p = GetScreenToWorld2D(Vector2{ screenWidth + 100, 0 }, camera);
@@ -168,7 +168,7 @@ void PlayableScene::drawScene() {
 		}*/
 
 	player->drawPlayer();
-	if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
+	//if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
 	//if (!medusaSpawners.empty()) DrawRectangleLinesEx(medusaSpawners[0], 1, BLUE);
 	
 	/*DrawRectangleRec(stairs[1].start, RED);
