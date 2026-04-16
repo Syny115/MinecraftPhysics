@@ -267,7 +267,7 @@ void Player::update() {
         jumpAllowed = true;
     }
 
-    if (isDamaged != 0) lowerState.changeState(KNOCKBACK);
+    if (isDamaged != 0 && lowerState.current == DIE) lowerState.changeState(KNOCKBACK);
 
     //Lower Body State Machine
     switch (lowerState.current) {

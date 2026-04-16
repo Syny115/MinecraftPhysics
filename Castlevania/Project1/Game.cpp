@@ -39,7 +39,8 @@ void Game::startGame() {
     soundArray[0] = LoadSound("resources/audio/snd_whip.wav");
 
     //Music
-    musicArray[0] = LoadMusicStream("resources/audio/VampireKiller.mp3");
+    musicArray[0] = LoadMusicStream("resources/audio/mus_vampireKiller.wav");
+    musicArray[1] = LoadMusicStream("resources/audio/mus_playerMiss.wav");
     musicArray[0].looping = true;
     float pitch = 0.5f;
 

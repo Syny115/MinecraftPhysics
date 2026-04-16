@@ -16,6 +16,8 @@ private:
 	Sound soundArray[10];
 	Music musicArray[10];
 
+
+
 	int levelIndex = 0, sceneIndex = 0;
 
 public:
@@ -34,6 +36,14 @@ public:
 
 	void publicPlaySound(int i) {
 		PlaySound(soundArray[i]);
+	}
+
+	void publicPauseMusic(int i) {
+		PauseMusicStream(musicArray[i]);
+	}
+
+	void publicPlayMusic(int i) {
+		PlayMusicStream(musicArray[i]);
 	}
 
 	int getLevelIndex() { return levelIndex; }
