@@ -49,7 +49,7 @@ void Game::startGame() {
     const float screenWidth = 800;
     const float screenHeight = 700;
     InitWindow(screenWidth, screenHeight, "Castlevania");
-    activeScene = new PlayableScene(levels[0].scenePath[0]);
+    activeScene = new PlayableScene(levels[1].scenePath[2]);
     activeScene->start();
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second

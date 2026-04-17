@@ -591,8 +591,11 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
                 *ammo-=projCost;
                 (*projectileCount)++;
             }
-            else GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
-            GameManager::getInstance().getGamePointer()->publicPlaySound(Game::WHIP);
+            else {
+                GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
+                GameManager::getInstance().getGamePointer()->publicPlaySound(Game::WHIP);
+            }
+            
             attackTimer.startTimer();
         }
         else if (current == ATTACK) {
@@ -607,7 +610,11 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
     else {
         if (current == FALL) maxHeight = 256;
         if (current == STAIRS) lockStair = 0;
-        if (future == KNOCKBACK) upperState.changeState(KNOCKBACK);
+        if (future == KNOCKBACK) 
+        {
+            upperState.changeState(KNOCKBACK);
+            GameManager::getInstance().getGamePointer()->publicPlaySound(Game::HURT);
+        }
         if (future == DIE) upperState.changeState(DIE);
     }
     

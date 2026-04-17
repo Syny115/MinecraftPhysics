@@ -88,9 +88,9 @@ public:
 
 	void maximizeHealth() { playerHealth = 12; }
 
-	void addWhipLevel(int wl) { if (whipLevel < 2) whipLevel+=wl; }
+	void addWhipLevel(int wl) { if (whipLevel < 2) whipLevel+=wl; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
 
-	void changeSubWeapon(int sw) { subWeapon = sw; }
+	void changeSubWeapon(int sw) { subWeapon = sw; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
 
 	void addScore(int sc) { score+=sc; }
 
@@ -105,7 +105,7 @@ public:
 	int getProjectileCount() { return projectileCount; }
 	void addProjectileCount(int i) { projectileCount += i; }
 
-	void addAmmo(int a) { ammo += a; }
+	void addAmmo(int a) { ammo += a; gamePointer->publicPlaySound(Game::HEART); }
 
 	void setTimeScale(float f) { timeScale = f; }
 	float getTimeScale() { return timeScale; }

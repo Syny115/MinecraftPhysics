@@ -45,7 +45,7 @@ public:
 	Scene* getActiveScene() { return activeScene; }	
 
 	void publicPlaySound(int i) {
-		PlaySound(soundArray[i]);
+			PlaySound(soundArray[i]);
 	}
 
 	void publicPauseMusic() {

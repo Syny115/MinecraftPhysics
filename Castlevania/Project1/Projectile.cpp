@@ -73,6 +73,7 @@ Dagger::Dagger(Vector2 pos, int dir, int own)
 	hurtbox.height = sprite->getAnimationFromName("dagger").frameHeight;
 	size = Vector2{ hurtbox.width, hurtbox.height };
 	owner = own;
+	GameManager::getInstance().getGamePointer()->publicPlaySound(Game::DAGGER);
 }
 
 Dagger::~Dagger()
@@ -98,6 +99,7 @@ Axe::Axe(Vector2 pos, int dir, int own)
 	owner = own;
 	grav = 600;
 	velocity.y = -350;
+	sfxTimer.startTimer();
 }
 
 Axe::~Axe()
@@ -109,6 +111,12 @@ void Axe::update() {
 	moveHLinear(100 * direction);
 	moveV();
 	lateUpdate();
+	sfxTimer.updateTimer();
+	if (sfxTimer.isTriggerd()) {
+		GameManager::getInstance().getGamePointer()->publicPlaySound(Game::AXE);
+		sfxTimer.startTimer();
+	}
+
 }
 
 //HORIZONTAL FIREBALL
@@ -145,8 +153,7 @@ Sfire::Sfire(Vector2 pos, int dir, int own)
 	hurtbox.height = sprite->getAnimationFromName("fireball").frameHeight;
 	size = Vector2{ hurtbox.width, hurtbox.height };
 	owner = own;
-	//sine = (GameManager::getInstance().getActiveScene().getPlayer()->getPos().y - pos.y) / Vector2Sub(GameManager::getInstance().getActiveScene().getPlayer()->getPos(), pos);
-	//cosine = (GameManager::getInstance().getActiveScene().getPlayer()->getPos().x - pos.x) / Vector2Sub(GameManager::getInstance().getActiveScene().getPlayer()->getPos(), pos);
+	playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
 }
 
 Sfire::~Sfire()
@@ -155,6 +162,6 @@ Sfire::~Sfire()
 
 void Sfire::update() {
 	earlyUpdate();
-	moveHLinear(100 * direction);
+	Vector2MoveTowards(position, playerPos, 100);
 	lateUpdate();
 }

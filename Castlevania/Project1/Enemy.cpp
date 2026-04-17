@@ -18,7 +18,8 @@ Enemy::~Enemy()
 {
 	if (offCamera == false)
 	{
-		int rand = GetRandomValue(1, 100);
+		GameManager::getInstance().getGamePointer()->publicPlaySound(Game::BREAK);
+		int rand = GetRandomValue(1, 256);
 		if (rand <= 40) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 1)); //small heart
 		else if (rand <= 60) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 2)); //big heart
 		else if (rand <= 90) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 3)); //Money bag

@@ -61,6 +61,7 @@ public:
 	void update() override;
 	bool enemyCollision(vector<damageRect>& dmgRect) override { return false; }
 private:
+	Timer sfxTimer{ 0.25 };
 };
 
 //HORIZONTAL FIREBALL
@@ -83,5 +84,5 @@ public:
 
 	void update() override;
 private:
-	float sine, cosine;
+	Vector2 playerPos;
 };
