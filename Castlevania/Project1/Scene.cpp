@@ -14,6 +14,7 @@ Scene::Scene() {
 	camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
+	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
 }
 
 void Scene::start() {
@@ -38,16 +39,17 @@ void Scene::updateScene() {
 
 //----------- PLAYABLE SCENE -------------//
 
-PlayableScene::PlayableScene(const char* path) {
-	camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
-	camera.rotation = 0.0f;
-	camera.zoom = screenWidth / viewportWidth;
+PlayableScene::PlayableScene(const char* path) : Scene() {
+	//camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
+	//camera.rotation = 0.0f;
+	//camera.zoom = screenWidth / viewportWidth;
 	parseTiles(path);
 }
 
 void PlayableScene::start() {
 	while (checkpoints[0].x == 0 && checkpoints[0].y == 0  && GameManager::getInstance().getCheck() > 0) GameManager::getInstance().addCheck(-1);
 	player = new Player(checkpoints[GameManager::getInstance().getCheck()]);
+	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
 }
 
 

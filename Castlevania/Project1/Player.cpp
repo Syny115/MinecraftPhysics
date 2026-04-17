@@ -266,8 +266,8 @@ void Player::update() {
     if (isOnFloor && lowerState.current != JUMP && lowerState.current != KNOCKBACK) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
-
-    if (isDamaged != 0 && lowerState.current == DIE) lowerState.changeState(KNOCKBACK);
+    if (IsKeyPressed(KEY_F6)) isDamaged = 6;
+    if (isDamaged != 0 && lowerState.current != DIE) lowerState.changeState(KNOCKBACK);
 
     //Lower Body State Machine
     switch (lowerState.current) {
@@ -425,6 +425,7 @@ void Player::update() {
             bottomAnimOffsetY = 17;
             bottomAnimOffsetX = -13;
         bottomSprite->setAnimation("dead");
+        GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::PLAYER_MISS);
         break;
     case KNOCKBACK:
             bottomAnimOffsetY = 17;
@@ -591,7 +592,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
                 (*projectileCount)++;
             }
             else GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
-            GameManager::getInstance().getGamePointer()->publicPlaySound(0);
+            GameManager::getInstance().getGamePointer()->publicPlaySound(Game::WHIP);
             attackTimer.startTimer();
         }
         else if (current == ATTACK) {

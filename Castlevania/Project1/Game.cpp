@@ -21,6 +21,29 @@ void Game::requestNextLevel() {
 }
 
 void Game::startGame() {
+    //Audio
+    InitAudioDevice();
+
+    //Sound
+    soundArray[AXE] = LoadSound("resources/audio/snd_axe.wav");
+    soundArray[BREAK] = LoadSound("resources/audio/snd_break.wav");
+    soundArray[CROSS] = LoadSound("resources/audio/snd_cross.wav");
+    soundArray[DAGGER] = LoadSound("resources/audio/snd_dagger.wav");
+    soundArray[HEART] = LoadSound("resources/audio/snd_heart.wav");
+    soundArray[HURT] = LoadSound("resources/audio/snd_hurt.wav");
+    soundArray[JAR] = LoadSound("resources/audio/snd_jar.wav");
+    soundArray[TREASURE] = LoadSound("resources/audio/snd_treasure.wav");
+    soundArray[WEAPON_PICK] = LoadSound("resources/audio/snd_weaponPick.wav");
+    soundArray[WHIP] = LoadSound("resources/audio/snd_whip.wav");
+
+    //Music
+    musicArray[VAMPIRE_KILLER] = LoadMusicStream("resources/audio/mus_vampireKiller.wav");
+    musicArray[VAMPIRE_KILLER].looping = true;
+    musicArray[PLAYER_MISS] = LoadMusicStream("resources/audio/mus_playerMiss.wav");
+    musicArray[PLAYER_MISS].looping = false;
+    
+    float pitch = 0.5f;
+
     // Initialization
     //--------------------------------------------------------------------------------------
     const float screenWidth = 800;
@@ -28,23 +51,6 @@ void Game::startGame() {
     InitWindow(screenWidth, screenHeight, "Castlevania");
     activeScene = new PlayableScene(levels[0].scenePath[0]);
     activeScene->start();
-    
-    
-
-
-    //Audio
-    InitAudioDevice();
-
-    //Sound
-    soundArray[0] = LoadSound("resources/audio/snd_whip.wav");
-
-    //Music
-    musicArray[0] = LoadMusicStream("resources/audio/mus_vampireKiller.wav");
-    musicArray[1] = LoadMusicStream("resources/audio/mus_playerMiss.wav");
-    musicArray[0].looping = true;
-    float pitch = 0.5f;
-
-    PlayMusicStream(musicArray[0]);
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -57,13 +63,12 @@ void Game::startGame() {
         {
             // Update
             //----------------------------------------------------------------------------------
-            //if (IsKeyPressed(KEY_SPACE)) publicPlaySound(0);      // Play WAV sound
             activeScene->updateScene();
             if (IsKeyPressed(KEY_F1)) GameManager::getInstance().setTimeScale(0.5f);
             else if (IsKeyPressed(KEY_F2)) GameManager::getInstance().setTimeScale(1.0f);
             else if (IsKeyPressed(KEY_F3)) GameManager::getInstance().setTimeScale(2.0f);
             else if (IsKeyPressed(KEY_F4)) GameManager::getInstance().setTimeScale(4.0f);
-            UpdateMusicStream(musicArray[0]);
+            if (currentSong > -1) UpdateMusicStream(musicArray[currentSong]);
             //----------------------------------------------------------------------------------
 
             // Draw
