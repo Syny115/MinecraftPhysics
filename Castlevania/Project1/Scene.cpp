@@ -12,6 +12,7 @@ Scene::Scene() {
 	camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
+	timeLeft.startTimer();
 }
 
 void Scene::start() {

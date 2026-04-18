@@ -21,4 +21,7 @@ public:
 	void publicPlaySound(int i) {
 		PlaySound(soundArray[i]);
 	}
+
+	int getCurrentLevel() { return currentLevel; }
+
 };

@@ -74,6 +74,12 @@ public:
 		return gamePointer;
 	}
 
+	int getBossHealth() { return enemyHealth; }
+
+	int getPlayerHealth() { return playerHealth; }
+
+	int getScore() { return score; }
+
 	int getWhipLevel() { return whipLevel; }
 
 	int getProjectileCount() { return projectileCount; }

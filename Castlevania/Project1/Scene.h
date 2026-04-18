@@ -23,6 +23,7 @@ protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
 	UI ui;
+	Timer timeLeft{ 300 };
 public:
 
 	Scene();
@@ -53,6 +54,9 @@ public:
 	virtual void removeSolidRects(Rectangle rect) {}
 	virtual void pushEnemyRects(damageRect hitBox) {}
 	virtual void removeEnemy(Enemy* e) {}
+
+	float getTimeLeft(){ return timeLeft.getTime(); }
+
 };
 
 

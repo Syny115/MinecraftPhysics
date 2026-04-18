@@ -55,6 +55,7 @@ void Game::startGame() {
         //----------------------------------------------------------------------------------
         BeginDrawing();
         activeScene->drawScene();
+        gui.renderUI();
         gui.updateUI();
 
         // Debug

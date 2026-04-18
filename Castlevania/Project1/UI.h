@@ -5,8 +5,10 @@
 class UI {
 private:
 	Font font;
+	bool isRendering = false;
 public:
 	UI();
 	~UI();
 	void updateUI();
+	void renderUI();
 };
