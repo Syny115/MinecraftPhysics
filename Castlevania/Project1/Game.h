@@ -35,7 +35,8 @@ public:
 
 	vector<Level> levels;
 	Game() {
-		levels.push_back({ {"resources/json/Level1_Scene1.json", "resources/json/Level1_Scene2.json", "resources/json/Level1_Scene3.json", "resources/json/Level1_Scene2.json"}});
+		levels.push_back({ {"Title"} });
+		levels.push_back({ {"resources/json/Level1_Scene1.json", "resources/json/Level1_Scene2.json", "resources/json/Level1_Scene3.json", "resources/json/Level1_Scene4.json"}});
 		levels.push_back({ {"resources/json/Test1.json", "resources/json/test2.json", "resources/json/Test3.json"} });
 	}
 	~Game();
@@ -77,7 +78,7 @@ public:
 	void publicPlayLevelMusic() {
 		switch (levelIndex) {
 		case 0:
-			publicPlayMusic(VAMPIRE_KILLER);
+			publicPlayMusic(-1);
 			break;
 		default:
 			publicPlayMusic(VAMPIRE_KILLER);

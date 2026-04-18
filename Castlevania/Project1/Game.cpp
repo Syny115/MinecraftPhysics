@@ -14,7 +14,8 @@ void Game::requestSceneChange(Scene* newScene) {
 
 void Game::requestSceneReload() {
     GameManager::getInstance().maximizeHealth();
-    pendingScene = new PlayableScene(activeScene->getPath());
+    if (levels[levelIndex].scenePath[sceneIndex] == "Title") pendingScene =  new TitleScene();
+    else pendingScene = new PlayableScene(activeScene->getPath());
 }
 
 void Game::requestNextLevel() {
@@ -22,7 +23,8 @@ void Game::requestNextLevel() {
         sceneIndex = 0;
         if (++levelIndex >= levels.size()) levelIndex = 0; //TODO, make this go to credits!
     }
-    requestSceneChange(new PlayableScene(levels[levelIndex].scenePath[sceneIndex]));
+    if (levels[levelIndex].scenePath[sceneIndex] == "Title") requestSceneChange(new TitleScene());
+    else requestSceneChange(new PlayableScene(levels[levelIndex].scenePath[sceneIndex]));
 }
 
 void Game::startGame() {
@@ -54,7 +56,7 @@ void Game::startGame() {
     const float screenWidth = 800;
     const float screenHeight = 700;
     InitWindow(screenWidth, screenHeight, "Castlevania");
-    activeScene = new PlayableScene(levels[0].scenePath[0]);
+    activeScene = new TitleScene();
     activeScene->start();
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
