@@ -40,6 +40,7 @@ public:
 	void startGame();
 	void loadScene(Scene* newScene); //DO NOT CALL!
 	void requestSceneChange(Scene* newScene);
+	void requestSceneReload();
 	void requestNextLevel();
 
 	Scene* getActiveScene() { return activeScene; }	

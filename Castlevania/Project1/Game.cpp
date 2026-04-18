@@ -12,6 +12,10 @@ void Game::requestSceneChange(Scene* newScene) {
     pendingScene = newScene;
 }
 
+void Game::requestSceneReload() {
+    pendingScene = activeScene;
+}
+
 void Game::requestNextLevel() {
     if (++sceneIndex >= levels[levelIndex].scenePath.size()) {
         sceneIndex = 0;
