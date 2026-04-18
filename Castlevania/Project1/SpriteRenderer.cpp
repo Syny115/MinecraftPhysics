@@ -135,6 +135,12 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
 		add("mermanShot", 1, 32, 0, 16, 32, 0, 1);
 		currentAnimName = "mermanShot";
         break;
+    case BAT_BOSS:
+        add("batBossIdle", 0, 0, 0, 0, 0, 0, 0);
+        add("batBossShot", 0, 0, 0, 0, 0, 0, 0);
+        add("batBossChase", 0, 0, 0, 0, 0, 0, 0);
+        currentAnimName = "batBossIdle";
+        break;
     case LOOT:
 
         add("whip", 1, 1, 1, 16, 16, 1, 1); //Whip upgrade loot item
