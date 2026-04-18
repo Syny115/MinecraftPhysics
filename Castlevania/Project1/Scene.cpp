@@ -80,7 +80,6 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
-	printf("\tBefore Update: %d\n", enemies.size());
 	if (player != nullptr)
 	{
 		player->groundCollision(solidRects);
@@ -165,8 +164,6 @@ void PlayableScene::updateScene() {
 		}
 	}
 	Scene::updateScene();
-	printf("\After Update: %d\n", enemies.size());
-
 }
 
 void PlayableScene::drawScene() {
