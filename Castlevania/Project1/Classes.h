@@ -36,6 +36,11 @@ public:
         active = true;
     }
 
+    void stopTimer() {
+        time = -1;
+        active = false;
+    }
+
     void updateTimer() {
         if (!active) return;
         time -= GetFrameTime();

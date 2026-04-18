@@ -18,7 +18,8 @@ Enemy::~Enemy()
 {
 	if (offCamera == false)
 	{
-		int rand = GetRandomValue(1, 100);
+		GameManager::getInstance().getGamePointer()->publicPlaySound(Game::BREAK);
+		int rand = GetRandomValue(1, 256);
 		if (rand <= 40) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 1)); //small heart
 		else if (rand <= 60) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 2)); //big heart
 		else if (rand <= 90) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 3)); //Money bag
@@ -31,7 +32,7 @@ Enemy::~Enemy()
 	{
 
 	}
-
+	GameManager::getInstance().getActiveScene()->removeEnemy(this);
 	delete sprite;
 }
 
@@ -49,9 +50,11 @@ void Enemy::update() {
 			direction = -1;
 		}
 	}
-
-	if (GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera()).x < -128 || GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera()).x > GetScreenWidth() + 128)
+	Vector2 temp = GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera());
+	Rectangle screen = { -GetScreenWidth() / 2, -GetScreenHeight() / 2, GetScreenWidth() * 2, GetScreenHeight() * 2 };
+	if (!CheckCollisionPointRec(temp, screen))
 	{
+		//TODO implement unloading for monsters that do not infinately despawm
 		health = 0;
 		offCamera = true;
 	}
@@ -61,7 +64,7 @@ void Enemy::update() {
 	sprite->setFlipX(direction > 0);
 
 	if (health <= 0) {
-		GameManager::getInstance().getActiveScene()->removeEnemy(this);
+		
 		queueDeletion();
 	}
 
@@ -92,7 +95,7 @@ Zombie::Zombie(Vector2 pos)
 
 void Zombie::update() {
 	earlyUpdate();
-
+	moveV();
 	moveHLinear(60 * direction);
 
 	Enemy::update();

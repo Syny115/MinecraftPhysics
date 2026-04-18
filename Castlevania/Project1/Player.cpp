@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "GameManager.h"
 
-Player::Player() {
+Player::Player(Vector2 pos) {
     topSprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER_TOP);
     topSprite->setAnimation("idle");
     bottomSprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PLAYER_BOTTOM);
@@ -10,7 +10,7 @@ Player::Player() {
     whipSprite->setAnimation("hidden");
 
     size = { (float) GameManager::getInstance().getActiveScene()->getTileWidth(), (float) GameManager::getInstance().getActiveScene()->getTileHeight() *2};
-    position = { 0, 100 };
+    position = pos;
     velocity = { 0, 0 };
     worldHeight = (float)GameManager::getInstance().getActiveScene()->getWorldHeight();
     worldWidth = (float)GameManager::getInstance().getActiveScene()->getWorldWidth();
@@ -22,6 +22,10 @@ Player::Player() {
 
     health = &GameManager::getInstance().playerHealth;
     whipLevel = &GameManager::getInstance().whipLevel;
+    subWeapon = &GameManager::getInstance().subWeapon;
+    ammo = &GameManager::getInstance().ammo;
+    projectileUpgrade = &GameManager::getInstance().projectileUpgrade;
+    projectileCount = &GameManager::getInstance().projectileCount;
 }
 Player::~Player() {
     delete topSprite;
@@ -86,9 +90,10 @@ int Player::checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
 void Player::groundCollision(Rectangle floorRec) {
     wasOnFloor = isOnFloor;
     if (CheckCollisionRecs(groundCollider, floorRec)) {
-        isOnFloor = true;
-        position.y = floorRec.y - size.y/2;
+        
         if (velocity.y > 0) {
+            isOnFloor = true;
+            position.y = floorRec.y - size.y / 2;
             velocity.y = 0;
         }
     }
@@ -104,11 +109,12 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     predictedRec.y += velocity.y * deltaTime;
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
-        isOnFloor = true;
-        if (lockStair == 0) position.y = floorRec[i].y - size.y/2;
-        floorHeight = position.y;
+        
         if (velocity.y > 0) {
             velocity.y = 0;
+            isOnFloor = true;
+            if (lockStair == 0) position.y = floorRec[i].y - size.y / 2;
+            floorHeight = position.y;
         }
     }
     else {
@@ -223,6 +229,7 @@ void Player::moveV() {
     grav = IsKeyDown(KEY_SPACE) ? halfGrav : halfGrav * 2;
 
     Entity::moveV();
+    if (position.y >= worldHeight) { isDamaged = true; position = lastViablePos; }
 }
 
 void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
@@ -234,23 +241,36 @@ void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
     }
     
     if ((normalizedVelocity * getInputAxis() <= 0 && abs(velocity.x) > minSPD) || !accelerate) velocity.x -= _dec * deltaTime * normalizedVelocity * 0.5f;
+    if (velocity.x * normalizedVelocity < 0) velocity.x = 0;
 }
 
 int someCounter = 0;
 
 void Player::earlyUpdate() {
     Entity::earlyUpdate();
+    if (isOnFloor) lastViablePos = position;
 }
 
 void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
+    
+
+    if (*subWeapon == GameManager::STOPWATCH) projCost = 5;
+    else if (*subWeapon == GameManager::HOLYWATER) projCost = 2;
+    else projCost = 1;
+
     invincibilityTimer.updateTimer(deltaTime);
     if (isOnFloor && lowerState.current != JUMP && lowerState.current != KNOCKBACK) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
-
-    if (isDamaged != 0) lowerState.changeState(KNOCKBACK);
+    if (IsKeyPressed(KEY_F6)) isDamaged = 6;
+    if (isDamaged != 0 && lowerState.current != DIE) 
+    {
+        attackTimer.stopTimer();
+        startAttackTimer.stopTimer();
+        lowerState.changeState(KNOCKBACK);
+    }
 
     //Lower Body State Machine
     switch (lowerState.current) {
@@ -408,6 +428,9 @@ void Player::update() {
             bottomAnimOffsetY = 17;
             bottomAnimOffsetX = -13;
         bottomSprite->setAnimation("dead");
+        GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::PLAYER_MISS);
+        deathTimer.updateTimer();
+        if (deathTimer.isTriggerd()) GameManager::getInstance().getGamePointer()->requestSceneReload();
         break;
     case KNOCKBACK:
             bottomAnimOffsetY = 17;
@@ -457,6 +480,7 @@ void Player::update() {
     switch (upperState.current) {
     
     case IDLE:
+        
             topAnimOffsetY = - 6;
             topAnimOffsetX = -2;
         if (lowerState.current != WALK && lowerState.current != STAIRS) topSprite->setAnimation("idle");
@@ -464,12 +488,17 @@ void Player::update() {
 
         //transition
         if (IsKeyPressed(KEY_D)) upperState.changeState(STARTATTACK);
+        else if (IsKeyPressed(KEY_A) && 
+            *subWeapon != GameManager::EMPTY &&
+            *projectileCount <= *projectileUpgrade &&
+            *ammo >= projCost) { subAttack = true;  upperState.changeState(STARTATTACK); }
         break;
     case STARTATTACK:
             topAnimOffsetY = -6;
             topAnimOffsetX = -13;
         topSprite->setAnimation("startAttack");
-        if (*whipLevel > 0) whipSprite->setAnimation("longStart");
+        if (subAttack) whipSprite->setAnimation("hidden");
+        else if (*whipLevel > 0) whipSprite->setAnimation("longStart");
         else whipSprite->setAnimation("shortStart");
         startAttackTimer.updateTimer(deltaTime);
 
@@ -480,7 +509,8 @@ void Player::update() {
             topAnimOffsetY = -6;
             topAnimOffsetX = -13;
         topSprite->setAnimation("attack");
-        if (*whipLevel == 2) whipSprite->setAnimation("lv3Attack");
+        if (subAttack) ;
+        else if (*whipLevel == 2) whipSprite->setAnimation("lv3Attack");
         else if (*whipLevel == 1) whipSprite->setAnimation("lv2Attack");
         else whipSprite->setAnimation("lv1Attack");
 
@@ -527,10 +557,8 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*health), 1);
-    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(invincibilityTimer.getTime()), 2);
-    
-    if (IsKeyPressed(KEY_A)) position.y = 0;
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*ammo), 1);
+    GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*projectileCount), 2);
 }
 
 void Player::drawPlayer() {
@@ -562,12 +590,22 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             if (lowerState.current != CROUCH && lowerState.current != STAIRS) lowerState.changeState(ATTACK);
         }
         else if (current == STARTATTACK && future == ATTACK) {
-            GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
-            GameManager::getInstance().getGamePointer()->publicPlaySound(0);
+            if (subAttack) {
+                if (*subWeapon == GameManager::DAGGER) GameManager::getInstance().getActiveScene()->pushProjectile(new Dagger({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
+                else if (*subWeapon == GameManager::AXE) GameManager::getInstance().getActiveScene()->pushProjectile(new Axe({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
+                *ammo-=projCost;
+                (*projectileCount)++;
+            }
+            else {
+                GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
+                GameManager::getInstance().getGamePointer()->publicPlaySound(Game::WHIP);
+            }
+            
             attackTimer.startTimer();
         }
-        else if (current == ATTACK && future == IDLE) {
-            GameManager::getInstance().getActiveScene()->removePlayerHitBoxes(&whipCollider);
+        else if (current == ATTACK) {
+            if (subAttack == false) GameManager::getInstance().getActiveScene()->removePlayerHitBoxes(&whipCollider);
+            subAttack = false;
         }
         else if (future == STUN) {
             stunTimer.startTimer();
@@ -577,8 +615,15 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
     else {
         if (current == FALL) maxHeight = 256;
         if (current == STAIRS) lockStair = 0;
-        if (future == KNOCKBACK) upperState.changeState(KNOCKBACK);
-        if (future == DIE) upperState.changeState(DIE);
+        if (future == KNOCKBACK) 
+        {
+            upperState.changeState(KNOCKBACK);
+            GameManager::getInstance().getGamePointer()->publicPlaySound(Game::HURT);
+        }
+        if (future == DIE) {
+            upperState.changeState(DIE);
+            deathTimer.startTimer();
+        }
     }
     
 }

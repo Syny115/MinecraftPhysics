@@ -55,4 +55,5 @@ public:
 	void moveVLinear(const int speed);
 	virtual void updateColliderPosiotions();
 	Rectangle getHurtbox() { return hurtbox; };
+	Rectangle* getHurtboxPtr() { return &hurtbox; }
 };

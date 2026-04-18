@@ -19,20 +19,24 @@ Loot::Loot(Vector2 p, int lt) {
 	else grav = 0;
 }
 Loot::~Loot() {
-	//delete sprite;
+	delete sprite;
 }
 
 bool Loot::playerCollision(Rectangle rec) {
 	if (CheckCollisionRecs(rec, hurtbox)) {
 		// Add pickup code here
-		if (lootType == 0 || lootType == 5 || lootType == 6 || lootType == 7 || lootType == 8 || lootType == 9) {
-			GameManager::getInstance().changeSubWeapon(lootType);
+		if (lootType == 5 || lootType == 6 || lootType == 7 || lootType == 8 || lootType == 9) {
+			GameManager::getInstance().changeSubWeapon(lootType-4);
 		}
-		else if (lootType == 1) GameManager::getInstance().addProjectiles(1);
-		else if (lootType == 5) GameManager::getInstance().addProjectiles(5);
-		else if (lootType == 3) GameManager::getInstance().addScore(1000);
-		else if (lootType == 10) GameManager::getInstance().changeWhipLevel(2);
-		else if (lootType == 11) GameManager::getInstance().changeWhipLevel(3);
+		else if (lootType == 0) GameManager::getInstance().addWhipLevel(1);
+		else if (lootType == 1) GameManager::getInstance().addAmmo(1);
+		else if (lootType == 2) GameManager::getInstance().addAmmo(5);
+		else if (lootType == 3) {
+			GameManager::getInstance().getGamePointer()->publicPlaySound(Game::TREASURE);
+			GameManager::getInstance().addScore(1000);
+		}
+		else if (lootType == 10) GameManager::getInstance().setProjectileUpgrade(1);
+		else if (lootType == 11) GameManager::getInstance().setProjectileUpgrade(2);
 		else if (lootType == 12) {
 			if (GameManager::getInstance().getHealth() > 7) {
 				GameManager::getInstance().maximizeHealth();

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include "SpriteRenderer.h"
+#include "Projectile.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ private:
     Timer attackTimer{ 0.25 };
     Timer stunTimer{ 0.5 };
     Timer invincibilityTimer{ 3.0 };
+    Timer deathTimer{ 3.0 };
 
     enum playerStates
     {
@@ -37,6 +39,11 @@ private:
     int* whipLevel;
     int* subWeapon;
     int* score;
+    int* ammo;
+    int* projectileUpgrade;
+    int* projectileCount;
+    int projCost;
+
 
     float jumpForce = 230;
     float halfGrav = 0.5f * grav;
@@ -58,6 +65,8 @@ private:
     
     float stunHeight = 100;
     float maxHeight = 256;
+
+    bool subAttack;
 
     float bottomAnimOffsetY;
     float bottomAnimOffsetX;
@@ -83,8 +92,10 @@ private:
     PlayerState upperState{*this};
     PlayerState lowerState{*this};
 
+    Vector2 lastViablePos;
+
 public:
-    Player();
+    Player(Vector2 pos);
     ~Player();
     Vector2 getPosition();
     Vector2 getVelocity();
