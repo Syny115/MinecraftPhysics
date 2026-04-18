@@ -219,7 +219,8 @@ void Player::moveH(bool accelerate, bool decelerate) {
     }
 
     //Clamp position to World Size TODO: Add world size to Game Manager
-    position.x = Clamp(position.x, +size.x/2, worldWidth - size.x/2);
+    if (!GameManager::getInstance().bossStarted) position.x = Clamp(position.x, size.x/2, worldWidth - size.x/2);
+    else  position.x = Clamp(position.x, size.x / 2 + worldWidth - 256, worldWidth - size.x / 2);
     offsetY = position.y - size.y / 2;
     offsetX = position.x - size.x / 2;
 }
