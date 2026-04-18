@@ -54,13 +54,15 @@ void PlayableScene::start() {
 PlayableScene::~PlayableScene() {
 	delete player;
 	UnloadTexture(tileAtlas);
-	for (Loot* loot : lootitems) delete loot;
+	for (Loot* loot : lootitems) if (loot != nullptr && loot != (Loot*)0xFFFFFFFFFFFFFFFF) delete loot;
 	lootitems.clear();
-	for (Enemy* enemy : enemies) delete enemy;
+	for (int i = enemies.size()-1; i >= 0 && !enemies.empty(); i--) {
+		delete enemies[i];
+	}
 	enemies.clear();
 	for (DestructableObject* dest : destructables) delete dest;
 	destructables.clear();
-	for (Projectile* proj : projectiles) delete proj;
+	for (Projectile* proj : projectiles) if (proj != nullptr && proj != (Projectile*)0xFFFFFFFFFFFFFFFF) delete proj;
 	projectiles.clear();
 }
 
@@ -78,6 +80,7 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
+	printf("\tBefore Update: %d\n", enemies.size());
 	if (player != nullptr)
 	{
 		player->groundCollision(solidRects);
@@ -162,6 +165,8 @@ void PlayableScene::updateScene() {
 		}
 	}
 	Scene::updateScene();
+	printf("\After Update: %d\n", enemies.size());
+
 }
 
 void PlayableScene::drawScene() {
@@ -280,9 +285,11 @@ void PlayableScene::removeLoot(Loot* l) {
 
 void PlayableScene::removeEnemy(Enemy* e) {
 	removeEnemyRects(e->getHurtboxPtr());
+	
 	for (int i = 0; i < enemies.size(); i++) {
 		if (enemies[i] == e) enemies.erase(enemies.begin() + i);
 	}
+	
 }
 
 void PlayableScene::removeEnemyRects(Rectangle* hitbox) {

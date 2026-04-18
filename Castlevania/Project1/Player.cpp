@@ -254,9 +254,7 @@ void Player::earlyUpdate() {
 void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
-    if (IsKeyPressed(KEY_F5)) {
-        GameManager::getInstance().getGamePointer()->requestNextLevel();
-    }
+    
 
     if (*subWeapon == GameManager::STOPWATCH) projCost = 5;
     else if (*subWeapon == GameManager::HOLYWATER) projCost = 2;

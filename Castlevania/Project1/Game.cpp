@@ -13,6 +13,7 @@ void Game::requestSceneChange(Scene* newScene) {
 }
 
 void Game::requestSceneReload() {
+    GameManager::getInstance().maximizeHealth();
     pendingScene = new PlayableScene(activeScene->getPath());
 }
 
@@ -72,6 +73,8 @@ void Game::startGame() {
             else if (IsKeyPressed(KEY_F2)) GameManager::getInstance().setTimeScale(1.0f);
             else if (IsKeyPressed(KEY_F3)) GameManager::getInstance().setTimeScale(2.0f);
             else if (IsKeyPressed(KEY_F4)) GameManager::getInstance().setTimeScale(4.0f);
+            else if (IsKeyPressed(KEY_F5)) requestNextLevel();
+            else if (IsKeyPressed(KEY_F7)) requestSceneReload();
             if (currentSong > -1) UpdateMusicStream(musicArray[currentSong]);
             //----------------------------------------------------------------------------------
 
