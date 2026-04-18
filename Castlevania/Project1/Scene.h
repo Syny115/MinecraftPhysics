@@ -43,6 +43,7 @@ public:
 	virtual float getWorldWidth() { return 0; }
 	virtual int getTileHeight() { return 0; }
 	virtual int getTileWidth() { return 0; }
+	virtual const char* getPath() { return ""; }
 
 	virtual void pushPlayerHitBoxes(damageRect hitBox) { /* I | Ii | II | I- */ }
 	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
@@ -66,6 +67,7 @@ public:
 
 class PlayableScene : public Scene {
 private:
+	const char* path;
 	Player* player;
 	vector<Rectangle> solidRects;
 	vector<damageRect> enemyRects;
@@ -124,6 +126,8 @@ public:
 	float getWorldWidth() override { return worldWidth; }
 	int getTileHeight() override { return tileHeight; }
 	int getTileWidth() override { return tileWidth; }
+
+	const char* getPath() override { return path; }
 
 	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); 
 	TraceLog(LOG_INFO, "ADD: rect=%p  INDEX: %d", hitBox.rect, playerHitBoxes.size()-1);

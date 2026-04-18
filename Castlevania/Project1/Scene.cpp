@@ -40,9 +40,7 @@ void Scene::updateScene() {
 //----------- PLAYABLE SCENE -------------//
 
 PlayableScene::PlayableScene(const char* path) : Scene() {
-	//camera.offset = Vector2{ screenWidth / 2.0f, screenHeight / 2.0f };
-	//camera.rotation = 0.0f;
-	//camera.zoom = screenWidth / viewportWidth;
+	this->path = path;
 	parseTiles(path);
 }
 

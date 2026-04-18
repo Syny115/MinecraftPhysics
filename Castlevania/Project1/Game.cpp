@@ -13,7 +13,7 @@ void Game::requestSceneChange(Scene* newScene) {
 }
 
 void Game::requestSceneReload() {
-    pendingScene = activeScene;
+    pendingScene = new PlayableScene(activeScene->getPath());
 }
 
 void Game::requestNextLevel() {
@@ -99,6 +99,8 @@ void Game::startGame() {
     //--------------------------------------------------------------------------------------
     for (int i = 0; i < 10; i++) {
         UnloadMusicStream(musicArray[i]);
+    }
+    for (int i = 0; i < 10; i++) {
         UnloadSound(soundArray[i]);
     }
     

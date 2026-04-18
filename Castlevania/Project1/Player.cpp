@@ -267,7 +267,12 @@ void Player::update() {
         jumpAllowed = true;
     }
     if (IsKeyPressed(KEY_F6)) isDamaged = 6;
-    if (isDamaged != 0 && lowerState.current != DIE) lowerState.changeState(KNOCKBACK);
+    if (isDamaged != 0 && lowerState.current != DIE) 
+    {
+        attackTimer.stopTimer();
+        startAttackTimer.stopTimer();
+        lowerState.changeState(KNOCKBACK);
+    }
 
     //Lower Body State Machine
     switch (lowerState.current) {
@@ -426,6 +431,8 @@ void Player::update() {
             bottomAnimOffsetX = -13;
         bottomSprite->setAnimation("dead");
         GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::PLAYER_MISS);
+        deathTimer.updateTimer();
+        if (deathTimer.isTriggerd()) GameManager::getInstance().getGamePointer()->requestSceneReload();
         break;
     case KNOCKBACK:
             bottomAnimOffsetY = 17;
@@ -615,7 +622,10 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             upperState.changeState(KNOCKBACK);
             GameManager::getInstance().getGamePointer()->publicPlaySound(Game::HURT);
         }
-        if (future == DIE) upperState.changeState(DIE);
+        if (future == DIE) {
+            upperState.changeState(DIE);
+            deathTimer.startTimer();
+        }
     }
     
 }

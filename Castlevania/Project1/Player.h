@@ -17,6 +17,7 @@ private:
     Timer attackTimer{ 0.25 };
     Timer stunTimer{ 0.5 };
     Timer invincibilityTimer{ 3.0 };
+    Timer deathTimer{ 3.0 };
 
     enum playerStates
     {
