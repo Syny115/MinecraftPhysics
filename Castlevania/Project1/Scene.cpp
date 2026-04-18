@@ -309,3 +309,30 @@ void PlayableScene::pushProjectile(Projectile* p) {
 	projectiles.push_back(p); 
 	pushPlayerHitBoxes({ rec, p->getDamage() }); 
 }
+
+// Tile screen
+
+TitleScene::TitleScene()
+{
+	camera.zoom = screenWidth / viewportWidth;
+	background = LoadTexture("resources/sprites/Title_BG.png");
+}
+
+TitleScene::~TitleScene()
+{
+	UnloadTexture(background);
+}
+
+void TitleScene::updateScene() {
+	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->requestNextLevel();
+}
+
+void TitleScene::drawScene() {
+	ClearBackground(BLACK);
+	camera.offset = { 0 , 0};
+	BeginMode2D(camera);
+	DrawTexture(background, 0, 0, WHITE);
+	EndMode2D();
+}
+
+

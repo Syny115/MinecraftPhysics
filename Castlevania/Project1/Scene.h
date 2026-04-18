@@ -152,15 +152,9 @@ class TitleScene : public Scene
 public:
 	TitleScene();
 	~TitleScene();
-
+	void updateScene() override;
+	void drawScene() override;
 private:
-
+	Texture2D background;
 };
 
-TitleScene::TitleScene() : Scene()
-{
-}
-
-TitleScene::~TitleScene()
-{
-}
