@@ -13,6 +13,7 @@
 #include "DestructableObject.h"
 #include "Enemy.h"
 #include "Loot.h"
+#include "Projectile.h"
 #include "UI.h"
 
 using json = nlohmann::json;
@@ -27,11 +28,12 @@ protected:
 public:
 
 	Scene();
-	//virtual ~Scene();
+	virtual ~Scene() {}
 	virtual void start();
 	virtual void updateScene();
 	virtual void updateCamera();
 	virtual void drawScene();
+	Camera2D getCamera() { return camera; }
 
 	void deleteMe(Entity* e) {
 		deletionQueue.push(e);
@@ -44,6 +46,7 @@ public:
 	virtual float getWorldWidth() { return 0; }
 	virtual int getTileHeight() { return 0; }
 	virtual int getTileWidth() { return 0; }
+	virtual const char* getPath() { return ""; }
 
 	virtual void pushPlayerHitBoxes(damageRect hitBox) { /* I | Ii | II | I- */ }
 	virtual void removePlayerHitBoxes(Rectangle* hitBox) { /*I AM AT A LOSS*/ }
@@ -54,6 +57,11 @@ public:
 	virtual void removeSolidRects(Rectangle rect) {}
 	virtual void pushEnemyRects(damageRect hitBox) {}
 	virtual void removeEnemy(Enemy* e) {}
+	virtual void removeEnemyRects(Rectangle* hitbox) {}
+
+	virtual void pushProjectile(Projectile* p) {}
+	virtual void removeProjectile(Projectile* p) {}
+	virtual Player* getPlayer() { return nullptr; }
 
 	float getTimeLeft(){ return timeLeft.getTime(); }
 
@@ -65,7 +73,7 @@ public:
 
 class PlayableScene : public Scene {
 private:
-	SpriteRenderer* spriteAnimation = nullptr;
+	const char* path;
 	Player* player;
 	vector<Rectangle> solidRects;
 	vector<damageRect> enemyRects;
@@ -74,10 +82,21 @@ private:
 	vector<damageRect> playerHitBoxes;
 	vector<Loot*> lootitems;
 
-	vector<Vector2> checkpoints;
+	Vector2 checkpoints[4];
+	Rectangle nextArea;
+	Vector2 bossStart = {-1, 0};
 	vector<staircase> stairs;
 	vector<DestructableObject*> destructables;
 	vector<Enemy*> enemies;
+
+	vector<Rectangle> zombieSpawners;
+	vector<Rectangle> medusaSpawners;
+	vector<Vector2> batSpawners;
+	Vector2 bossSpawner;
+
+	vector<Projectile*> projectiles;
+
+	Timer spawnCoolDown{ 3 };
 
 	float worldWidth;
 	float worldHeight;
@@ -114,7 +133,11 @@ public:
 	int getTileHeight() override { return tileHeight; }
 	int getTileWidth() override { return tileWidth; }
 
-	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); }
+	const char* getPath() override { return path; }
+
+	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); 
+	TraceLog(LOG_INFO, "ADD: rect=%p  INDEX: %d", hitBox.rect, playerHitBoxes.size()-1);
+	}
 	void removePlayerHitBoxes(Rectangle* hitBox) override;
 	void removeDestructables(DestructableObject* d) override;
 	void pushSolidRects(Rectangle hitBox) override { solidRects.push_back(hitBox); }
@@ -123,4 +146,9 @@ public:
 	void removeLoot(Loot* l) override;
 	void pushEnemyRects(damageRect hitBox) override { enemyRects.push_back(hitBox); }
 	void removeEnemy(Enemy* e) override;
+	void removeEnemyRects(Rectangle* hitbox) override;
+	void pushProjectile(Projectile* p) override;
+	void removeProjectile(Projectile* p) override;
+	Player* getPlayer() override { return player; }
+
 };

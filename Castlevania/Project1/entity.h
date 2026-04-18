@@ -49,9 +49,11 @@ public:
 	virtual void earlyUpdate();
 	virtual void lateUpdate();
 	virtual void update();
-	virtual void moveV(); // moved to entity.cpp
+	virtual void moveV();
+	virtual void moveH();
 	void moveHLinear(const int speed);
 	void moveVLinear(const int speed);
 	virtual void updateColliderPosiotions();
 	Rectangle getHurtbox() { return hurtbox; };
+	Rectangle* getHurtboxPtr() { return &hurtbox; }
 };

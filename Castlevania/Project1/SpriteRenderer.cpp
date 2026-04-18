@@ -102,7 +102,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "idle";
         break;
     case WHIP:
-        add("hidden", 1, 0, 0, 0, 0, 1, 1);
+        add("hidden", 3, 0, 0, 0, 0, 1, 1);
         add("shortStart", 2, 1, 91, 20, 26, 1, 7);
         add("longStart", 2, 43, 91, 20, 26, 1, 7);
         add("lv1Attack", 1, 85, 91, 62, 20, 1, 1);
@@ -112,14 +112,30 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "hidden";
         break;
     case ZOMBIE:
-        add("walk", 2, 0, 0, 15, 31, 0, 1);
+        add("walk", 2, 0, 0, 16, 32, 0, 6);
         currentAnimName = "walk";
         break;
     case BAT:
-        add("fly", 1, 0, 0, 0, 0, 0, 1);
+        add("batFly", 3, 32, 32, 16, 16, 0, 6);
+        add("batIdle", 1, 80, 32, 16, 16, 0, 1);
+        currentAnimName = "batIdle";
+        break;
+    case MEDUSA:
+        add("medusaFly", 2, 0, 32, 16 ,16, 0, 6);
+		currentAnimName = "medusaFly";
+        break;
+    case PANTHER:
+        add("pantherWalk", 2, 0, 80, 32, 16, 0, 6);
+		add("pantherIdle", 1, 96, 80, 32, 16, 0, 1);
+		add("pantherJump", 1, 64, 80, 32, 16, 0, 1);
+        currentAnimName = "pantherIdle";
+		break;
+    case MERMAN:
+		add("mermanWalk", 2, 48, 0, 16, 32, 0, 6);
+		add("mermanShot", 1, 32, 0, 16, 32, 0, 1);
+		currentAnimName = "mermanShot";
         break;
     case LOOT:
-
         add("whip", 1, 1, 1, 16, 16, 1, 1); //Whip upgrade loot item
         add("smallheart", 1, 18, 1, 8, 8, 1, 1);
         add("bigheart", 1, 27, 1, 16, 16, 1, 1);
@@ -128,13 +144,13 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("dagger", 1, 1, 18, 16, 16, 1, 1);
         add("axe", 1, 18, 18, 16, 16, 1, 1);
         add("holywater", 1, 35, 18, 16, 16, 1, 1);
-        add("boomerang", 3, 52, 18, 16, 16, 1, 12);
+        add("boomerang", 1, 52, 18, 16, 16, 1, 12);
         add("stopwatch", 1, 103, 18, 16, 16, 1, 1);
         add("twoupgrade", 1, 120, 18, 16, 16, 1, 1);
         add("threeupgrade", 1, 137, 18, 16, 16, 1, 1);
         add("chicken", 1, 1, 35, 16, 16, 1, 1);
         add("jar", 1, 18, 35, 16, 16, 1, 1);
-        add("invincibilitycross", 1, 35, 35, 16, 16, 1, 1);
+        add("rosary", 1, 35, 35, 16, 16, 1, 1);
         add("1up", 1, 52, 35, 16, 16, 1, 1); //Probably delete this ngl im not sure about it being a loot item
         add("crown", 4, 69, 35, 16, 16, 1, 12);
         add("chest", 4, 137, 35, 16, 16, 1, 12);
@@ -144,7 +160,14 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("candle", 2, 157, 1, 8, 16, 1, 10); //needs offset!!
         add("torch", 2, 175, 1, 16, 32, 1, 10); //needs offset!!
         currentAnimName = "torch";
-
+        break;
+    case PROJECTILES:
+        add("dagger", 1, 148, 112, 20, 20, 1, 1);
+        add("axe", 4, 211, 91, 20, 20, 1, 12);
+        add("holywater", 1, 0, 0, 0, 0, 1, 1);
+        add("boomerang", 1, 0, 0, 0, 0, 1, 6);
+        add("fireball", 1, 172, 161, 12, 6, 1, 1);
+        currentAnimName = "dagger";
         break;
     default:
         break;
