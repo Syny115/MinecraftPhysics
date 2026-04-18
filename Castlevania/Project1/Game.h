@@ -88,6 +88,4 @@ public:
 	int getLevelIndex() { return levelIndex; }
 	int getSceneIndex() { return sceneIndex; }
 
-	int getCurrentLevel() { return currentLevel; }
-
 };

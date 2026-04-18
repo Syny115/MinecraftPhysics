@@ -61,7 +61,7 @@ void UI::updateUI() {
 		text = "TIME 0" + to_string((int)GameManager::getInstance().getActiveScene()->getTimeLeft());
 		DrawTextEx(font, text.c_str(), Vector2{320,0}, FontSize, FontSpacing, WHITE);
 
-		text = "STAGE 0" + to_string((int)GameManager::getInstance().getGamePointer()->getCurrentLevel() + 1);
+		text = "STAGE 0" + to_string((int)GameManager::getInstance().getGamePointer()->getLevelIndex());
 
 		DrawTextEx(font, text.c_str(), Vector2{600,0}, FontSize, FontSpacing, WHITE);
 
