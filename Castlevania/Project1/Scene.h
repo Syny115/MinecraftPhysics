@@ -129,9 +129,7 @@ public:
 
 	const char* getPath() override { return path; }
 
-	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); 
-	TraceLog(LOG_INFO, "ADD: rect=%p  INDEX: %d", hitBox.rect, playerHitBoxes.size()-1);
-	}
+	void pushPlayerHitBoxes(damageRect hitBox) override { playerHitBoxes.push_back(hitBox); }
 	void removePlayerHitBoxes(Rectangle* hitBox) override;
 	void removeDestructables(DestructableObject* d) override;
 	void pushSolidRects(Rectangle hitBox) override { solidRects.push_back(hitBox); }
@@ -146,3 +144,23 @@ public:
 	Player* getPlayer() override { return player; }
 
 };
+
+// TILE SCREEN
+
+class TitleScene : public Scene
+{
+public:
+	TitleScene();
+	~TitleScene();
+
+private:
+
+};
+
+TitleScene::TitleScene() : Scene()
+{
+}
+
+TitleScene::~TitleScene()
+{
+}
