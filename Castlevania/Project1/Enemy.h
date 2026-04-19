@@ -103,11 +103,29 @@ public:
 	BatBoss(Vector2 pos);
 	~BatBoss();
 private:
-	enum class BatBossState { IDLE, FLY };
+	enum class BatBossState { IDLE, SEARCHING, ATTACKING, SPITTING };
 	BatBossState state = BatBossState::IDLE;
-	const float detectionRange = 150.0f;
-	const float speed = 60.0f;
-};
 
+	// Movimiento
+	const float speed = 60.0f;
+	const float attackSpeed = 120.0f;
+	Vector2 targetPos = { 0, 0 };      // posición a la que se dirige
+	bool reachedTarget = false;
+
+	// Spitting
+	float spitTimer = 0;
+	const float spitInterval = 1.5f;   // cada cuánto escupe
+	const int spitCount = 3;           // cuántos proyectiles por ráfaga
+	int spitsFired = 0;
+
+	// Retreat (posición alejada tras atacar)
+	const float retreatDistance = 80.0f;
+
+	// Umbral Y para pasar a SPITTING
+	const float spitYThreshold = 10.0f; // si playerY > bossY + este valor -> SPITTING
+
+	// Deteccion jugador
+	const float detectionRange = 100.0f;
+};
 
 

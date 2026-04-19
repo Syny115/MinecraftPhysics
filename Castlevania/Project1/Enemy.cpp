@@ -238,7 +238,7 @@ Merman::Merman(Vector2 pos)
 	hurtbox.width = size.x;
 	hurtbox.height = size.y;
 	position = pos;
-	health = 1;
+	health = 1;																																																												
 	damage = 1;
 	points = 400;
 }
@@ -258,17 +258,130 @@ Merman::~Merman() {}
 
 //BAT BOSS
 
-BatBoss::BatBoss(Vector2 pos)
-{
-	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::BAT_BOSS;
-	size.x = sprite->getAnimationFromName("mermanShot").frameWidth;
-	size.y = sprite->getAnimationFromName("mermanShot").frameHeight;
+BatBoss::BatBoss(Vector2 pos) {
+	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::BAT_BOSS);
+	size.x = sprite->getAnimationFromName("batBossIdle").frameWidth;
+	size.y = sprite->getAnimationFromName("batBossIdle").frameHeight;
 	hurtbox.width = size.x;
 	hurtbox.height = size.y;
 	position = pos;
-	health = 1;
-	damage = 1;
-	points = 400;
+	health = 10;
+	damage = 2;
+	points = 5000;
 }
+
+void BatBoss::update() {
+	earlyUpdate();
+
+	if (setup) {
+		Vector2 playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+
+		switch (state) {
+
+		case BatBossState::IDLE:
+		{
+			sprite->setAnimation("batBossIdle");
+
+			// Embestida rápida hacia targetPos
+			float dx = playerPos.x - position.x;
+			float dy = playerPos.y - position.y;
+			float dist = sqrtf(dx * dx + dy * dy);
+
+			if (dist <= detectionRange)
+			{
+				GameManager::getInstance().setBossStarted(true);
+			}
+
+			if (GameManager::getInstance().getBossStarted()) {
+				state = BatBossState::SEARCHING;
+			}
+
+			break;
+
+		}
+
+		case BatBossState::SEARCHING: {
+			sprite->setAnimation("batBossSearching");
+
+			// Volar hacia el jugador
+			float dx = playerPos.x - position.x;
+			float dy = playerPos.y - position.y;
+			float dist = sqrtf(dx * dx + dy * dy);
+
+			if (dist > 8.0f) {
+				// Normalizar y mover
+				position.x += (dx / dist) * speed * GetFrameTime();
+				position.y += (dy / dist) * speed * GetFrameTime();
+			}
+			else {
+				// Llegó al jugador — decidir si atacar o escupir
+				float yDiff = playerPos.y - position.y;
+				if (yDiff > spitYThreshold) {
+					state = BatBossState::SPITTING;
+					spitsFired = 0;
+					spitTimer = 0;
+				}
+				else {
+					state = BatBossState::ATTACKING;
+					targetPos = playerPos; // guarda dónde estaba el jugador al atacar
+				}
+			}
+			break;
+		}
+
+		case BatBossState::ATTACKING: {
+			sprite->setAnimation("batBossAttack");
+
+			// Embestida rápida hacia targetPos
+			float dx = targetPos.x - position.x;
+			float dy = targetPos.y - position.y;
+			float dist = sqrtf(dx * dx + dy * dy);
+
+			if (dist > 8.0f) {
+				position.x += (dx / dist) * attackSpeed * GetFrameTime();
+				position.y += (dy / dist) * attackSpeed * GetFrameTime();
+			}
+			else {
+				// Ataque completado — retroceder a posición alejada del jugador
+				// La posición de retreat es en dirección contraria al jugador
+				float rdx = position.x - playerPos.x;
+				float rdy = position.y - playerPos.y;
+				float rdist = sqrtf(rdx * rdx + rdy * rdy);
+				targetPos = {
+					position.x + (rdx / rdist) * retreatDistance,
+					position.y + (rdy / rdist) * retreatDistance
+				};
+				state = BatBossState::SEARCHING;
+			}
+			break;
+		}
+
+		case BatBossState::SPITTING: {
+			sprite->setAnimation("batBossSpit");
+
+			spitTimer += GetFrameTime();
+			if (spitTimer >= spitInterval) {
+				spitTimer = 0;
+				spitsFired++;
+
+				// TODO: instanciar proyectil apuntando al jugador
+				// GameManager::getInstance().getActiveScene()->spawnProjectile(position, playerPos);
+
+				if (spitsFired >= spitCount) {
+					// Ráfaga completada — volver a SEARCHING
+					state = BatBossState::SEARCHING;
+					spitsFired = 0;
+				}
+			}
+			break;
+		}
+		}
+	}
+
+	Enemy::update();
+	lateUpdate();
+}
+
+BatBoss::~BatBoss() {}
 
 

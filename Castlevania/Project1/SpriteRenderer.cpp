@@ -136,9 +136,10 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
 		currentAnimName = "mermanShot";
         break;
     case BAT_BOSS:
-        add("batBossIdle", 0, 0, 0, 0, 0, 0, 0);
-        add("batBossShot", 0, 0, 0, 0, 0, 0, 0);
-        add("batBossChase", 0, 0, 0, 0, 0, 0, 0);
+        add("batBossIdle", 1, 96, 0, 16, 16, 0, 6);
+        add("batBossSpit", 1, 112, 0, 48, 32, 0, 6);
+        add("batBossAttack", 1, 160, 0, 48, 32, 0, 6);
+        add("batBossSearching", 2, 112, 0, 48, 32, 0, 6);
         currentAnimName = "batBossIdle";
         break;
     case LOOT:
