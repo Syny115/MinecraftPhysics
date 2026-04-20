@@ -114,7 +114,7 @@ void UI::updateUI() {
 			else if (buffer == 2) sw->setAnimation("holywater");
 			else if (buffer == 2) sw->setAnimation("cross");
 			else if (buffer == 2) sw->setAnimation("stopwatch");
-			sw->draw({ 420,45 }, 4.125);
+			sw->draw({ 420, 60 }, 4.125);
 		}
 	}
 	
