@@ -443,9 +443,8 @@ Vector2 BatBoss::EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopH
 	Vector2 direction = Vector2Normalize(Vector2Subtract(end, start));
 
 	// Perpendicular vector (rotate 90 degrees)
-	Vector2 perpendicular;
-	if (end.x < start.x) perpendicular = { -direction.y, direction.x };
-	else perpendicular = { direction.y, -direction.x };
+	Vector2 perpendicular = { -direction.y, direction.x };
+
 
 	// Parabolic offset: peak at t = 0.5, zero at t = 0 and t = 1
 	float offset = swoopHeight * (1.0f - std::pow(2.0f * t - 1.0f, 2.0f));
