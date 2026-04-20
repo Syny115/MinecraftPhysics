@@ -13,10 +13,14 @@ public:
 	void hitCollision(vector<damageRect>& dmgRect);
 	virtual void update() override;
 	void draw() {
-		sprite->draw({offsetX, offsetY});
+		if (!hitCooldown.isActive() || (int)(GetTime() / GetFrameTime()) % 8 > 0 || health == 0)
+		{
+			sprite->draw({ offsetX, offsetY });
+		}
 	}
 
 protected:
+	Timer hitCooldown{0.5};
 	short damage;
 	bool setup = false;
 	SpriteRenderer* sprite = nullptr;
@@ -102,15 +106,17 @@ public:
 	void update() override;
 	BatBoss(Vector2 pos);
 	~BatBoss();
-private:
-	enum class BatBossState { IDLE, SEARCHING, ATTACKING, SPITTING };
-	BatBossState state = BatBossState::IDLE;
 
+
+	Vector2 EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopHeight);
+	
+private:
+	Timer seekingTimer{ 1.5 };
+	enum BatBossState { IDLE, SEARCHING, ATTACKING, SPITTING, ROOSTING };
+	BatBossState state = BatBossState::IDLE;
+	Vector2 playerPos;
 	// Movimiento
-	const float speed = 60.0f;
-	const float attackSpeed = 120.0f;
 	Vector2 targetPos = { 0, 0 };      // posición a la que se dirige
-	bool reachedTarget = false;
 
 	// Spitting
 	float spitTimer = 0;
@@ -118,14 +124,13 @@ private:
 	const int spitCount = 3;           // cuántos proyectiles por ráfaga
 	int spitsFired = 0;
 
-	// Retreat (posición alejada tras atacar)
-	const float retreatDistance = 80.0f;
-
-	// Umbral Y para pasar a SPITTING
-	const float spitYThreshold = 10.0f; // si playerY > bossY + este valor -> SPITTING
-
-	// Deteccion jugador
-	const float detectionRange = 100.0f;
+	Vector2 startPos;
+	Vector2 EndPos;
+	float swoopTimer;
+	float swoopDuration = 2;
+	float swoopHeight = 50;
+	float t;
+	float dist;
 };
 
 

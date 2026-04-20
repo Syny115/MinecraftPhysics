@@ -48,12 +48,6 @@ void PlayableScene::start() {
 	while (checkpoints[0].x == 0 && checkpoints[0].y == 0  && GameManager::getInstance().getCheck() > 0) GameManager::getInstance().addCheck(-1);
 	player = new Player(checkpoints[GameManager::getInstance().getCheck()]);
 	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
-
-	// SPAWN TEMPORAL DE PRUEBA
-	BatBoss* boss = new BatBoss(Vector2{ 200, 100 });
-	enemies.push_back(boss);
-
-
 }
 
 
@@ -148,6 +142,16 @@ void PlayableScene::updateScene() {
 				batSpawners.erase(batSpawners.begin() + i);
 			}
 		}
+	}
+
+	if (!Vector2Equals(bossSpawner, {0, 0}))
+	{
+			Vector2 p = GetWorldToScreen2D(bossSpawner, camera);
+			if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+				enemies.push_back(new BatBoss(Vector2Add(bossSpawner, {0, 16})));
+				bossSpawner = { 0, 0 };
+			}
+
 	}
 
 	if (!enemies.empty()) {
