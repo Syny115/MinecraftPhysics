@@ -40,6 +40,25 @@ void SpriteRenderer::draw(Vector2 position) {
     };
     DrawTextureRec(sprite, source, position, WHITE);
 }
+void SpriteRenderer::draw(Vector2 position, float scale) {
+    if (animationLibrary.empty()) return;
+    Animation& anim = animationLibrary[findAnimation(currentAnimName)];
+
+    // Los frames NO son contiguos en todos los casos,
+    // por eso guardamos los offsets de cada frame individualmente
+    float fx = anim.originX + currentFrame * anim.frameWidth + currentFrame * anim.offset;
+    float fy = anim.originY;
+
+    Rectangle source = {
+        fx,
+        fy,
+        flipX ? -anim.frameWidth : anim.frameWidth,
+        anim.frameHeight
+    };
+    DrawTexturePro(sprite, source, { position.x,position.y,anim.frameWidth * scale,anim.frameHeight * scale }, { 0,0 }, 0, WHITE);
+}
+
+
 
 SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     : currentFrame(0), frameTimer(0), flipX(false)
@@ -162,6 +181,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("crown", 4, 69, 35, 16, 16, 1, 12);
         add("chest", 4, 137, 35, 16, 16, 1, 12);
         currentAnimName = "whip";
+        break;
     case BREAKABLES:
         add("ground", 1, 32, 96, 16, 16, 1, 1);
         add("candle", 2, 157, 1, 8, 16, 1, 10); //needs offset!!

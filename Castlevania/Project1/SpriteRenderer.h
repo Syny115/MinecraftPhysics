@@ -17,7 +17,7 @@ private:
         float originX;   // X en el spritesheet donde empieza esta animación
         float originY;   // Y en el spritesheet donde empieza esta animación
         float fps;       // frames por segundo de esta animación
-        float offset; // por si alguna animacion tiene un relieve mayor o menor
+        float offset; // por si alguna animacion tiene un relieve mayor o menor        
     };
 
     vector<Animation> animationLibrary;
@@ -29,7 +29,6 @@ private:
     bool flipX;          // para mirar a la izquierda
 
     int findAnimation(const string& name) const;
-
 public:
     enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BAT_BOSS, MEDUSA, MERMAN, LOOT, PANTHER, WHIP, BREAKABLES, PROJECTILES };
 
@@ -41,7 +40,7 @@ public:
     void setFlipX(bool flip) { flipX = flip; }
     void update(float deltaTime);                   // avanza el timer
     void draw(Vector2 position);                    // dibuja el frame actual
+    void draw(Vector2 position, float scale); // mismo que draw pero con scale
     string getAnimation() { return currentAnimName; }
     Animation getAnimationFromName(string can) { return animationLibrary[findAnimation(can)]; }
-
 };

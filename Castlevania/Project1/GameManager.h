@@ -37,7 +37,7 @@ private:
 		EMPTY, DAGGER, AXE, HOLYWATER, CROSS, STOPWATCH
 	};
 
-	int playerHealth = 12;
+	int playerHealth = 16;
 	int enemyHealth;
 	int score = 0;
 	int whipLevel = 0;
@@ -49,6 +49,8 @@ private:
 	int cp = 0;
 
 	float timeScale = 1.0f;
+
+	//Lives but not yet
 
 public:
 
@@ -93,11 +95,13 @@ public:
 
 	void addHealth(int h) { playerHealth += h; }
 
-	void maximizeHealth() { playerHealth = 12; }
+	void maximizeHealth() { playerHealth = 16; }
 
 	void addWhipLevel(int wl) { if (whipLevel < 2) whipLevel+=wl; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
 
 	void changeSubWeapon(int sw) { subWeapon = sw; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
+
+	int getSubWeapon() { return subWeapon; }
 
 	void addScore(int sc) { score+=sc; }
 
@@ -113,6 +117,8 @@ public:
 	void addProjectileCount(int i) { projectileCount += i; }
 
 	void addAmmo(int a) { ammo += a; gamePointer->publicPlaySound(Game::HEART); }
+
+	int getAmmo() { return ammo; }
 
 	void setTimeScale(float f) { timeScale = f; }
 	float getTimeScale() { return timeScale; }

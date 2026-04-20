@@ -19,8 +19,6 @@ private:
 	bool musFirstGo;
 
 	int levelIndex = 0, sceneIndex = 0;
-
-	UI gui;
 public:
 
 	enum MUSIC
