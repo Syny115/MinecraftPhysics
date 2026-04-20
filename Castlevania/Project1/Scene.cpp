@@ -14,7 +14,6 @@ Scene::Scene() {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
-	timeLeft.startTimer();
 }
 
 void Scene::start() {
@@ -42,6 +41,7 @@ void Scene::updateScene() {
 PlayableScene::PlayableScene(const char* path) : Scene() {
 	this->path = path;
 	parseTiles(path);
+	timeLeft.startTimer();
 }
 
 void PlayableScene::start() {
@@ -80,6 +80,13 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
+
+	timeLeft.updateTimer();
+
+	if (timeLeft.isTriggerd()) {
+		GameManager::getInstance().getGamePointer()->requestSceneReload();
+	}
+
 	if (player != nullptr)
 	{
 		player->groundCollision(solidRects);
@@ -169,6 +176,9 @@ void PlayableScene::updateScene() {
 void PlayableScene::drawScene() {
 	ClearBackground(/*{0xA0, 0xF0, 0xFF, 0xFF}*/BLACK);
 	BeginMode2D(camera);
+
+	
+
 	drawTiles();
 	/*	for (int i = 0; i < solidRects.size(); i++) {
 			DrawRectangleRec(solidRects[i], WHITE);
@@ -222,10 +232,14 @@ void PlayableScene::drawScene() {
 	//	}
 	//}
 	
-	EndMode2D();
+	
 
-	DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
-	DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
+	EndMode2D();
+	
+	ui.renderUI();
+	ui.updateUI();
+	//DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
+	//DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
 
 
 

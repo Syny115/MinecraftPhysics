@@ -23,8 +23,6 @@ class Scene {
 protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
-	UI ui;
-	Timer timeLeft{ 300 };
 public:
 
 	Scene();
@@ -63,7 +61,7 @@ public:
 	virtual void removeProjectile(Projectile* p) {}
 	virtual Player* getPlayer() { return nullptr; }
 
-	float getTimeLeft(){ return timeLeft.getTime(); }
+	virtual float getTimeLeft() { return 0; }
 
 };
 
@@ -110,6 +108,9 @@ private:
 
 	string debug_text1;
 	string debug_text2;
+
+	UI ui;
+	Timer timeLeft{ 300 };
 public:
 
 	PlayableScene(const char* path);
@@ -148,7 +149,7 @@ public:
 	void pushProjectile(Projectile* p) override;
 	void removeProjectile(Projectile* p) override;
 	Player* getPlayer() override { return player; }
-
+	float getTimeLeft() override { return timeLeft.getTime(); }
 };
 
 // TILE SCREEN
