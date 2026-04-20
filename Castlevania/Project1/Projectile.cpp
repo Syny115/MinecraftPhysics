@@ -100,6 +100,7 @@ Axe::Axe(Vector2 pos, int dir, int own)
 	grav = 600;
 	velocity.y = -350;
 	sfxTimer.startTimer();
+	damage = 2;
 }
 
 Axe::~Axe()

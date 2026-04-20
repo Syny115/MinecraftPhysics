@@ -50,6 +50,8 @@ void Game::startGame() {
     musicArray[VAMPIRE_KILLER].looping = true;
     musicArray[PLAYER_MISS] = LoadMusicStream("resources/audio/mus_playerMiss.wav");
     musicArray[PLAYER_MISS].looping = false;
+    musicArray[BLACK_NIGHT] = LoadMusicStream("resources/audio/mus_blackNight.wav");
+    musicArray[BLACK_NIGHT].looping = true;
     
     float pitch = 0.5f;
 

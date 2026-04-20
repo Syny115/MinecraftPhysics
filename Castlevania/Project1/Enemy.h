@@ -20,6 +20,7 @@ public:
 	}
 
 protected:
+	bool isBoss = false;
 	Timer hitCooldown{0.5};
 	short damage;
 	bool setup = false;
@@ -105,7 +106,7 @@ class BatBoss : public Enemy
 public:
 	void update() override;
 	BatBoss(Vector2 pos);
-	~BatBoss();
+	~BatBoss() override;
 	void groundCollision(vector<Rectangle> floorRec) override {}
 
 	Vector2 EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopHeight);

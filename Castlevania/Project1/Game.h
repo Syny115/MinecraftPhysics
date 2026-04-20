@@ -16,7 +16,7 @@ private:
 	Sound soundArray[10];
 	Music musicArray[10];
 	int currentSong = -1;
-
+	bool musFirstGo;
 
 	int levelIndex = 0, sceneIndex = 0;
 
@@ -25,7 +25,7 @@ public:
 
 	enum MUSIC
 	{
-		VAMPIRE_KILLER, PLAYER_MISS
+		VAMPIRE_KILLER, PLAYER_MISS, BLACK_NIGHT
 	};
 
 	enum SOUND
@@ -70,9 +70,21 @@ public:
 		if (i == currentSong) return;
 		if (currentSong > -1) StopMusicStream(musicArray[currentSong]);
 		PlayMusicStream(musicArray[i]);
-		currentSong = i;
-		
-			
+		currentSong = i;	
+	}
+
+	void publicPlayMusicOffset(int i, float time) {
+		printf("%f / %f\n", GetMusicTimePlayed(musicArray[i]), GetMusicTimeLength(musicArray[i]));
+		if (i == currentSong) {
+			if (GetMusicTimePlayed(musicArray[i]) < time && !musFirstGo) SeekMusicStream(musicArray[i], time); //1.6 for blackNight
+			if (GetMusicTimePlayed(musicArray[i]) >= GetMusicTimeLength(musicArray[i]) - GetFrameTime())
+			{
+				musFirstGo = false;
+			}
+			return;
+		}
+		musFirstGo = true;
+		publicPlayMusic(i);
 	}
 
 	void publicPlayLevelMusic() {

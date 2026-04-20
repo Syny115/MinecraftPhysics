@@ -175,6 +175,11 @@ void PlayableScene::updateScene() {
 
 		}
 	}
+
+	if (GameManager::getInstance().getBossStarted() && GameManager::getInstance().getPlayerHealth() > 0) {
+		GameManager::getInstance().getGamePointer()->publicPlayMusicOffset(Game::BLACK_NIGHT, 1.6);
+	}
+
 	Scene::updateScene();
 }
 

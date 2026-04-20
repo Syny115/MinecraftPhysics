@@ -16,7 +16,8 @@ Enemy::Enemy(Vector2 pos)
 
 Enemy::~Enemy()
 {
-	if (offCamera == false)
+	printf("AAA\nAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAA\nAAAAA\n\n\n\nAA\nAA");
+	if (offCamera == false && !isBoss)
 	{
 		GameManager::getInstance().getGamePointer()->publicPlaySound(Game::BREAK);
 		int rand = GetRandomValue(1, 256);
@@ -262,6 +263,7 @@ Merman::~Merman() {}
 //BAT BOSS
 
 BatBoss::BatBoss(Vector2 pos) {
+	isBoss = true;
 	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::BAT_BOSS);
 	size.x = sprite->getAnimationFromName("batBossIdle").frameWidth;
 	size.y = sprite->getAnimationFromName("batBossIdle").frameHeight;
@@ -276,7 +278,6 @@ BatBoss::BatBoss(Vector2 pos) {
 
 void BatBoss::update() {
 	earlyUpdate();
-	printf("TIMER: %f\n", hitCooldown.getTime());
 	switch (state)
 	{
 	case IDLE:
@@ -340,7 +341,9 @@ void BatBoss::update() {
 	lateUpdate();
 }
 
-BatBoss::~BatBoss() {}
+BatBoss::~BatBoss() {
+	GameManager::getInstance().getActiveScene()->pushLoot(new Loot({ GameManager::getInstance().getActiveScene()->getWorldWidth() - (128), 96 }, 4)); //ORB
+}
 
 Vector2 BatBoss::EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopHeight) {
 	// Linear interpolation (straight line point)
