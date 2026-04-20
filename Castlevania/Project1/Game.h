@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <vector>
 #include "Scene.h"
+#include "UI.h"
 
 struct Level
 {
@@ -19,6 +20,7 @@ private:
 
 	int levelIndex = 0, sceneIndex = 0;
 
+	UI gui;
 public:
 
 	enum MUSIC
@@ -86,4 +88,5 @@ public:
 
 	int getLevelIndex() { return levelIndex; }
 	int getSceneIndex() { return sceneIndex; }
+
 };

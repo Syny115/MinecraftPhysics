@@ -14,6 +14,7 @@
 #include "Enemy.h"
 #include "Loot.h"
 #include "Projectile.h"
+#include "UI.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -22,6 +23,8 @@ class Scene {
 protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
+	UI ui;
+	Timer timeLeft{ 300 };
 public:
 
 	Scene();
@@ -59,6 +62,9 @@ public:
 	virtual void pushProjectile(Projectile* p) {}
 	virtual void removeProjectile(Projectile* p) {}
 	virtual Player* getPlayer() { return nullptr; }
+
+	float getTimeLeft(){ return timeLeft.getTime(); }
+
 };
 
 

@@ -1,7 +1,6 @@
 #include "Scene.h"
 #include "GameManager.h"
 
-
 //REPLACE LATER WHEN I HAVE GAME MANAGER
 const float screenWidth = 800;
 const float screenHeight = 700;
@@ -15,6 +14,7 @@ Scene::Scene() {
 	camera.rotation = 0.0f;
 	camera.zoom = screenWidth / viewportWidth;
 	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
+	timeLeft.startTimer();
 }
 
 void Scene::start() {

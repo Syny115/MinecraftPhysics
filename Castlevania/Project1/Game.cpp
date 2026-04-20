@@ -80,11 +80,12 @@ void Game::startGame() {
             if (currentSong > -1) UpdateMusicStream(musicArray[currentSong]);
             //----------------------------------------------------------------------------------
 
-            // Draw
-            //----------------------------------------------------------------------------------
-            BeginDrawing();
-            activeScene->drawScene();
-
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        activeScene->drawScene();
+        gui.renderUI();
+        gui.updateUI();
 
             // Debug
 
