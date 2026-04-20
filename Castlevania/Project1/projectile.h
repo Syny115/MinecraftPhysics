@@ -84,5 +84,6 @@ public:
 
 	void update() override;
 private:
+	Vector2 path;
 	Vector2 playerPos;
 };

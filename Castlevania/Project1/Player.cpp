@@ -579,8 +579,7 @@ void Player::drawPlayer() {
     if (upperState.current == ATTACK && whipSprite->getAnimation().find("Start") == string::npos) {
        // DrawRectangleRec(whipCollider, WHITE);
         whipSprite->draw(Vector2{ offsetX - 23.5f + 39.5f * direction, offsetY + topAnimOffsetY + 9});
-    }
-    
+    } 
 }
 
 void Player::betweenStates(int previous, int current, int future, PlayerState* state) {
@@ -598,7 +597,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
                 (*projectileCount)++;
             }
             else {
-                GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, whipLevel == 0 ? (short)1 : (short)2 });
+                GameManager::getInstance().getActiveScene()->pushPlayerHitBoxes(damageRect{ &whipCollider, *whipLevel == 0 ? (short)1 : (short)2 });
                 GameManager::getInstance().getGamePointer()->publicPlaySound(Game::WHIP);
             }
             

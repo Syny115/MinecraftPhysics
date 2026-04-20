@@ -87,6 +87,7 @@ public:
 	int getScore() { return score; }
 
 	int getWhipLevel() { return whipLevel; }
+	void setWhipLevel(int n) { whipLevel = n; }
 
 	int getHealth() { return playerHealth; }
 
@@ -121,6 +122,8 @@ public:
 
 	void setBossStarted(bool b) { bossStarted = b; }
 	bool getBossStarted() { return bossStarted; }
+
+	int* getBossHealthPointer() { return &enemyHealth; }
 
 	friend class Player;
 };

@@ -62,7 +62,9 @@ PlayableScene::~PlayableScene() {
 	enemies.clear();
 	for (DestructableObject* dest : destructables) delete dest;
 	destructables.clear();
-	for (Projectile* proj : projectiles) if (proj != nullptr && proj != (Projectile*)0xFFFFFFFFFFFFFFFF) delete proj;
+	for (int i = projectiles.size() - 1; i >= 0 && !projectiles.empty(); i--) {
+		delete projectiles[i];
+	}
 	projectiles.clear();
 }
 
@@ -227,8 +229,9 @@ void PlayableScene::drawScene() {
 	//}
 	//if (!playerHitBoxes.empty()) {
 	//	for (int i = 0; i < playerHitBoxes.size(); i++) {
-	//		DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, BLUE);
-	//		//DrawRectangleRec();
+	//		printf("damage: %d\n", playerHitBoxes[i].damage);
+	//		//DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, BLUE);
+	//		////DrawRectangleRec();
 	//	}
 	//}
 	
@@ -316,8 +319,11 @@ void PlayableScene::removeProjectile(Projectile* p) {
 
 void PlayableScene::pushProjectile(Projectile* p) { 
 	Rectangle* rec = p->getHurtboxPtr();
+	if (p->getOwner() == Projectile::PLAYER) pushPlayerHitBoxes({ rec, p->getDamage() });
+	if (p->getOwner() == Projectile::ENEMY) pushEnemyRects({ rec, p->getDamage() });
+	if (p->getOwner() == Projectile::ENEMY) pushEnemyRects({ rec, p->getDamage() });
 	projectiles.push_back(p); 
-	pushPlayerHitBoxes({ rec, p->getDamage() }); 
+	 
 }
 
 // Tile screen

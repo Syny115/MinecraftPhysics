@@ -148,12 +148,14 @@ Sfire::Sfire(Vector2 pos, int dir, int own)
 {
 	sprite->setAnimation("fireball");
 	position = pos;
-	direction = dir;
+	
 	hurtbox.width = sprite->getAnimationFromName("fireball").frameWidth;
 	hurtbox.height = sprite->getAnimationFromName("fireball").frameHeight;
 	size = Vector2{ hurtbox.width, hurtbox.height };
 	owner = own;
 	playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+	path = Vector2Normalize(Vector2MoveTowards(position, playerPos, 1));
+	direction = path.x < 0 ? -1 : 1;
 }
 
 Sfire::~Sfire()
@@ -162,6 +164,9 @@ Sfire::~Sfire()
 
 void Sfire::update() {
 	earlyUpdate();
-	Vector2MoveTowards(position, playerPos, 100);
+
+	position.x +=  path.x * 120 * deltaTime;
+	position.y -=  path.y * 120 * deltaTime;
+	 
 	lateUpdate();
 }

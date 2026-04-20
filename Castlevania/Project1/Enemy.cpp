@@ -71,6 +71,7 @@ void Enemy::update() {
 }
 
 void Enemy::hitCollision(vector<damageRect>& dmgRect) {
+	hitCooldown.updateTimer();
 	if (hitCooldown.isActive()) return;
 	for (int i = 0; i < dmgRect.size(); i++) {
 		if (CheckCollisionRecs(hurtbox, *dmgRect[i].rect)) {
@@ -270,10 +271,12 @@ BatBoss::BatBoss(Vector2 pos) {
 	health = 16;
 	damage = 2;
 	points = 5000;
+	globalHealth = GameManager::getInstance().getBossHealthPointer();
 }
 
 void BatBoss::update() {
 	earlyUpdate();
+	printf("TIMER: %f\n", hitCooldown.getTime());
 	switch (state)
 	{
 	case IDLE:
@@ -285,7 +288,6 @@ void BatBoss::update() {
 		}
 		break;
 	case SEARCHING:
-		printf("%d\n", seekingTimer.getTime());
 		seekingTimer.updateTimer();
 		sprite->setAnimation("batBossSearching");
 		playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
@@ -293,10 +295,8 @@ void BatBoss::update() {
 		dist = Vector2DistanceSqr(playerPos, position);
 
 		if (seekingTimer.isTriggerd()) {
-			if (dist > 8 * 16 * 8 * 16) {
-				startPos = position;
-				targetPos = { (float)GameManager::getInstance().getActiveScene()->getWorldWidth() - 16 - GetRandomValue(0, 256 - 32), (float)16 + GetRandomValue(0, 224 - 32) };
-				swoopTimer = 0.0f;
+			if (dist < 8 * 16 * 8 * 16) {
+				prepareRoost();
 				state = ROOSTING;
 			}
 			else {
@@ -308,26 +308,24 @@ void BatBoss::update() {
 		}
 		break;
 	case ATTACKING:
-		printf("attack\n");
 		position = Vector2MoveTowards(position, playerPos, 120 * deltaTime);
 
 		if (Vector2Equals(position, playerPos)) {
-			startPos = position;
-			targetPos = { (float)GameManager::getInstance().getActiveScene()->getWorldWidth() - 128, (float) 224/2 };
-			swoopTimer = 0.0f;
+			prepareRoost();
 			state = ROOSTING;
 		}
 
 		break;
 	case SPITTING:
+		GameManager::getInstance().getActiveScene()->pushProjectile(new Sfire({position.x + size.x/2, position.y + size.y / 2 }, 1, Projectile::ENEMY));
+		seekingTimer.startTimer();
+		state = BatBossState::SEARCHING;
 		break;
 	case ROOSTING:
-		printf("roost\n");
 		swoopTimer += deltaTime;
 		t = swoopTimer / swoopDuration;
 		position = EvaluateSwoop(startPos, targetPos, t, swoopHeight);
 		if (t >= 1.0f) {
-			printf("aaaaaa\n");
 			t = 1.0f;
 			seekingTimer.startTimer();
 			state = SEARCHING;
@@ -336,99 +334,8 @@ void BatBoss::update() {
 	default:
 		break;
 	}
-	//if (setup) {
 
-	//	switch (state) {
-
-	//	case BatBossState::IDLE:
-	//	{
-	//		
-	//		
-
-	//		
-
-	//		break;
-
-	//	}
-
-	//	case BatBossState::SEARCHING: {
-	//		
-	//		
-	//		// Volar hacia el jugador
-	//		float dx = playerPos.x - position.x;
-	//		float dy = playerPos.y - position.y;
-	//		float dist = sqrtf(dx * dx + dy * dy);
-
-	//		if (dist > 8.0f) {
-	//			// Normalizar y mover
-	//			position.x += (dx / dist) * speed * GetFrameTime();
-	//			position.y += (dy / dist) * speed * GetFrameTime();
-	//		}
-	//		else {
-	//			// Llegó al jugador — decidir si atacar o escupir
-	//			float yDiff = playerPos.y - position.y;
-	//			if (yDiff > spitYThreshold) {
-	//				state = BatBossState::SPITTING;
-	//				spitsFired = 0;
-	//				spitTimer = 0;
-	//			}
-	//			else {
-	//				state = BatBossState::ATTACKING;
-	//				targetPos = playerPos; // guarda dónde estaba el jugador al atacar
-	//			}
-	//		}
-	//		break;
-	//	}
-
-	//	case BatBossState::ATTACKING: {
-	//		sprite->setAnimation("batBossAttack");
-
-	//		// Embestida rápida hacia targetPos
-	//		float dx = targetPos.x - position.x;
-	//		float dy = targetPos.y - position.y;
-	//		float dist = sqrtf(dx * dx + dy * dy);
-
-	//		if (dist > 8.0f) {
-	//			position.x += (dx / dist) * attackSpeed * GetFrameTime();
-	//			position.y += (dy / dist) * attackSpeed * GetFrameTime();
-	//		}
-	//		else {
-	//			// Ataque completado — retroceder a posición alejada del jugador
-	//			// La posición de retreat es en dirección contraria al jugador
-	//			float rdx = position.x - playerPos.x;
-	//			float rdy = position.y - playerPos.y;
-	//			float rdist = sqrtf(rdx * rdx + rdy * rdy);
-	//			targetPos = {
-	//				position.x + (rdx / rdist) * retreatDistance,
-	//				position.y + (rdy / rdist) * retreatDistance
-	//			};
-	//			state = BatBossState::SEARCHING;
-	//		}
-	//		break;
-	//	}
-
-	//	case BatBossState::SPITTING: {
-	//		sprite->setAnimation("batBossSpit");
-
-	//		spitTimer += GetFrameTime();
-	//		if (spitTimer >= spitInterval) {
-	//			spitTimer = 0;
-	//			spitsFired++;
-
-	//			// TODO: instanciar proyectil apuntando al jugador
-	//			// GameManager::getInstance().getActiveScene()->spawnProjectile(position, playerPos);
-
-	//			if (spitsFired >= spitCount) {
-	//				// Ráfaga completada — volver a SEARCHING
-	//				state = BatBossState::SEARCHING;
-	//				spitsFired = 0;
-	//			}
-	//		}
-	//		break;
-	//	}
-	//	}
-	//}
-	
+	*globalHealth = health;
 	Enemy::update();
 	lateUpdate();
 }
@@ -449,11 +356,20 @@ Vector2 BatBoss::EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopH
 	// Parabolic offset: peak at t = 0.5, zero at t = 0 and t = 1
 	float offset = swoopHeight * (1.0f - std::pow(2.0f * t - 1.0f, 2.0f));
 
+	float w = GameManager::getInstance().getActiveScene()->getWorldWidth();
+
 	// Apply the offset
-	return {
+	return Vector2Clamp( {
 		linearPoint.x + perpendicular.x * offset,
 		linearPoint.y + perpendicular.y * offset
-	};
+		}, { w - (256), 31 }, {w, 224});
 }
 
-
+void BatBoss::prepareRoost() {
+	startPos = position;
+	targetPos.y = 96 + (float)GetRandomValue(0, 80);
+	float middle = GameManager::getInstance().getActiveScene()->getWorldWidth()-(128);
+	if (playerPos.x > middle) targetPos.x = middle - (float)GetRandomValue(0, 128-16);
+	else targetPos.x = middle + (float)GetRandomValue(0, 128 - 16);
+	swoopTimer = 0.0f;
+}

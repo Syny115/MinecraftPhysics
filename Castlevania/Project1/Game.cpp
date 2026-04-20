@@ -3,6 +3,7 @@
 
 
 void Game::loadScene(Scene* newScene) {
+    GameManager::getInstance().setBossStarted(false);
     delete activeScene;
     activeScene = newScene;
     activeScene->start();
@@ -14,6 +15,7 @@ void Game::requestSceneChange(Scene* newScene) {
 
 void Game::requestSceneReload() {
     GameManager::getInstance().maximizeHealth();
+    GameManager::getInstance().setWhipLevel(0);
     if (levels[levelIndex].scenePath[sceneIndex] == "Title") pendingScene =  new TitleScene();
     else pendingScene = new PlayableScene(activeScene->getPath());
 }

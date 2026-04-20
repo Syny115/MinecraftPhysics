@@ -106,17 +106,15 @@ public:
 	void update() override;
 	BatBoss(Vector2 pos);
 	~BatBoss();
-
+	void groundCollision(vector<Rectangle> floorRec) override {}
 
 	Vector2 EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopHeight);
+	void prepareRoost();
 	
 private:
 	Timer seekingTimer{ 1.5 };
 	enum BatBossState { IDLE, SEARCHING, ATTACKING, SPITTING, ROOSTING };
 	BatBossState state = BatBossState::IDLE;
-	Vector2 playerPos;
-	// Movimiento
-	Vector2 targetPos = { 0, 0 };      // posición a la que se dirige
 
 	// Spitting
 	float spitTimer = 0;
@@ -125,7 +123,10 @@ private:
 	int spitsFired = 0;
 
 	Vector2 startPos;
-	Vector2 EndPos;
+	Vector2 targetPos = { 0, 0 };
+	Vector2 playerPos;
+
+	int* globalHealth;
 	float swoopTimer;
 	float swoopDuration = 2;
 	float swoopHeight = 50;
