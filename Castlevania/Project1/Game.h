@@ -35,7 +35,6 @@ public:
 	Game() {
 		levels.push_back({ {"Title"} });
 		levels.push_back({ {"resources/json/Level1_Scene1.json", "resources/json/Level1_Scene2.json", "resources/json/Level1_Scene3.json", "resources/json/Level1_Scene4.json"}});
-		levels.push_back({ {"resources/json/Test1.json", "resources/json/test2.json", "resources/json/Test3.json"} });
 	}
 	~Game();
 	void startGame();
@@ -66,6 +65,10 @@ public:
 
 	void publicPlayMusic(int i) {
 		if (i == currentSong) return;
+		else if (i < 0) {
+			StopMusicStream(musicArray[currentSong]);
+			return;
+		}
 		if (currentSong > -1) StopMusicStream(musicArray[currentSong]);
 		PlayMusicStream(musicArray[i]);
 		currentSong = i;	

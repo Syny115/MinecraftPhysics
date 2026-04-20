@@ -23,7 +23,9 @@ void Game::requestSceneReload() {
 void Game::requestNextLevel() {
     if (++sceneIndex >= levels[levelIndex].scenePath.size()) {
         sceneIndex = 0;
-        if (++levelIndex >= levels.size()) levelIndex = 0; //TODO, make this go to credits!
+        if (++levelIndex >= levels.size()) {
+            levelIndex = 0; //TODO, make this go to credits!
+        }
     }
     if (levels[levelIndex].scenePath[sceneIndex] == "Title") requestSceneChange(new TitleScene());
     else requestSceneChange(new PlayableScene(levels[levelIndex].scenePath[sceneIndex]));
