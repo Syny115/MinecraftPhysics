@@ -201,7 +201,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "particles";
         break;
     case HIT_EFFECT:
-        add("hitEffect", 0, 0, 0, 0, 0, 0, 0);
+        add("hitEffect", 4, 0, 160, 8, 16, 0, 1);
         currentAnimName = "hitEffect";
         break;
     default:

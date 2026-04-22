@@ -117,6 +117,7 @@ void DestructableObject::hitCollision(vector<damageRect>& dmgRect) {
 	float s = GameManager::getInstance().getWhipLevel() < 2 ? 32 : 48;
 	for (int i = 0; i < dmgRect.size(); i++) {
 		if (CheckCollisionRecs(hurtbox, *dmgRect[i].rect) && dmgRect[i].rect->width == s) {
+			GameManager::getInstance().getActiveScene()->spawnHitEffect(position);
 			GameManager::getInstance().getActiveScene()->removeDestructables(this);
 			queueDeletion();
 		}
@@ -128,3 +129,4 @@ void DestructableObject::draw() {
 	//DrawRectangleRec(hurtbox, GREEN);
 	sprite->draw({offsetX, offsetY});
 }
+

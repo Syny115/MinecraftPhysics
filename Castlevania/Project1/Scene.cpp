@@ -374,6 +374,18 @@ void PlayableScene::spawnParticle(Vector2 position) {
 	particles.push_back(p);
 }
 
+void PlayableScene::spawnHitEffect(Vector2 position) {
+	Particle p;
+	p.position = { position.x + 0.0f, position.y + 0.0f };
+	p.velocity = { 0, 0 };
+	p.timer = 0;
+	p.duration = 0.2f;
+	p.sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::HIT_EFFECT);
+	p.sprite->setAnimation("hitEffect");
+	p.sprite->setFlipX(GetRandomValue(0, 1) == 1);
+	particles.push_back(p);
+}
+
 // Tile screen
 
 TitleScene::TitleScene()

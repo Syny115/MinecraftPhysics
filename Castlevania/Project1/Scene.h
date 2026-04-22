@@ -64,6 +64,7 @@ public:
 	virtual float getTimeLeft() { return 0; }
 
 	virtual void spawnParticle(Vector2 position) {}
+	virtual void spawnHitEffect(Vector2 position) {}
 
 
 };
@@ -167,6 +168,7 @@ public:
 	Player* getPlayer() override { return player; }
 	float getTimeLeft() override { return timeLeft.getTime(); }
 	void spawnParticle(Vector2 position) override;
+	void spawnHitEffect(Vector2 position) override;
 };
 
 // TILE SCREEN
