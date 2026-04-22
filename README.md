@@ -1,26 +1,42 @@
 # Minecraft Physics' Castlevania
 
-TODO: Write a project description
+This is Project 1 of Bachelor's degree in Video Game Design and Development at CITM UPC, in which we must recreate Castlevania game with the raylib library.
 
 ## Installation
 
-TODO: Describe the installation 
+TODO: Joao what do we have to do here?
 
-## Usage
+## 1 minute video gameplay
 
-Have fun IG?
-
-## Contributing
-
-Do you really wanna tho?
-
-## History
-
-This is Project 1 of a game design course, in which we must recreate a classic / arcade game with the raylib library.
+youtube.com idk bruh
 
 ## Credits
 
-TODO: Write credits
+Adrià Pavón - https://github.com/UnderRTX
+
+João de Queiroz - https://github.com/JammestOfAllToast
+
+Fernando García - https://github.com/Syny115
+
+##  Castlevania
+
+Castlevania is a classic NES title where Simon Belmont, the vampire killer, must treck into count Dracula's labyrinthine castle and kill him. This game is of the genre "Classicvania", which consists of linear, action-platformer games focused on strict platforming, precise combat, and navigating levels to defeat bosses.
+
+## Instructions
+
+← / → (Arrow Keys) → Move left / right
+
+↓ (Arrow Down) → Crouch
+
+Space → Jump
+
+D → Use whip (main attack)
+
+A → Use secondary weapon
+
+↑ (Arrow Up) while walking onto stairs → Climb up
+
+↓ (Arrow Down) while walking onto stairs → Climb down
 
 ## License
 
