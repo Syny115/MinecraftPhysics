@@ -1,6 +1,6 @@
 # Minecraft Physics' Castlevania
 
-This is Project 1 of a game design course, in which we must recreate Castlevania game with the raylib library.
+This is Project 1 of Bachelor's degree in Video Game Design and Development at CITM UPC, in which we must recreate Castlevania game with the raylib library.
 
 ## Installation
 
