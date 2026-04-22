@@ -34,7 +34,10 @@ Enemy::~Enemy()
 
 	}
 	GameManager::getInstance().getActiveScene()->removeEnemy(this);
+
 	delete sprite;
+	
+	GameManager::getInstance().getActiveScene()->spawnParticle(position);
 }
 
 void Enemy::update() {

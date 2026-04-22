@@ -57,6 +57,7 @@ void DestructableWall::update() {
 DestructableObject::~DestructableObject() {
 	delete sprite;
 	GameManager::getInstance().getGamePointer()->publicPlaySound(Game::BREAK);
+	GameManager::getInstance().getActiveScene()->spawnParticle(position);
 }
 
 DestructableLoot::~DestructableLoot() {

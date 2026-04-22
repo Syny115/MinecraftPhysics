@@ -66,6 +66,9 @@ PlayableScene::~PlayableScene() {
 		delete projectiles[i];
 	}
 	projectiles.clear();
+
+	for (Particle& p : particles) delete p.sprite;
+	particles.clear();
 }
 
 
@@ -187,6 +190,17 @@ void PlayableScene::updateScene() {
 		GameManager::getInstance().getGamePointer()->publicPlayMusicOffset(Game::BLACK_NIGHT, 1.6);
 	}
 
+	for (int i = (int)particles.size() - 1; i >= 0; i--) {
+		particles[i].timer += GetFrameTime();
+		particles[i].sprite->update(GetFrameTime());
+		particles[i].position.y += particles[i].velocity.y * GetFrameTime();
+		particles[i].position.x += particles[i].velocity.x * GetFrameTime();
+		if (particles[i].timer >= particles[i].duration) {
+			delete particles[i].sprite;
+			particles.erase(particles.begin() + i);
+		}
+	}
+
 	Scene::updateScene();
 }
 
@@ -249,7 +263,11 @@ void PlayableScene::drawScene() {
 	//		////DrawRectangleRec();
 	//	}
 	//}
-	
+
+
+	for (int i = 0; i < particles.size(); i++) {
+		particles[i].sprite->draw(particles[i].position);
+	}
 	
 
 	EndMode2D();
@@ -343,6 +361,17 @@ void PlayableScene::pushProjectile(Projectile* p) {
 	if (p->getOwner() == Projectile::ENEMY) pushEnemyRects({ rec, p->getDamage() });
 	projectiles.push_back(p); 
 	 
+}
+
+void PlayableScene::spawnParticle(Vector2 position) {
+	Particle p;
+	p.position = { position.x - 2.5f, position.y - 10.0f };
+	p.velocity = { 0, 0 };
+	p.timer = 0;
+	p.duration = 0.4f;
+	p.sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::PARTICLES);
+	p.sprite->setAnimation("death");
+	particles.push_back(p);
 }
 
 // Tile screen
