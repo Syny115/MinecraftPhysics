@@ -13,7 +13,9 @@ youtube.com idk bruh
 ## Credits
 
 Adrià Pavón - https://github.com/UnderRTX
+
 João de Queiroz - https://github.com/JammestOfAllToast
+
 Fernando García - https://github.com/Syny115
 
 ##  Castlevania
@@ -23,12 +25,17 @@ Castlevania is a classic NES title where Simon Belmont, the vampire killer, must
 ## Instructions
 
 ← / → (Arrow Keys) → Move left / right
+
 ↓ (Arrow Down) → Crouch
+
 Space → Jump
+
 D → Use whip (main attack)
+
 A → Use secondary weapon
 
 ↑ (Arrow Up) while walking onto stairs → Climb up
+
 ↓ (Arrow Down) while walking onto stairs → Climb down
 
 ## License
