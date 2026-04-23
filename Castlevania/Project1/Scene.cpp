@@ -39,6 +39,7 @@ void Scene::updateScene() {
 //----------- PLAYABLE SCENE -------------//
 
 PlayableScene::PlayableScene(const char* path) : Scene() {
+	GameManager::getInstance().sceneTime = 0;
 	this->path = path;
 	parseTiles(path);
 	timeLeft.startTimer();
@@ -85,7 +86,7 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
-
+	GameManager::getInstance().sceneTime += GetFrameTime();
 	timeLeft.updateTimer();
 
 	if (timeLeft.isTriggerd()) {
@@ -152,6 +153,17 @@ void PlayableScene::updateScene() {
 			if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
 				enemies.push_back(new Bat(batSpawners[i]));
 				batSpawners.erase(batSpawners.begin() + i);
+			}
+		}
+	}
+
+	if (!pantherSpawners.empty())
+	{
+		for (int i = pantherSpawners.size() - 1; i >= 0; i--) {
+			Vector2 p = GetWorldToScreen2D(pantherSpawners[i], camera);
+			if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+				enemies.push_back(new Panther(pantherSpawners[i]));
+				pantherSpawners.erase(pantherSpawners.begin() + i);
 			}
 		}
 	}

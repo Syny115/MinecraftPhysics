@@ -3,10 +3,12 @@
 
 
 void Game::loadScene(Scene* newScene) {
+    publicPauseMusic();
     GameManager::getInstance().setBossStarted(false);
     delete activeScene;
     activeScene = newScene;
     activeScene->start();
+    publicResumeMusic();
 }
 
 void Game::requestSceneChange(Scene* newScene) {

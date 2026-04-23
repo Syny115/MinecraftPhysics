@@ -23,7 +23,7 @@ void Entity::groundCollision(vector<Rectangle> floorRec) {
 }
 
 void Entity::increaseHalfOfGravity() {
-	if (!isOnFloor && velocity.y < maxFALL && GetTime()/GetFrameTime() > 15) {
+	if (!isOnFloor && velocity.y < maxFALL && GameManager::getInstance().sceneTime/GetFrameTime() > 15) {
 		velocity.y += grav * deltaTime * 0.5f;
 	}
 }

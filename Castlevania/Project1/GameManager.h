@@ -18,7 +18,7 @@ public:
 		// Instantiated on first use.
 		return instance;
 	}
-
+	float sceneTime;
 private:
 	GameManager() = default;
 

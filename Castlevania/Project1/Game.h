@@ -43,6 +43,11 @@ public:
 	void requestSceneReload();
 	void requestNextLevel();
 
+	bool sceneRequested() {
+		if (pendingScene != nullptr) return true;
+		return false;
+	}
+
 	Scene* getActiveScene() { return activeScene; }	
 
 	void publicPlaySound(int i) {
@@ -58,8 +63,7 @@ public:
 	}
 
 	void publicResumeMusic() {
-		if (currentSong > -1)
-		ResumeMusicStream(musicArray[currentSong]);
+		if (currentSong > -1) ResumeMusicStream(musicArray[currentSong]);
 
 	}
 
