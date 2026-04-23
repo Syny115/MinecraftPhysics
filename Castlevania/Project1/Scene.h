@@ -184,4 +184,15 @@ public:
 private:
 	Texture2D background;
 };
+// LORE SCREEN
+
+class LoreScene : public Scene
+{
+public:
+	LoreScene();
+	~LoreScene();
+	void updateScene() override;
+	void drawScene() override;
+private:
+};
 

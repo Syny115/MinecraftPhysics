@@ -19,6 +19,7 @@ void Game::requestSceneReload() {
     GameManager::getInstance().maximizeHealth();
     GameManager::getInstance().setWhipLevel(0);
     if (levels[levelIndex].scenePath[sceneIndex] == "Title") pendingScene =  new TitleScene();
+    else if (levels[levelIndex].scenePath[sceneIndex] == "Lore") pendingScene = new LoreScene();
     else pendingScene = new PlayableScene(activeScene->getPath());
 }
 
@@ -30,6 +31,7 @@ void Game::requestNextLevel() {
         }
     }
     if (levels[levelIndex].scenePath[sceneIndex] == "Title") requestSceneChange(new TitleScene());
+    else if (levels[levelIndex].scenePath[sceneIndex] == "Lore") pendingScene = new LoreScene();
     else requestSceneChange(new PlayableScene(levels[levelIndex].scenePath[sceneIndex]));
 }
 

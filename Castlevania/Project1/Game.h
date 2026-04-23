@@ -33,7 +33,7 @@ public:
 
 	vector<Level> levels;
 	Game() {
-		levels.push_back({ {"Title"} });
+		levels.push_back({ {"Title", "Lore"}});
 		levels.push_back({ {"resources/json/Level1_Scene1.json", "resources/json/Level1_Scene2.json", "resources/json/Level1_Scene3.json", "resources/json/Level1_Scene4.json"}});
 	}
 	~Game();

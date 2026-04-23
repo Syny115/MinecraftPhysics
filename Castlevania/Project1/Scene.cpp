@@ -424,3 +424,36 @@ void TitleScene::drawScene() {
 }
 
 
+// LORE screen
+
+LoreScene::LoreScene()
+{
+	camera.zoom = screenWidth / viewportWidth;
+}
+
+LoreScene::~LoreScene()
+{
+}
+
+void LoreScene::updateScene() {
+	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->requestNextLevel();
+}
+
+void LoreScene::drawScene() {
+	ClearBackground(BLACK);
+	camera.offset = { 0 , 0};
+	BeginMode2D(camera);
+	DrawText("This is Project 1 of Bachelor's ,", 16, 16, 16, WHITE);
+	DrawText("degree in Video Game Design,", 16, 32, 16, WHITE);
+	DrawText("and Development at CITM UPC,", 16, 48, 16, WHITE);
+	DrawText("in which we must recreate", 16, 64, 16, WHITE);
+	DrawText("Castlevania game with raylib.", 16, 64+16, 16, WHITE);
+	DrawText("By Fernando Garcia,", 16, 64+48, 16, WHITE);
+	DrawText("Adria Pavon", 16, 64+48+16, 16, WHITE);
+	DrawText("Joao de Queiroz. Our bossman", 16, 64+48+16+16, 16, WHITE);
+	DrawText("is Rodrigo de Pedro", 16, 64+48+32+16, 16, WHITE);
+	DrawText("Press start, dingus!", 8, 64+48+32+16+32-8, 24, WHITE);
+	EndMode2D();
+}
+
+
