@@ -40,7 +40,7 @@ A → Use secondary weapon
 
 ## Features
 
-Jump, climbing up and down stairs, crouching, picking up items and subweapons, using subweapons as projectiles, upgrading the whip, healing after every boss and by picking up chicken, destructible objects (walls, torches and candles), entities dropping loot, custom boss movement and a tile parsing system (using json).
+Move, jump, climbing up and down stairs, crouching, whip (main weapon), whip upgrades, daggers and axe (subweapons), destructible objects, loot  system, enemies: zombie, bat, panther, medusa and bat boss, UI and OST and music effects.
 
 Assets by Nintendo.
 
