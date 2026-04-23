@@ -16,7 +16,6 @@ Enemy::Enemy(Vector2 pos)
 
 Enemy::~Enemy()
 {
-	printf("AAA\nAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAA\nAAAAA\n\n\n\nAA\nAA");
 	if (offCamera == false && !isBoss)
 	{
 		GameManager::getInstance().getGamePointer()->publicPlaySound(Game::BREAK);
@@ -29,9 +28,9 @@ Enemy::~Enemy()
 		else if (rand <= 100) GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 15)); //1-up
 		//GameManager::getInstance().addScore(points); //points DESCOMENTAR CUANDO HAGAMOS MERGE CON ADRI 
 	}
-	else
+	if (offCamera == false)
 	{
-
+		GameManager::getInstance().addScore(points);
 	}
 	GameManager::getInstance().getActiveScene()->removeEnemy(this);
 
