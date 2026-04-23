@@ -38,6 +38,12 @@ A → Use secondary weapon
 
 ↓ (Arrow Down) while walking onto stairs → Climb down
 
+## Features
+
+Jump, climbing up and down stairs, crouching, picking up items and subweapons, using subweapons as projectiles, upgrading the whip, healing after every boss and by picking up chicken, destructible objects (walls, torches and candles), entities dropping loot, custom boss movement and a tile parsing system (using json).
+
+Assets by Nintendo.
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
