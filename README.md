@@ -1,14 +1,16 @@
 # Minecraft Physics' Castlevania
 
+https://github.com/Syny115/MinecraftPhysics
+
 This is Project 1 of Bachelor's degree in Video Game Design and Development at CITM UPC, in which we must recreate Castlevania game with the raylib library.
 
 ## Installation
 
-TODO: Joao what do we have to do here?
+Extract and double click ya dummy!
 
 ## 1 minute video gameplay
 
-youtube.com idk bruh
+https://youtu.be/\_H48EHIys4I
 
 ## Credits
 
@@ -18,7 +20,7 @@ João de Queiroz - https://github.com/JammestOfAllToast
 
 Fernando García - https://github.com/Syny115
 
-##  Castlevania
+## Castlevania
 
 Castlevania is a classic NES title where Simon Belmont, the vampire killer, must treck into count Dracula's labyrinthine castle and kill him. This game is of the genre "Classicvania", which consists of linear, action-platformer games focused on strict platforming, precise combat, and navigating levels to defeat bosses.
 
