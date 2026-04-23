@@ -34,7 +34,10 @@ Enemy::~Enemy()
 
 	}
 	GameManager::getInstance().getActiveScene()->removeEnemy(this);
+
 	delete sprite;
+	
+	GameManager::getInstance().getActiveScene()->spawnParticle(position);
 }
 
 void Enemy::update() {
@@ -78,8 +81,10 @@ void Enemy::hitCollision(vector<damageRect>& dmgRect) {
 		if (CheckCollisionRecs(hurtbox, *dmgRect[i].rect)) {
 			health -= dmgRect[i].damage;
 			hitCooldown.startTimer();
+			GameManager::getInstance().getActiveScene()->spawnHitEffect(position);
 		}
 	}
+
 }
 
 // ZOMBIE //por hacer: que cambie de dirección al llegar a un muro

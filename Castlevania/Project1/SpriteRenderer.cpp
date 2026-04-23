@@ -196,6 +196,14 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("fireball", 1, 177, 154, 12, 6, 1, 1);
         currentAnimName = "dagger";
         break;
+    case PARTICLES:
+        add("particles", 3, 0, 128, 8, 16, 0, 6);
+        currentAnimName = "particles";
+        break;
+    case HIT_EFFECT:
+        add("hitEffect", 4, 0, 160, 8, 16, 0, 1);
+        currentAnimName = "hitEffect";
+        break;
     default:
         break;
     }

@@ -63,6 +63,10 @@ public:
 
 	virtual float getTimeLeft() { return 0; }
 
+	virtual void spawnParticle(Vector2 position) {}
+	virtual void spawnHitEffect(Vector2 position) {}
+
+
 };
 
 
@@ -111,6 +115,19 @@ private:
 
 	UI ui;
 	Timer timeLeft{ 300 };
+
+	//particles for enemies death
+	struct Particle {
+		Vector2 position;
+		Vector2 velocity;
+		float timer;
+		float duration;
+		int frame;
+		float frameTimer;
+		SpriteRenderer* sprite;
+	};
+	vector<Particle> particles;
+
 public:
 
 	PlayableScene(const char* path);
@@ -150,6 +167,8 @@ public:
 	void removeProjectile(Projectile* p) override;
 	Player* getPlayer() override { return player; }
 	float getTimeLeft() override { return timeLeft.getTime(); }
+	void spawnParticle(Vector2 position) override;
+	void spawnHitEffect(Vector2 position) override;
 };
 
 // TILE SCREEN
