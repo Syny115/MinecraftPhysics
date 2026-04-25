@@ -8,6 +8,16 @@
 #include "SpriteRenderer.h"
 #include "Projectile.h"
 
+#define I_JUMP KEY_W
+#define I_ATK KEY_D
+#define I_SUBATK KEY_A
+#define I_DASH KEY_SPACE
+#define I_UP KEY_UP
+#define I_DOWN KEY_DOWN
+#define I_LEFT KEY_LEFT
+#define I_RIGHT KEY_RIGHT
+
+
 using namespace std;
 
 class Player : public Entity
@@ -18,10 +28,12 @@ private:
     Timer stunTimer{ 0.5 };
     Timer invincibilityTimer{ 3.0 };
     Timer deathTimer{ 3.0 };
+    Timer dashTimer{ 0.25 };
+    Timer dashCooldown{ 0.125 };
 
     enum playerStates
     {
-        IDLE, WALK, JUMP, FALL, ATTACK, STARTATTACK, CROUCH, STUN, STAIRS, KNOCKBACK, DIE
+        IDLE, WALK, JUMP, FALL, ATTACK, STARTATTACK, CROUCH, STUN, STAIRS, KNOCKBACK, DIE, DASH
     };
 
     struct PlayerState {

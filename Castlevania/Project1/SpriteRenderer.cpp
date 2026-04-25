@@ -117,6 +117,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("stairsWalkUp", 2, 341, 31, 20, 16, 1, 10);
         add("stairsIdleDown", 1, 320, 73, 20, 16, 1, 1); // Hurt also uses this
         add("stairsWalkDown", 2, 341, 73, 20, 16, 1, 10);
+        add("dash", 1, 253, 70, 41, 19, 1, 1);
 
         currentAnimName = "idle";
         break;
