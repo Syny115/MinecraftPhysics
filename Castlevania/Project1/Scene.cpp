@@ -49,6 +49,7 @@ void PlayableScene::start() {
 	while (checkpoints[0].x == 0 && checkpoints[0].y == 0  && GameManager::getInstance().getCheck() > 0) GameManager::getInstance().addCheck(-1);
 	player = new Player(checkpoints[GameManager::getInstance().getCheck()]);
 	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
+	spawnCoolDown.startTimer();
 }
 
 
@@ -93,6 +94,7 @@ void PlayableScene::updateScene() {
 		GameManager::getInstance().getGamePointer()->requestSceneReload();
 	}
 
+	//collisions
 	if (player != nullptr)
 	{
 		player->groundCollision(solidRects);
@@ -100,108 +102,107 @@ void PlayableScene::updateScene() {
 		player->wallCollision(solidRects);
 		player->stairCollision(stairs);
 		player->enemyCollision(enemyRects);
-		player->update();
-
 		if (CheckCollisionPointRec(player->getPosition(), nextArea)) GameManager::getInstance().getGamePointer()->requestNextLevel();
 	}
 
-	if (!destructables.empty()) {
-		for (int i = 0; i < destructables.size(); i++) {
-			destructables[i]->update();
-			destructables[i]->hitCollision(playerHitBoxes);
-		}
+	for (int i = destructables.size() - 1; i >= 0; i--) {
+		destructables[i]->hitCollision(playerHitBoxes);
 	}
 
-	if (!lootitems.empty()) {
-		for (int i = (int)lootitems.size() - 1; i >= 0; i--) { //si se sacan con player collision se puede saltar algun update, por eso iteramos al reves
-			if (!lootitems[i]->playerCollision(player->getHurtbox())) {
-				lootitems[i]->groundCollision(solidRects);
-				lootitems[i]->update();
-			}
+	for (int i = lootitems.size() - 1; i >= 0; i--) {
+		if (!lootitems[i]->playerCollision(player->getHurtbox())) {
+			lootitems[i]->groundCollision(solidRects);
 		}
 	}
+	
+	for (int i = enemies.size() - 1; i >= 0; i--) {
+		enemies[i]->hitCollision(playerHitBoxes);
+		enemies[i]->groundCollision(solidRects);
+	}
+	
+	for (int i = projectiles.size() - 1; i >= 0; i--) {
+		if (!projectiles[i]->boolGroundCollision(solidRects) &&
+			!projectiles[i]->enemyCollision(enemyRects) &&
+			!projectiles[i]->playerCollision(player->getHurtbox())) {
+		}
+	}
+	
+	//Spawning
+		//timers
+		spawnCoolDown.updateTimer();
 
-	spawnCoolDown.updateTimer();
-
-	if (!zombieSpawners.empty()) 
+	for (int i = zombieSpawners.size() - 1; i >= 0; i--)
 	{
-		for (int i = 0; i < zombieSpawners.size();i ++)
 		if (CheckCollisionPointRec(player->getPosition(), zombieSpawners[i])
-			&& enemies.size() < 10 && !spawnCoolDown.isActive()) {
+			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
 			spawnCoolDown.startTimer();
-			enemies.push_back(new Zombie(GetScreenToWorld2D(Vector2{ screenWidth+100, screenHeight }, camera)));
+			enemies.push_back(new Zombie(GetScreenToWorld2D(Vector2{ screenWidth + 100, screenHeight }, camera)));
 		}
 	}
-	if (!medusaSpawners.empty())
+
+	for (int i = medusaSpawners.size() - 1; i >= 0; i--)
 	{
-		for (int i = 0; i < medusaSpawners.size(); i++)
-		{
-			if (CheckCollisionPointRec(player->getPosition(), medusaSpawners[i])
-				&& enemies.size() < 10 && !spawnCoolDown.isActive()) {
-				spawnCoolDown.startTimer();
-				Vector2 p = GetScreenToWorld2D(Vector2{ screenWidth + 100, 0 }, camera);
-				p.y = player->getPos().y;
-				enemies.push_back(new Medusa(p));
-			}
+		if (CheckCollisionPointRec(player->getPosition(), medusaSpawners[i])
+			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
+			spawnCoolDown.startTimer();
+			Vector2 p = GetScreenToWorld2D(Vector2{ screenWidth + 100, 0 }, camera);
+			p.y = player->getPos().y;
+			enemies.push_back(new Medusa(p));
 		}
 	}
 
-	if (!batSpawners.empty())
+	for (int i = batSpawners.size() - 1; i >= 0; i--) {
+		Vector2 p = GetWorldToScreen2D(batSpawners[i], camera);
+		if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+			enemies.push_back(new Bat(batSpawners[i]));
+			batSpawners.erase(batSpawners.begin() + i);
+		}
+	}
+
+	for (int i = pantherSpawners.size() - 1; i >= 0; i--) {
+		Vector2 p = GetWorldToScreen2D(pantherSpawners[i], camera);
+		if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+			enemies.push_back(new Panther(pantherSpawners[i]));
+			pantherSpawners.erase(pantherSpawners.begin() + i);
+		}
+	}
+
+	if (!Vector2Equals(bossSpawner, { 0, 0 }))
 	{
-		for (int i = batSpawners.size()-1; i >= 0; i--) {
-			Vector2 p = GetWorldToScreen2D(batSpawners[i], camera);
-			if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
-				enemies.push_back(new Bat(batSpawners[i]));
-				batSpawners.erase(batSpawners.begin() + i);
-			}
+		Vector2 p = GetWorldToScreen2D(bossSpawner, camera);
+		if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+			enemies.push_back(new BatBoss(Vector2Add(bossSpawner, { 0, 16 })));
+			bossSpawner = { 0, 0 };
 		}
-	}
-
-	if (!pantherSpawners.empty())
-	{
-		for (int i = pantherSpawners.size() - 1; i >= 0; i--) {
-			Vector2 p = GetWorldToScreen2D(pantherSpawners[i], camera);
-			if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
-				enemies.push_back(new Panther(pantherSpawners[i]));
-				pantherSpawners.erase(pantherSpawners.begin() + i);
-			}
-		}
-	}
-
-	if (!Vector2Equals(bossSpawner, {0, 0}))
-	{
-			Vector2 p = GetWorldToScreen2D(bossSpawner, camera);
-			if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
-				enemies.push_back(new BatBoss(Vector2Add(bossSpawner, {0, 16})));
-				bossSpawner = { 0, 0 };
-			}
 
 	}
 
-	if (!enemies.empty()) {
-		for (int i = (int)enemies.size() - 1; i >= 0; i--) {
-			enemies[i]->hitCollision(playerHitBoxes);
-			enemies[i]->groundCollision(solidRects);
-			enemies[i]->update();
-			
-		}
+	//physics
+	if (player != nullptr) player->update();
+
+	for (int i = destructables.size() - 1; i >= 0; i--) {
+		destructables[i]->update();
 	}
-
-	if (!projectiles.empty()) {
-		for (int i = (int)projectiles.size() - 1; i >= 0; i--) {
-			if (!projectiles[i]->boolGroundCollision(solidRects) && 
-				!projectiles[i]->enemyCollision(enemyRects) && 
-				!projectiles[i]->playerCollision(player->getHurtbox())) {
-				projectiles[i]->update();
-			}
-
-		}
+	
+	for (int i = lootitems.size() - 1; i >= 0; i--) { 
+		lootitems[i]->update();
 	}
+	
+	for (int i = enemies.size() - 1; i >= 0; i--) {
+		enemies[i]->update();
+	}
+	
+	for (int i = projectiles.size() - 1; i >= 0; i--) {
+		projectiles[i]->update();
+	}
+	
 
+	//Boss start
 	if (GameManager::getInstance().getBossStarted() && GameManager::getInstance().getPlayerHealth() > 0) {
 		GameManager::getInstance().getGamePointer()->publicPlayMusicOffset(Game::BLACK_NIGHT, 1.6);
 	}
 
+	//Particles
 	for (int i = (int)particles.size() - 1; i >= 0; i--) {
 		particles[i].timer += GetFrameTime();
 		particles[i].sprite->update(GetFrameTime());

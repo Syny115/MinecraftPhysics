@@ -109,7 +109,7 @@ private:
 	vector<vector<int>> tileMat;
 	Texture2D tileAtlas = LoadTexture("resources/sprites/CastlevaniaTileset.png");
 
-	//vector<Entity*> entities;
+	int enemyCap = 10;
 
 	string debug_text1;
 	string debug_text2;
