@@ -1,13 +1,10 @@
 #pragma once
-#include "raylib.h"
-#include <string>
-#include <vector>
+#include "TextureManager.h"
 using namespace std;
 
 class SpriteRenderer {
 private:
-    Image rawSprite;
-    Texture2D sprite;
+    Texture2D* sprite;
 
     struct Animation {
         string name;

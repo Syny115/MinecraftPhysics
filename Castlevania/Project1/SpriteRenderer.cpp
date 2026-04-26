@@ -38,7 +38,7 @@ void SpriteRenderer::draw(Vector2 position) {
         flipX ? -anim.frameWidth : anim.frameWidth,
         anim.frameHeight
     };
-    DrawTextureRec(sprite, source, position, WHITE);
+    DrawTextureRec(*sprite, source, position, WHITE);
 }
 void SpriteRenderer::draw(Vector2 position, float scale) {
     if (animationLibrary.empty()) return;
@@ -55,7 +55,7 @@ void SpriteRenderer::draw(Vector2 position, float scale) {
         flipX ? -anim.frameWidth : anim.frameWidth,
         anim.frameHeight
     };
-    DrawTexturePro(sprite, source, { position.x,position.y,anim.frameWidth * scale,anim.frameHeight * scale }, { 0,0 }, 0, WHITE);
+    DrawTexturePro(*sprite, source, { position.x,position.y,anim.frameWidth * scale,anim.frameHeight * scale }, { 0,0 }, 0, WHITE);
 }
 
 
@@ -63,12 +63,7 @@ void SpriteRenderer::draw(Vector2 position, float scale) {
 SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
     : currentFrame(0), frameTimer(0), flipX(false)
 {
-    rawSprite = LoadImage(path);
-    Color target = { 119, 51, 153, 255 };
-    ImageColorReplace(&rawSprite, target, BLANK);
-
-    sprite = LoadTextureFromImage(rawSprite);
-    UnloadImage(rawSprite);
+    sprite = &TextureManager::Get().Load(path);
 
     // Todos los sprites de Simon son 16x32 pero el frame en si es 20x41 (dentro del relieve lila)
     // Fila superior: y=7, altura=41
@@ -212,5 +207,5 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
 
 
 SpriteRenderer::~SpriteRenderer() {
-    UnloadTexture(sprite);
+    //UnloadTexture(sprite);
 }

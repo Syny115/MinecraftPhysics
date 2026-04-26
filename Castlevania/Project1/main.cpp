@@ -10,6 +10,7 @@ int main(void)
     GameManager::getInstance().setGamePointer(&game);
     GameManager::getInstance().debugMode = false; //Enable / Disable Debug Mode (OPtion in start?)
     game.startGame();
+    TextureManager::Get().UnloadAll();
     return 0;
 }
 

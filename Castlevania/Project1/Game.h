@@ -51,6 +51,7 @@ public:
 	Scene* getActiveScene() { return activeScene; }	
 
 	void publicPlaySound(int i) {
+		if (!IsAudioDeviceReady()) return;
 		if (i < 0 || i >= 10) {
 			TraceLog(LOG_ERROR, "publicPlaySound: invalid index %d", i);
 			return;
