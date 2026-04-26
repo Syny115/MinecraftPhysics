@@ -44,7 +44,7 @@ void Enemy::update() {
 
 	if (!setup) {
 		GameManager::getInstance().getActiveScene()->pushEnemyRects(damageRect{ &hurtbox, damage });
-		if (GameManager::getInstance().getActiveScene()->getPlayer()->getPos().x - position.x > 0)
+		if (GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x - position.x > 0)
 		{
 			direction = 1;
 		}
@@ -132,7 +132,7 @@ void Bat::update() {
 
 	if (setup) { // setup se vuelve true después del primer Enemy::update()
 		if (state == BatState::IDLE) {
-			Vector2 playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+			Vector2 playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPosition();
 			float distX = playerPos.x - position.x;
 			float distance = sqrtf(distX * distX + (playerPos.y - position.y) * (playerPos.y - position.y));
 
@@ -175,7 +175,7 @@ void Panther::update() {
 		if (state == PantherState::IDLE) {
 			sprite->setAnimation("pantherIdle"); // fuerza la animación correcta
 
-			Vector2 playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+			Vector2 playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPosition();
 			float distX = playerPos.x - position.x;
 			float distance = sqrtf(distX * distX + (playerPos.y - position.y) * (playerPos.y - position.y));
 
@@ -295,7 +295,7 @@ void BatBoss::update() {
 	case SEARCHING:
 		seekingTimer.updateTimer();
 		sprite->setAnimation("batBossSearching");
-		playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+		playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPosition();
 
 		dist = Vector2DistanceSqr(playerPos, position);
 

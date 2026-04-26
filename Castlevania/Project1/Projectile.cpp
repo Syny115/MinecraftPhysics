@@ -154,7 +154,7 @@ Sfire::Sfire(Vector2 pos, int dir, int own)
 	hurtbox.height = sprite->getAnimationFromName("fireball").frameHeight;
 	size = Vector2{ hurtbox.width, hurtbox.height };
 	owner = own;
-	playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPos();
+	playerPos = GameManager::getInstance().getActiveScene()->getPlayer()->getPosition();
 	path = Vector2Normalize(Vector2MoveTowards(position, playerPos, 1));
 	direction = path.x < 0 ? -1 : 1;
 }

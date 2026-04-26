@@ -146,7 +146,7 @@ void PlayableScene::updateScene() {
 			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
 			spawnCoolDown.startTimer();
 			Vector2 p = GetScreenToWorld2D(Vector2{ screenWidth + 100, 0 }, camera);
-			p.y = player->getPos().y;
+			p.y = player->getPosition().y;
 			enemies.push_back(new Medusa(p));
 		}
 	}

@@ -32,9 +32,6 @@ Player::~Player() {
     delete bottomSprite;
 }
 
-Vector2 Player::getPosition() { return position; }
-Vector2 Player::getVelocity() { return velocity; }
-
 int Player::getInputAxis() { return IsKeyDown(I_RIGHT) - IsKeyDown(I_LEFT); }
 
 int Player::getNormalizedVelocity() {

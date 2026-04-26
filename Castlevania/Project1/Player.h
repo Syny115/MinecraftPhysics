@@ -109,8 +109,7 @@ private:
 public:
     Player(Vector2 pos);
     ~Player();
-    Vector2 getPosition();
-    Vector2 getVelocity();
+
     int getInputAxis();
     int checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len);
     void groundCollision(Rectangle floorRec);

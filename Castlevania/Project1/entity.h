@@ -34,7 +34,7 @@ public:
 	Vector2 getSize() {
 		return size;
 	}
-	Vector2 getPos() {
+	Vector2 getPosition() {
 		return position;
 	}
 	Vector2 getVelocity() {
