@@ -8,6 +8,7 @@ int main(void)
 {
     Game game;
     GameManager::getInstance().setGamePointer(&game);
+    GameManager::getInstance().debugMode = false; //Enable / Disable Debug Mode (OPtion in start?)
     game.startGame();
     return 0;
 }

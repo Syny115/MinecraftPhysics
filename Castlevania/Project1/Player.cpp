@@ -267,7 +267,7 @@ void Player::update() {
     if (isOnFloor && lowerState.current != JUMP && lowerState.current != KNOCKBACK) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
-    //if (IsKeyPressed(KEY_F6)) isDamaged = 6;
+    if (IsKeyPressed(KEY_F6) && GameManager::getInstance().debugMode) isDamaged = 6;
     if (isDamaged != 0 && lowerState.current != DIE)
     {
         attackTimer.stopTimer();
@@ -573,21 +573,23 @@ void Player::lateUpdate() {
 }
 
 void Player::drawPlayer() {
-    //DrawRectangleRec(hurtbox, DARKGREEN);
+    if (GameManager::getInstance().debugMode) DrawRectangleRec(hurtbox, DARKGREEN);
     if (!invincibilityTimer.isActive() || (int) (GetTime()/GetFrameTime()) % 8 > 0 || lowerState.current == DIE)
     {
         topSprite->draw(Vector2{ offsetX + topAnimOffsetX, offsetY + topAnimOffsetY });
         bottomSprite->draw(Vector2{ offsetX + bottomAnimOffsetX, offsetY + bottomAnimOffsetY });
     }
-    /*DrawRectangleRec(groundCollider, RED);
-    DrawRectangleRec(topCollider, RED);
-    DrawRectangleRec(leftCollider, RED);
-    DrawRectangleRec(rightCollider, RED);*/
+    if (GameManager::getInstance().debugMode)
+    {
+        DrawRectangleRec(groundCollider, RED);
+        DrawRectangleRec(topCollider, RED);
+        DrawRectangleRec(leftCollider, RED);
+        DrawRectangleRec(rightCollider, RED);
+    }
     if (upperState.current == STARTATTACK) {
         whipSprite->draw(Vector2{ offsetX + (topAnimOffsetX * direction)-4, offsetY + topAnimOffsetY + 13 });
     }
     if (upperState.current == ATTACK && whipSprite->getAnimation().find("Start") == string::npos) {
-       // DrawRectangleRec(whipCollider, WHITE);
         whipSprite->draw(Vector2{ offsetX - 23.5f + 39.5f * direction, offsetY + topAnimOffsetY + 9});
     } 
 }

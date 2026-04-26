@@ -19,6 +19,7 @@ public:
 		return instance;
 	}
 	float sceneTime;
+	bool debugMode;
 private:
 	GameManager() = default;
 

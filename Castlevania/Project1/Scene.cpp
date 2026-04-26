@@ -223,21 +223,14 @@ void PlayableScene::drawScene() {
 	
 
 	drawTiles();
-	/*	for (int i = 0; i < solidRects.size(); i++) {
+	if (GameManager::getInstance().debugMode) {
+		for (int i = 0; i < solidRects.size(); i++) {
 			DrawRectangleRec(solidRects[i], WHITE);
 			DrawRectangle(solidRects[i].x + 1, solidRects[i].y + 1, solidRects[i].width - 2, solidRects[i].height - 2, GREEN);
-		}*/
+		}
+	}
 
 	player->drawPlayer();
-	//if (!zombieSpawners.empty()) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
-	//if (!medusaSpawners.empty()) DrawRectangleLinesEx(medusaSpawners[0], 1, BLUE);
-	
-	/*DrawRectangleRec(stairs[1].start, RED);
-	DrawRectangleRec(stairs[1].end, RED);*/
-	/*DrawRectangleRec(stairs[2].start, GREEN);
-	DrawRectangleRec(stairs[2].end, GREEN);*/
-	//DrawRectangleRec(stairs[0].start, BLUE);
-	//DrawRectangleRec(stairs[0].end, BLUE);
 
 	if (!lootitems.empty()) {
 		for (int i = 0; i < lootitems.size(); i++) {
@@ -254,27 +247,30 @@ void PlayableScene::drawScene() {
 			projectiles[i]->draw();
 		}
 	}
-	//DrawRectangleLinesEx(nextArea, 3, GREEN);
-	//if (!lootRects.empty()) {
-	//	for (int i = 0; i < lootRects.size(); i++) {
-	//		
-	//		
-	//		//DrawRectangleRec();
-	//	}
-	//}
-	//if (!enemyRects.empty()) {
-	//	for (int i = 0; i < enemyRects.size(); i++) {
-	//		DrawRectangleLinesEx(*enemyRects[i].rect, 2, RED);
-	//		//DrawRectangleRec();
-	//	}
-	//}
-	//if (!playerHitBoxes.empty()) {
-	//	for (int i = 0; i < playerHitBoxes.size(); i++) {
-	//		printf("damage: %d\n", playerHitBoxes[i].damage);
-	//		//DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, BLUE);
-	//		////DrawRectangleRec();
-	//	}
-	//}
+
+	if (GameManager::getInstance().debugMode)
+	{
+		if (!zombieSpawners.empty()) {
+			for (int i = 0; i < zombieSpawners.size(); i++) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
+		}
+		if (!zombieSpawners.empty()) {
+			for (int i = 0; i < zombieSpawners.size(); i++) DrawRectangleLinesEx(zombieSpawners[0], 1, BLUE);
+		}
+		if (!destructableRects.empty()) {
+			for (int i = 0; i < destructableRects.size(); i++) DrawRectangleLinesEx(destructableRects[0], 1, ORANGE);
+		}
+		DrawRectangleLinesEx(nextArea, 3, GREEN);
+		if (!enemyRects.empty()) {
+			for (int i = 0; i < enemyRects.size(); i++) {
+				DrawRectangleLinesEx(*enemyRects[i].rect, 2, RED);
+			}
+		}
+		if (!playerHitBoxes.empty()) {
+			for (int i = 0; i < playerHitBoxes.size(); i++) {
+				DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, WHITE);
+			}
+		}
+	}
 
 
 	for (int i = 0; i < particles.size(); i++) {
@@ -286,9 +282,11 @@ void PlayableScene::drawScene() {
 	
 	ui.renderUI();
 	ui.updateUI();
-	//DrawText(debug_text1.c_str(), 0, 0, 50, WHITE);
-	//DrawText(debug_text2.c_str(), 0, 50, 50, WHITE);
-
+	
+	if (GameManager::getInstance().debugMode)  {
+		DrawText(debug_text1.c_str(), 0, 146, 50, WHITE);
+		DrawText(debug_text2.c_str(), 0, 196, 50, WHITE);
+	}
 
 
 }
