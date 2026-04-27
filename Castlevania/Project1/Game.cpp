@@ -71,7 +71,7 @@ void Game::startGame() {
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
-
+    HideCursor();
    // activeScene.startScene();
 
     while (!WindowShouldClose())    // Detect window close button or ESC key

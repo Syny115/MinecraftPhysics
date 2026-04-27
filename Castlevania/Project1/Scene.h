@@ -129,6 +129,11 @@ private:
 	};
 	vector<Particle> particles;
 
+	void debugEnemySpawn();
+	int debugEnemySelected = 0;
+	SpriteRenderer* debugTile;
+	Vector2 mousePos;
+
 public:
 
 	PlayableScene(const char* path);

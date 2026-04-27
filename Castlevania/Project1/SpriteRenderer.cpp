@@ -200,6 +200,17 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("hitEffect", 4, 0, 160, 8, 16, 0, 1);
         currentAnimName = "hitEffect";
         break;
+    case DEBUG_TILE:
+        add("zombieTile", 1, 0, 240, 16, 16, 0, 1);
+        add("medusaTile", 1, 32, 240, 16, 16, 0, 1);
+        add("batTile", 1, 64, 240, 16, 16, 0, 1);
+        add("pantherTile", 1, 80, 240, 16, 16, 0, 1);
+        add("mermanTile", 1, 96, 240, 16, 16, 0, 1);
+        add("bossTile", 1, 128, 240, 16, 16, 0, 1);
+        add("camTile", 1, 144, 240, 16, 16, 0, 1);
+        add("knightTile", 1, 160, 240, 16, 16, 0, 1);
+        currentAnimName = "zombieTile";
+        break;
     default:
         break;
     }

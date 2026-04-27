@@ -50,11 +50,13 @@ void PlayableScene::start() {
 	player = new Player(checkpoints[GameManager::getInstance().getCheck()]);
 	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
 	spawnCoolDown.startTimer();
+	debugTile = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::DEBUG_TILE);
 }
 
 
 PlayableScene::~PlayableScene() {
 	delete player;
+	delete debugTile;
 	UnloadTexture(tileAtlas);
 	for (Loot* loot : lootitems) if (loot != nullptr && loot != (Loot*)0xFFFFFFFFFFFFFFFF) delete loot;
 	lootitems.clear();
@@ -177,6 +179,8 @@ void PlayableScene::updateScene() {
 
 	}
 
+	if (GameManager::getInstance().debugMode) debugEnemySpawn();
+
 	//physics
 	if (player != nullptr) player->update();
 
@@ -271,6 +275,7 @@ void PlayableScene::drawScene() {
 				DrawRectangleLinesEx(*playerHitBoxes[i].rect, 1, WHITE);
 			}
 		}
+		debugTile->draw(mousePos);
 	}
 
 
@@ -397,6 +402,49 @@ void PlayableScene::spawnHitEffect(Vector2 position) {
 	particles.push_back(p);
 }
 
+void PlayableScene::debugEnemySpawn() {
+	mousePos = Vector2SubtractValue(GetScreenToWorld2D(GetMousePosition(), camera),8);
+
+	if (GetMouseWheelMove() > 0) debugEnemySelected = (debugEnemySelected+1) % 6;
+	else if (GetMouseWheelMove() < 0) debugEnemySelected > 0 ? debugEnemySelected-- : debugEnemySelected = 5;
+	
+	switch (debugEnemySelected) {
+	case 0:
+		//zombie
+		debugTile->setAnimation("zombieTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Zombie(mousePos));
+		break;
+	case 1:
+		//bat
+		debugTile->setAnimation("batTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Bat(mousePos));
+		break;
+	case 2:
+		//panther
+		debugTile->setAnimation("pantherTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Panther(mousePos));
+		break;
+	case 3:
+		//merman
+		debugTile->setAnimation("mermanTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Merman(mousePos));
+		break;
+	case 4:
+		//batBoss
+		debugTile->setAnimation("bossTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new BatBoss(mousePos));
+		break;
+	case 5:
+		//knight
+		debugTile->setAnimation("knightTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Zombie(mousePos));
+		break;
+	default:
+		break;
+	}
+
+
+}
 // Tile screen
 
 TitleScene::TitleScene()
