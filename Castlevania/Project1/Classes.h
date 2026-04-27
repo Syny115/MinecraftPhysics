@@ -13,6 +13,13 @@ struct staircase
     bool up;
 };
 
+enum class SceneType {
+    TITLE,
+    LORE,
+    PLAYABLE,
+    LEVEL_SELECT
+};
+
 class Timer
 {
 private:

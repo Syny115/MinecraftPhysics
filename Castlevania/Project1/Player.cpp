@@ -423,7 +423,11 @@ void Player::update() {
         bottomSprite->setAnimation("dead");
         GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::PLAYER_MISS);
         deathTimer.updateTimer();
-        if (deathTimer.isTriggerd()) GameManager::getInstance().getGamePointer()->requestSceneReload();
+        if (deathTimer.isTriggerd()) {
+            *health = 16;
+            *whipLevel = 0;
+            GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::PLAYABLE);
+        }
         break;
     case KNOCKBACK:
             bottomAnimOffsetY = 17;

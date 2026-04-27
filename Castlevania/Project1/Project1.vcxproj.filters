@@ -14,6 +14,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes.h" />
@@ -32,5 +33,6 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
 </Project>

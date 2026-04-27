@@ -1,5 +1,6 @@
 #include "Loot.h"
 #include "GameManager.h"
+#include "Classes.h"
 
 static string lootnames[] = { "whip", "smallheart", "bigheart", "moneybag", "orb", "dagger", "axe", "holywater", "boomerang", "stopwatch", "twoupgrade", 
 "threeupgrade", "chicken", "jar", "rosary", "1up", "crown", "chest"};
@@ -60,7 +61,7 @@ bool Loot::playerCollision(Rectangle rec) {
 		else if (lootType >= 16 && lootType <= 17) GameManager::getInstance().addScore(2000);
 		else if (lootType == 4){ 
 			GameManager::getInstance().maximizeHealth();
-			GameManager::getInstance().getGamePointer()->requestNextLevel();
+			GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::TITLE);
 
 			// Deletes all enemies from scene, so copy loottype == 14 code (Or call it)
 			// Play cutscene

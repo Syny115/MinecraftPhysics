@@ -3,11 +3,7 @@
 #include <vector>
 #include "Scene.h"
 #include "UI.h"
-
-struct Level
-{
-	vector<const char*> scenePath;
-};
+#include "SceneManager.h"
 
 class Game {
 private:
@@ -31,22 +27,24 @@ public:
 		WHIP, BREAK, CROSS, DAGGER, HEART, JAR, TREASURE, WEAPON_PICK, AXE, HURT
 	};
 
-	vector<Level> levels;
-	Game() {
-		levels.push_back({ {"Title", "Lore"}});
-		levels.push_back({ {"resources/json/Level1_Scene1.json", "resources/json/Level1_Scene2.json", "resources/json/Level1_Scene3.json", "resources/json/Level1_Scene4.json"}});
-	}
+	
 	~Game();
+	
+
+	
 	void startGame();
 	void loadScene(Scene* newScene); //DO NOT CALL!
-	void requestSceneChange(Scene* newScene);
-	void requestSceneReload();
-	void requestNextLevel();
+	
 
 	bool sceneRequested() {
 		if (pendingScene != nullptr) return true;
 		return false;
 	}
+
+	void setPendingScene(Scene* newScene) { pendingScene = newScene; }
+
+
+	SceneManager sceneMan;
 
 	Scene* getActiveScene() { return activeScene; }	
 
@@ -93,16 +91,7 @@ public:
 		publicPlayMusic(i);
 	}
 
-	void publicPlayLevelMusic() {
-		switch (levelIndex) {
-		case 0:
-			publicPlayMusic(-1);
-			break;
-		default:
-			publicPlayMusic(VAMPIRE_KILLER);
-			break;
-		}
-	}
+	void publicPlayLevelMusic();
 
 	int getLevelIndex() { return levelIndex; }
 	int getSceneIndex() { return sceneIndex; }

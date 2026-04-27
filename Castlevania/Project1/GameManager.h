@@ -46,6 +46,7 @@ private:
 	int projectileUpgrade = 0; // 0 is un-upgraded, 1 is two projectiles and so on
 	int projectileCount = 0; // actual amount of projectiles
 	int ammo = 0;
+	int area = 0;
 
 	int cp = 0;
 
@@ -131,6 +132,9 @@ public:
 	bool getBossStarted() { return bossStarted; }
 
 	int* getBossHealthPointer() { return &enemyHealth; }
+
+	void setArea(int i) { area = i; }
+	int getArea() { return area; }
 
 	friend class Player;
 };

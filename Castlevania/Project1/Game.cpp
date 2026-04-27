@@ -11,28 +11,17 @@ void Game::loadScene(Scene* newScene) {
     publicResumeMusic();
 }
 
-void Game::requestSceneChange(Scene* newScene) {
-    pendingScene = newScene;
-}
-
-void Game::requestSceneReload() {
-    GameManager::getInstance().maximizeHealth();
-    GameManager::getInstance().setWhipLevel(0);
-    if (levels[levelIndex].scenePath[sceneIndex] == "Title") pendingScene =  new TitleScene();
-    else if (levels[levelIndex].scenePath[sceneIndex] == "Lore") pendingScene = new LoreScene();
-    else pendingScene = new PlayableScene(activeScene->getPath());
-}
-
-void Game::requestNextLevel() {
-    if (++sceneIndex >= levels[levelIndex].scenePath.size()) {
-        sceneIndex = 0;
-        if (++levelIndex >= levels.size()) {
-            levelIndex = 0; //TODO, make this go to credits!
-        }
+void Game::publicPlayLevelMusic() {
+    if (activeScene == nullptr) return;
+    if (activeScene->type != SceneType::PLAYABLE) return;
+    switch (GameManager::getInstance().getArea()) {
+    case 0:
+        publicPlayMusic(VAMPIRE_KILLER);
+        break;
+    default:
+        publicPlayMusic(VAMPIRE_KILLER);
+        break;
     }
-    if (levels[levelIndex].scenePath[sceneIndex] == "Title") requestSceneChange(new TitleScene());
-    else if (levels[levelIndex].scenePath[sceneIndex] == "Lore") pendingScene = new LoreScene();
-    else requestSceneChange(new PlayableScene(levels[levelIndex].scenePath[sceneIndex]));
 }
 
 void Game::startGame() {
@@ -86,8 +75,8 @@ void Game::startGame() {
                 else if (IsKeyPressed(KEY_F2)) GameManager::getInstance().setTimeScale(1.0f);
                 else if (IsKeyPressed(KEY_F3)) GameManager::getInstance().setTimeScale(2.0f);
                 else if (IsKeyPressed(KEY_F4)) GameManager::getInstance().setTimeScale(4.0f);
-                else if (IsKeyPressed(KEY_F5)) requestNextLevel();
-                else if (IsKeyPressed(KEY_F7)) requestSceneReload();
+                else if (IsKeyPressed(KEY_F5)) sceneMan.requestSceneLoad(SceneType::PLAYABLE);
+                else if (IsKeyPressed(KEY_F7)) sceneMan.requestRoomExit(1);
             }
             if (currentSong > -1) UpdateMusicStream(musicArray[currentSong]);
             //----------------------------------------------------------------------------------

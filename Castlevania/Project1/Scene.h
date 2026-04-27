@@ -24,7 +24,7 @@ protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
 public:
-
+	SceneType type;
 	Scene();
 	virtual ~Scene() {}
 	virtual void start();
@@ -135,7 +135,6 @@ private:
 	Vector2 mousePos;
 
 public:
-
 	PlayableScene(const char* path);
 	~PlayableScene();
 

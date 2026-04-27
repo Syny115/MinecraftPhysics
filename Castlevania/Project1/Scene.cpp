@@ -39,6 +39,7 @@ void Scene::updateScene() {
 //----------- PLAYABLE SCENE -------------//
 
 PlayableScene::PlayableScene(const char* path) : Scene() {
+	type = SceneType::PLAYABLE;
 	GameManager::getInstance().sceneTime = 0;
 	this->path = path;
 	parseTiles(path);
@@ -93,7 +94,7 @@ void PlayableScene::updateScene() {
 	timeLeft.updateTimer();
 
 	if (timeLeft.isTriggerd()) {
-		GameManager::getInstance().getGamePointer()->requestSceneReload();
+		GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::PLAYABLE);
 	}
 
 	//collisions
@@ -104,7 +105,7 @@ void PlayableScene::updateScene() {
 		player->wallCollision(solidRects);
 		player->stairCollision(stairs);
 		player->enemyCollision(enemyRects);
-		if (CheckCollisionPointRec(player->getPosition(), nextArea)) GameManager::getInstance().getGamePointer()->requestNextLevel();
+		if (CheckCollisionPointRec(player->getPosition(), nextArea)) GameManager::getInstance().getGamePointer()->sceneMan.requestRoomExit(1);
 	}
 
 	for (int i = destructables.size() - 1; i >= 0; i--) {
@@ -451,6 +452,7 @@ TitleScene::TitleScene()
 {
 	camera.zoom = screenWidth / viewportWidth;
 	background = LoadTexture("resources/sprites/Title_BG.png");
+	type = SceneType::TITLE;
 }
 
 TitleScene::~TitleScene()
@@ -459,7 +461,7 @@ TitleScene::~TitleScene()
 }
 
 void TitleScene::updateScene() {
-	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->requestNextLevel();
+	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE);
 }
 
 void TitleScene::drawScene() {
@@ -475,6 +477,7 @@ void TitleScene::drawScene() {
 
 LoreScene::LoreScene()
 {
+	type = SceneType::LORE;
 	camera.zoom = screenWidth / viewportWidth;
 }
 
@@ -483,7 +486,7 @@ LoreScene::~LoreScene()
 }
 
 void LoreScene::updateScene() {
-	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->requestNextLevel();
+	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
 }
 
 void LoreScene::drawScene() {
