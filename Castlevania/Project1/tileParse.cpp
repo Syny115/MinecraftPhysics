@@ -178,7 +178,10 @@ void PlayableScene::parseTiles(const char* path) {
     queue<Vector2> zombQ;
     queue<Vector2> meduQ;
 
-    vector<vector<int>> doorMat(row, vector<int>(col));
+    vector<vector<int>> doorMat0(row, vector<int>(col));
+    vector<vector<int>> doorMat1(row, vector<int>(col));
+    vector<vector<int>> doorMat2(row, vector<int>(col));
+    vector<vector<int>> doorMat3(row, vector<int>(col));
 
 
 	int background = 0, foreground = 0, breakables = 0, level = 0;
@@ -203,8 +206,14 @@ void PlayableScene::parseTiles(const char* path) {
 		}
 		else collisionMat[j / col][j % col] = 0;
         //Breakables Data
-        if (lData == 209) doorMat[j / col][j % col] = 1; //Load Next Level
-        else doorMat[j / col][j % col] = 0;
+        if (lData == 194) doorMat0[j / col][j % col] = 1; //Door 0
+        else doorMat0[j / col][j % col] = 0;
+        if (lData == 195) doorMat1[j / col][j % col] = 1; //Door 1
+        else doorMat1[j / col][j % col] = 0;
+        if (lData == 196) doorMat2[j / col][j % col] = 1; //Door 2
+        else doorMat2[j / col][j % col] = 0;
+        if (lData == 197) doorMat3[j / col][j % col] = 1; //Door 3
+        else doorMat3[j / col][j % col] = 0;
         
         if (bkData == 216) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 0)); //breakable block
         else if (bkData == 217) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 1)); //WITH CHICKEN!!
@@ -221,10 +230,11 @@ void PlayableScene::parseTiles(const char* path) {
         else if (bkData == 235) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 7)); //Candle with cross
 
         //Level Data
-        if (lData == 210) checkpoints[0] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //CHECKPOINT 1 
-        else if (lData == 211) checkpoints[1] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //CHECKPOINT 2
-        else if (lData == 212) checkpoints[2] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //CHECKPOINT 3
-        else if (lData == 213) checkpoints[3] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //CHECKPOINT 4
+        if (lData == 210) spawnponits[0] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 1 
+        else if (lData == 211) spawnponits[1] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 2
+        else if (lData == 212) spawnponits[2] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 3
+        else if (lData == 213) spawnponits[3] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 4
+        else if (lData == 209) spawnponits[4] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SAVE POINT
         else if (lData == 225) dVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
         else if (lData == 228) upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
 
@@ -304,7 +314,10 @@ void PlayableScene::parseTiles(const char* path) {
 
 
     matrixToRects(&solidRects, collisionMat, tileWidth, tileHeight);
-    matrixToRect(&nextArea, doorMat, tileWidth, tileHeight);
+    matrixToRect(&exits[0], doorMat0, tileWidth, tileHeight);
+    matrixToRect(&exits[1], doorMat1, tileWidth, tileHeight);
+    matrixToRect(&exits[2], doorMat2, tileWidth, tileHeight);
+    matrixToRect(&exits[3], doorMat3, tileWidth, tileHeight);
 
 	data.close();
 }

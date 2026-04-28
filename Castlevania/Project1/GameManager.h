@@ -48,7 +48,7 @@ private:
 	int ammo = 0;
 	int area = 0;
 
-	int cp = 0;
+	int lastExit = 0;
 
 	float timeScale = 1.0f;
 
@@ -125,8 +125,8 @@ public:
 	void setTimeScale(float f) { timeScale = f; }
 	float getTimeScale() { return timeScale; }
 
-	int getCheck() { return cp; }
-	void addCheck(int i) { cp += i; }
+	int getLastExit() { return lastExit; }
+	void setLastExit(int i) { lastExit = i; }
 
 	void setBossStarted(bool b) { bossStarted = b; }
 	bool getBossStarted() { return bossStarted; }

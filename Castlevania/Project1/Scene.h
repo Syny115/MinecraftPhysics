@@ -84,8 +84,9 @@ private:
 	vector<damageRect> playerHitBoxes;
 	vector<Loot*> lootitems;
 
-	Vector2 checkpoints[4];
-	Rectangle nextArea;
+	Vector2 spawnponits[5];
+	Vector2 spawnpoint;
+	Rectangle exits[4];
 	Vector2 bossStart = {-1, 0};
 	vector<staircase> stairs;
 	vector<DestructableObject*> destructables;
@@ -135,7 +136,7 @@ private:
 	Vector2 mousePos;
 
 public:
-	PlayableScene(const char* path);
+	PlayableScene(const char* path, int spawn);
 	~PlayableScene();
 
 	void start() override;

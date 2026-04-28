@@ -30,7 +30,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::requestSceneLoad(SceneType type) {
 	switch (type) {
-		case SceneType::PLAYABLE: if (currentRoom != nullptr) GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path)); break;
+		case SceneType::PLAYABLE: if (currentRoom != nullptr) GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, GameManager::getInstance().getLastExit())); break;
 		case SceneType::TITLE: GameManager::getInstance().getGamePointer()->setPendingScene(new TitleScene()); break;
 		case SceneType::LORE: GameManager::getInstance().getGamePointer()->setPendingScene(new LoreScene()); break;
 	default: GameManager::getInstance().getGamePointer()->setPendingScene(new TitleScene()); break;
@@ -40,9 +40,15 @@ void SceneManager::requestSceneLoad(SceneType type) {
 
 void SceneManager::requestRoomExit(int exit) {
 	room* r = getExit(exit);
+	int spawn;
 		if (r != nullptr) {
+			if (currentRoom == r->exit0) spawn = 0;
+			else if (currentRoom == r->exit1) spawn = 1;
+			else if (currentRoom == r->exit2) spawn = 2;
+			else if (currentRoom == r->exit3) spawn = 3;
 			currentRoom = r;
-			GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path));
+			GameManager::getInstance().setLastExit(spawn);
+			GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, spawn));
 		}
 }
 
@@ -50,7 +56,7 @@ void SceneManager::requestFirstRoomInArea(int area) {
 	if (areas[area] != nullptr) {
 		currentRoom = areas[area];
 		GameManager::getInstance().setArea(area);
-		GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path));
+		GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, 0));
 	}
 }
 
