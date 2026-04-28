@@ -4,12 +4,15 @@
 SceneManager::SceneManager() {
 	static room entrance{ "resources/json/Level1_Scene1.json" };
 	static room hall1{ "resources/json/Level1_Scene2.json" };
+	static room hall1p5{ "resources/json/Level1_Scene2-5.json" };
 	static room hall2{ "resources/json/Level1_Scene3.json" };
 	static room hall3{ "resources/json/Level1_Scene4.json" };
 
 	entrance.exit1 = &hall1;
 	hall1.exit0 = &entrance;
 	hall1.exit1 = &hall2;
+	hall1.exit2 = &hall1p5;
+	hall1p5.exit0 = &hall1;
 	hall2.exit0 = &hall1;
 	hall2.exit1 = &hall3;
 	hall3.exit0 = &hall2;
@@ -18,6 +21,8 @@ SceneManager::SceneManager() {
 	//----------------------------------------------------------------------------------//
 	//	null <- | entrance	| <- | hall1	| <- | hall2	| <- | hall3	|			//
 	//			|			| -> |			| -> |			| -> | hall3	| -> null	//
+	//								V	^												//
+	//							 | hall1p5  |											//
 	//----------------------------------------------------------------------------------//
 
 	head = &entrance;

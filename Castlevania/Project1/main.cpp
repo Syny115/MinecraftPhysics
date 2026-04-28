@@ -8,7 +8,7 @@ int main(void)
 {
     Game game;
     GameManager::getInstance().setGamePointer(&game);
-    GameManager::getInstance().debugMode = true; //Enable / Disable Debug Mode (OPtion in start?)
+    GameManager::getInstance().debugMode = false; //Enable / Disable Debug Mode (OPtion in start?)
     game.startGame();
     TextureManager::Get().UnloadAll();
     return 0;
