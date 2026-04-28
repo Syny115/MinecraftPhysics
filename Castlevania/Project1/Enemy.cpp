@@ -264,6 +264,32 @@ void Merman::update() {
 
 Merman::~Merman() {}
 
+Knight::Knight(Vector2 pos)
+{
+	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::KNIGHT);
+	size.x = sprite->getAnimationFromName("knightWalk").frameWidth;
+	size.y = sprite->getAnimationFromName("knightWalk").frameHeight;
+	hurtbox.width = size.x;
+	hurtbox.height = size.y;
+	position = pos;
+	health = 1;
+	damage = 1;
+	points = 500;
+}
+
+void Knight::update() {
+	earlyUpdate();
+
+	if (setup) {
+		moveHLinear(velocity.x * direction);
+	}
+
+	Enemy::update();
+	lateUpdate();
+}
+
+Knight::~Knight() {}
+
 //BAT BOSS
 
 BatBoss::BatBoss(Vector2 pos) {

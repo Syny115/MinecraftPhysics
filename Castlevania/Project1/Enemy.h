@@ -99,6 +99,17 @@ private:
 	const float speed = 40.0f;
 };
 
+class Knight : public Enemy
+{
+public:
+	void update() override;
+	Knight(Vector2 pos);
+	~Knight();
+private:
+	enum class KnightState { ATTACK, WALK };
+	KnightState state = KnightState::WALK;
+};
+
 // BAT BOSS
 
 class BatBoss : public Enemy

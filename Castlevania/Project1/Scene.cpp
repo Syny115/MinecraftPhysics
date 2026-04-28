@@ -438,7 +438,7 @@ void PlayableScene::debugEnemySpawn() {
 	case 5:
 		//knight
 		debugTile->setAnimation("knightTile");
-		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Zombie(mousePos));
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Knight(mousePos));
 		break;
 	default:
 		break;
