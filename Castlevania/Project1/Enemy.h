@@ -10,7 +10,7 @@ public:
 	Enemy() {}
 	Enemy(Vector2 p);
 	virtual ~Enemy();
-	void hitCollision(vector<damageRect>& dmgRect);
+	virtual void hitCollision(vector<damageRect>& dmgRect);
 	virtual void update() override;
 	void draw() {
 		if (!hitCooldown.isActive() || (int)(GetTime() / GetFrameTime()) % 8 > 0 || health == 0)
@@ -103,11 +103,14 @@ class Knight : public Enemy
 {
 public:
 	void update() override;
+	void hitCollision(vector<damageRect>& dmgRect) override;
 	Knight(Vector2 pos);
 	~Knight();
 private:
 	enum class KnightState { ATTACK, WALK };
 	KnightState state = KnightState::WALK;
+	bool isHittable = true;
+
 };
 
 // BAT BOSS

@@ -207,7 +207,7 @@ void Panther::update() {
 
 Panther::~Panther() {}
 
-//MEDUSA //por hacer: retocar parametros 
+//MEDUSA
 
 Medusa::Medusa(Vector2 pos)
 {
@@ -279,13 +279,21 @@ Knight::Knight(Vector2 pos)
 
 void Knight::update() {
 	earlyUpdate();
+	moveV();
+	moveHLinear(20 * direction);
 
-	if (setup) {
-		moveHLinear(velocity.x * direction);
-	}
+
+	if (GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x - position.x > 0) isHittable = true;
+	
+	else isHittable = false;
 
 	Enemy::update();
 	lateUpdate();
+}
+
+void Knight::hitCollision(vector<damageRect>& playerHitBoxes) {
+	if (!isHittable) return;
+	Enemy::hitCollision(playerHitBoxes);
 }
 
 Knight::~Knight() {}
