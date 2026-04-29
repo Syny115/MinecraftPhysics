@@ -264,6 +264,8 @@ void Merman::update() {
 
 Merman::~Merman() {}
 
+//KNIGHT
+
 Knight::Knight(Vector2 pos)
 {
 	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::KNIGHT);
@@ -272,7 +274,7 @@ Knight::Knight(Vector2 pos)
 	hurtbox.width = size.x;
 	hurtbox.height = size.y;
 	position = pos;
-	health = 1;
+	health = 2;
 	damage = 1;
 	points = 500;
 }
@@ -283,7 +285,7 @@ void Knight::update() {
 	moveHLinear(20 * direction);
 
 
-	if (GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x - position.x > 0) isHittable = true;
+	if ((GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x - position.x)*direction < 0) isHittable = true;
 	
 	else isHittable = false;
 
