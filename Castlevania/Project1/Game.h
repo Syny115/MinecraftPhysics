@@ -16,7 +16,6 @@ private:
 
 	int levelIndex = 0, sceneIndex = 0;
 public:
-
 	enum MUSIC
 	{
 		VAMPIRE_KILLER, PLAYER_MISS, BLACK_NIGHT

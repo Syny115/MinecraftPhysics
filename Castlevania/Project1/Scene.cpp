@@ -38,17 +38,20 @@ void Scene::updateScene() {
 
 //----------- PLAYABLE SCENE -------------//
 
-PlayableScene::PlayableScene(const char* path) : Scene() {
+PlayableScene::PlayableScene(const char* path, int spawn) : Scene() {
 	type = SceneType::PLAYABLE;
 	GameManager::getInstance().sceneTime = 0;
 	this->path = path;
 	parseTiles(path);
 	timeLeft.startTimer();
+	while (Vector2Equals(spawnponits[spawn], Vector2Zero())  && spawn >= 0) {
+		spawn = (spawn + 1) % 5;
+	}
+	spawnpoint = spawnponits[spawn];
 }
 
 void PlayableScene::start() {
-	while (checkpoints[0].x == 0 && checkpoints[0].y == 0  && GameManager::getInstance().getCheck() > 0) GameManager::getInstance().addCheck(-1);
-	player = new Player(checkpoints[GameManager::getInstance().getCheck()]);
+	player = new Player(spawnpoint);
 	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
 	spawnCoolDown.startTimer();
 	debugTile = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::DEBUG_TILE);
@@ -105,7 +108,11 @@ void PlayableScene::updateScene() {
 		player->wallCollision(solidRects);
 		player->stairCollision(stairs);
 		player->enemyCollision(enemyRects);
-		if (CheckCollisionPointRec(player->getPosition(), nextArea)) GameManager::getInstance().getGamePointer()->sceneMan.requestRoomExit(1);
+		for (int i = 0; i < 4; i++) {
+			if (CheckCollisionPointRec(player->getPosition(), exits[i])) {
+				GameManager::getInstance().getGamePointer()->sceneMan.requestRoomExit(i);
+			}
+		}
 	}
 
 	for (int i = destructables.size() - 1; i >= 0; i--) {
@@ -265,7 +272,10 @@ void PlayableScene::drawScene() {
 		if (!destructableRects.empty()) {
 			for (int i = 0; i < destructableRects.size(); i++) DrawRectangleLinesEx(destructableRects[0], 1, ORANGE);
 		}
-		DrawRectangleLinesEx(nextArea, 3, GREEN);
+		for (int i = 0; i<4; i++) {
+			DrawRectangleLinesEx(exits[i], 3, GREEN);
+		}
+		
 		if (!enemyRects.empty()) {
 			for (int i = 0; i < enemyRects.size(); i++) {
 				DrawRectangleLinesEx(*enemyRects[i].rect, 2, RED);
@@ -472,6 +482,47 @@ void TitleScene::drawScene() {
 	EndMode2D();
 }
 
+// Level screen
+
+LevelScene::LevelScene()
+{
+	camera.zoom = screenWidth / viewportWidth;
+	//background = LoadTexture("resources/sprites/Title_BG.png");
+	type = SceneType::LEVEL_SELECT;
+}
+
+LevelScene::~LevelScene()
+{
+	//UnloadTexture(background);
+}
+
+void LevelScene::updateScene() {
+	if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_DOWN)) selection = !selection;
+	if (selection) {
+		triangleCenter = { 48-16, 16 + 96 + 8 };
+		if (IsKeyPressed(KEY_RIGHT)) level++;
+		if (IsKeyPressed(KEY_LEFT)) level--;
+		level = (int)Clamp(level, 1, GameManager::getInstance().getGamePointer()->sceneMan.getAllRoomsSize());
+
+		if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSpecificRoom(level-1);
+	}
+	else {
+		triangleCenter = { 48 - 16, 48+16+8 };
+		if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
+	}
+}
+
+void LevelScene::drawScene() {
+	ClearBackground(BLACK);
+	camera.offset = { 0 , 0};
+	BeginMode2D(camera);
+	DrawTriangle({ triangleCenter.x - 16, triangleCenter.y + 8 }, triangleCenter, { triangleCenter.x - 16, triangleCenter.y - 8 }, WHITE);
+		DrawText("Start", 48, 48+16, 24, WHITE);
+		DrawText("Level Select:", 48, 16+96, 24, WHITE);
+		DrawText(to_string(level).c_str(), 48 + 16, 40 + 96, 24, WHITE);
+	EndMode2D();
+}
+
 
 // LORE screen
 
@@ -486,7 +537,7 @@ LoreScene::~LoreScene()
 }
 
 void LoreScene::updateScene() {
-	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
+	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LEVEL_SELECT);
 }
 
 void LoreScene::drawScene() {

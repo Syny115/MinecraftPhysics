@@ -20,12 +20,15 @@ public:
 	void requestSceneLoad(SceneType type);
 	void requestRoomExit(int exit);
 	void requestFirstRoomInArea(int area);
+	void requestSpecificRoom(int r);
 	room* getExit(int exit);
+	int getAllRoomsSize();
 
 private:
 	room* head;
 	room* currentRoom;
 	vector<room*> areas;
+	vector<room*> allRooms;
 };
 
 
