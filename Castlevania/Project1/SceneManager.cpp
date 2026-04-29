@@ -3,10 +3,15 @@
 
 SceneManager::SceneManager() {
 	static room entrance{ "resources/json/Level1_Scene1.json" };
+	allRooms.push_back(&entrance);
 	static room hall1{ "resources/json/Level1_Scene2.json" };
+	allRooms.push_back(&hall1);
 	static room hall1p5{ "resources/json/Level1_Scene2-5.json" };
+	allRooms.push_back(&hall1p5);
 	static room hall2{ "resources/json/Level1_Scene3.json" };
+	allRooms.push_back(&hall2);
 	static room hall3{ "resources/json/Level1_Scene4.json" };
+	allRooms.push_back(&hall3);
 
 	entrance.exit1 = &hall1;
 	hall1.exit0 = &entrance;
@@ -38,6 +43,7 @@ void SceneManager::requestSceneLoad(SceneType type) {
 		case SceneType::PLAYABLE: if (currentRoom != nullptr) GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, GameManager::getInstance().getLastExit())); break;
 		case SceneType::TITLE: GameManager::getInstance().getGamePointer()->setPendingScene(new TitleScene()); break;
 		case SceneType::LORE: GameManager::getInstance().getGamePointer()->setPendingScene(new LoreScene()); break;
+		case SceneType::LEVEL_SELECT: GameManager::getInstance().getGamePointer()->setPendingScene(new LevelScene()); break;
 	default: GameManager::getInstance().getGamePointer()->setPendingScene(new TitleScene()); break;
 	}
 	
@@ -65,9 +71,18 @@ void SceneManager::requestFirstRoomInArea(int area) {
 	}
 }
 
+void SceneManager::requestSpecificRoom(int r) {
+	if (allRooms[r] != nullptr) {
+		currentRoom = allRooms[r];
+		GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, 0));
+	}
+}
+
 room* SceneManager::getExit(int exit) {
 	if (exit == 1) return currentRoom->exit1;
 	if (exit == 2) return currentRoom->exit2;
 	if (exit == 3) return currentRoom->exit3;
 	return currentRoom->exit0;
 }
+
+int SceneManager::getAllRoomsSize() { return allRooms.size(); }

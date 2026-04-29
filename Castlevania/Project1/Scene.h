@@ -189,6 +189,23 @@ public:
 private:
 	Texture2D background;
 };
+
+// LEVEL SCREEN
+
+class LevelScene : public Scene
+{
+public:
+	LevelScene();
+	~LevelScene();
+	void updateScene() override;
+	void drawScene() override;
+private:
+	Texture2D background;
+	Vector2 triangleCenter;
+	int level;
+	bool selection;
+};
+
 // LORE SCREEN
 
 class LoreScene : public Scene
