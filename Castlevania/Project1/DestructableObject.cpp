@@ -21,16 +21,19 @@ DestructableObject::DestructableObject(Vector2 p)
 	
 }
 
-DestructableLoot::DestructableLoot(Vector2 p, bool c, int l) {
+DestructableLoot::DestructableLoot(Vector2 p, int t, int l) {
 	
 	sprite = new SpriteRenderer("resources/sprites/misc_sprites.png", SpriteRenderer::BREAKABLES);
-	if (c) sprite->setAnimation("candle");
-	else {
+	if (t == 0) sprite->setAnimation("candle");
+	else if (t == 1) {
 		sprite->setAnimation("torch");
 		size.x = sprite->getAnimationFromName("torch").frameWidth;
 		size.y = sprite->getAnimationFromName("torch").frameHeight;
 		hurtbox.width = size.x;
 		hurtbox.height = size.y;
+	}
+	else {
+		sprite->setAnimation("chest");
 	}
 	loot = l;
 
@@ -81,6 +84,9 @@ DestructableLoot::~DestructableLoot() {
 	}
 	else if (loot == 7) { // cross
 		GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 14));
+	}
+	else if (loot == 8) {//dash
+		GameManager::getInstance().getActiveScene()->pushLoot(new Loot(position, 17));
 	}
 	else { // random
 		int rand = GetRandomValue(1, 100);

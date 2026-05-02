@@ -16,6 +16,8 @@
 #define I_DOWN KEY_DOWN
 #define I_LEFT KEY_LEFT
 #define I_RIGHT KEY_RIGHT
+#define I_INV_D KEY_Q
+#define I_INV_U KEY_E
 
 
 using namespace std;

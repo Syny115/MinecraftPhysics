@@ -172,6 +172,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("holywater", 1, 35, 18, 16, 16, 1, 1);
         add("boomerang", 1, 52, 18, 16, 16, 1, 12);
         add("stopwatch", 1, 103, 18, 16, 16, 1, 1);
+        add("dash", 1, 129, 1, 16, 16, 1, 1);
         add("twoupgrade", 1, 120, 18, 16, 16, 1, 1);
         add("threeupgrade", 1, 137, 18, 16, 16, 1, 1);
         add("chicken", 1, 1, 35, 16, 16, 1, 1);
@@ -179,13 +180,14 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("rosary", 1, 35, 35, 16, 16, 1, 1);
         add("1up", 1, 52, 35, 16, 16, 1, 1); //Probably delete this ngl im not sure about it being a loot item
         add("crown", 4, 69, 35, 16, 16, 1, 12);
-        add("chest", 4, 137, 35, 16, 16, 1, 12);
+        
         currentAnimName = "whip";
         break;
     case BREAKABLES:
-        add("ground", 1, 32, 96, 16, 16, 1, 1);
+        add("ground", 1, 32, 96, 16, 16, 0, 1);
         add("candle", 2, 157, 1, 8, 16, 1, 10); //needs offset!!
         add("torch", 2, 175, 1, 16, 32, 1, 10); //needs offset!!
+        add("chest", 4, 137, 35, 16, 16, 1, 12);
         currentAnimName = "torch";
         break;
     case PROJECTILES:

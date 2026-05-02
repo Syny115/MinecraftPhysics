@@ -219,15 +219,16 @@ void PlayableScene::parseTiles(const char* path) {
         else if (bkData == 217) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 1)); //WITH CHICKEN!!
         else if (bkData == 218) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 2)); //projectile upgrade!!
 
-        else if (bkData == 214) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth/2, tileHeight * (float)(j / col) }, true, 0)); //Candle with random
-        else if (bkData == 215) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) - tileHeight }, false, 0)); //Torch with random
-        else if (bkData == 229) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 1)); //Candle with axe
-        else if (bkData == 230) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 2)); //Candle with dagger
-        else if (bkData == 231) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 3)); //Candle with Holy Water
-        else if (bkData == 232) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 4)); //Candle with Stopwatch
-        else if (bkData == 233) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 5)); //Candle with Boomerang
-        else if (bkData == 234) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 6)); //Candle with jar
-        else if (bkData == 235) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, true, 7)); //Candle with cross
+        else if (bkData == 214) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth/2, tileHeight * (float)(j / col) }, 0, 0)); //Candle with random
+        else if (bkData == 215) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) - tileHeight }, 1, 0)); //Torch with random
+        else if (bkData == 229) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 1)); //Chest with axe
+        else if (bkData == 230) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 2)); //Chest with dagger
+        else if (bkData == 231) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 3)); //Chest with Holy Water
+        else if (bkData == 232) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 4)); //Chest with Stopwatch
+        else if (bkData == 233) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 5)); //Chest with Boomerang
+        else if (bkData == 234) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 0, 6)); //Candle with jar
+        else if (bkData == 235) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 0, 7)); //Candle with cross
+        else if (bkData == 236) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 8)); //Candle with dash
 
         //Level Data
         if (lData == 210) spawnponits[0] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 1 

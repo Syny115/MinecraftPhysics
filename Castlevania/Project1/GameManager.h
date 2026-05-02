@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <queue>
+#include <unordered_map>
 using namespace std;
 
 
@@ -18,10 +19,17 @@ public:
 		// Instantiated on first use.
 		return instance;
 	}
-	float sceneTime;
-	bool debugMode;
+	float sceneTime = 0;
+	bool debugMode = false;
 private:
-	GameManager() = default;
+	GameManager() {
+		inventory["dagger"] = false;
+		inventory["axe"] = false;
+		inventory["holywater"] = false;
+		inventory["cross"] = false;
+		inventory["stopwatch"] = false;
+		inventory["dash"] = false;
+	}
 
 
 	Game* gamePointer = nullptr;
@@ -31,7 +39,7 @@ private:
 	const float viewportWidth = 256;
 	const float viewportHeight = 224;
 
-	bool bossStarted;
+	bool bossStarted = false;;
 
 	enum weapons
 	{
@@ -39,7 +47,7 @@ private:
 	};
 
 	int playerHealth = 16;
-	int enemyHealth;
+	int enemyHealth = 0;
 	int score = 0;
 	int whipLevel = 0;
 	int subWeapon = EMPTY;
@@ -51,6 +59,9 @@ private:
 	int lastExit = 0;
 
 	float timeScale = 1.0f;
+
+
+	unordered_map<string, bool> inventory;
 
 	//Lives but not yet
 
@@ -101,7 +112,28 @@ public:
 
 	void addWhipLevel(int wl) { if (whipLevel < 2) whipLevel+=wl; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
 
-	void changeSubWeapon(int sw) { subWeapon = sw; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
+	void changeSubWeapon(bool dir) { 
+		int mult = dir ? 1 : -1;
+		const char* weaponKeys[] = { "", "dagger", "axe", "holywater", "cross", "stopwatch" };
+		int total = 6;
+		int next = subWeapon;
+
+		for (int i = 1; i < total; i++) {
+			int candidate = (subWeapon + mult * i + total) % total;
+			if (candidate == EMPTY) {
+				next = EMPTY; 
+				break;
+			}
+			if (inventory[weaponKeys[candidate]]) {
+				next = candidate;
+				break;
+			}
+		}
+
+		subWeapon = next;
+	}
+
+	void setSubWeapon(int sw) { subWeapon = sw; }
 
 	int getSubWeapon() { return subWeapon; }
 
@@ -135,6 +167,9 @@ public:
 
 	void setArea(int i) { area = i; }
 	int getArea() { return area; }
+
+	void setInvetory(string key, bool value) { inventory.at(key) = value; if (value) gamePointer->publicPlaySound(Game::WEAPON_PICK);}
+	bool getInvetory(string key) { return inventory.at(key); }
 
 	friend class Player;
 };

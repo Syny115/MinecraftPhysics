@@ -3,7 +3,7 @@
 #include "Classes.h"
 
 static string lootnames[] = { "whip", "smallheart", "bigheart", "moneybag", "orb", "dagger", "axe", "holywater", "boomerang", "stopwatch", "twoupgrade", 
-"threeupgrade", "chicken", "jar", "rosary", "1up", "crown", "chest"};
+"threeupgrade", "chicken", "jar", "rosary", "1up", "crown", "dash"};
 
 Loot::Loot(Vector2 p, int lt) {
 	// Loot should only be constructed with position and loottype
@@ -26,8 +26,9 @@ Loot::~Loot() {
 bool Loot::playerCollision(Rectangle rec) {
 	if (CheckCollisionRecs(rec, hurtbox)) {
 		// Add pickup code here
-		if (lootType == 5 || lootType == 6 || lootType == 7 || lootType == 8 || lootType == 9) {
-			GameManager::getInstance().changeSubWeapon(lootType-4);
+		if (lootType == 5 || lootType == 6 || lootType == 7 || lootType == 8 || lootType == 9 || lootType == 17) {
+			GameManager::getInstance().setInvetory(lootnames[lootType], true);
+			if (lootType < 17) GameManager::getInstance().setSubWeapon(lootType - 4);
 		}
 		else if (lootType == 0) GameManager::getInstance().addWhipLevel(1);
 		else if (lootType == 1) GameManager::getInstance().addAmmo(1);
@@ -58,7 +59,7 @@ bool Loot::playerCollision(Rectangle rec) {
 			// Gives... one life? I can't find this one up item anywhere
 
 		}
-		else if (lootType >= 16 && lootType <= 17) GameManager::getInstance().addScore(2000);
+		else if (lootType == 16) GameManager::getInstance().addScore(2000); //changed chest to boots, you'll see why
 		else if (lootType == 4){ 
 			GameManager::getInstance().maximizeHealth();
 			GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::TITLE);

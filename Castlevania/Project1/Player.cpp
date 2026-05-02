@@ -253,6 +253,11 @@ void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
     
+    if (!attackTimer.isActive() && !startAttackTimer.isActive())
+    {
+        if (IsKeyPressed(I_INV_D)) GameManager::getInstance().changeSubWeapon(false);
+        if (IsKeyPressed(I_INV_U)) GameManager::getInstance().changeSubWeapon(true);
+    }
 
     if (*subWeapon == GameManager::STOPWATCH) projCost = 5;
     else if (*subWeapon == GameManager::HOLYWATER) projCost = 2;
@@ -283,7 +288,7 @@ void Player::update() {
         moveH(false, true);
         //Transition
         if (IsKeyPressed(I_JUMP)) lowerState.changeState(JUMP);
-        else if (IsKeyPressed(I_DASH) && !dashCooldown.isActive()) lowerState.changeState(DASH);
+        else if (IsKeyPressed(I_DASH) && !dashCooldown.isActive() && GameManager::getInstance().getInvetory("dash")) lowerState.changeState(DASH);
         else if (!isOnFloor) lowerState.changeState(FALL);
         else if (getInputAxis()) lowerState.changeState(WALK);
         if (IsKeyDown(I_DOWN)) {
@@ -302,7 +307,7 @@ void Player::update() {
         updateDirection();
         //Transition
         if (IsKeyPressed(I_JUMP)) lowerState.changeState(JUMP);
-        else if (IsKeyPressed(I_DASH) && !dashCooldown.isActive()) lowerState.changeState(DASH);
+        else if (IsKeyPressed(I_DASH) && !dashCooldown.isActive() && GameManager::getInstance().getInvetory("dash")) lowerState.changeState(DASH);
         else if (!isOnFloor) lowerState.changeState(FALL);
         else if (IsKeyDown(I_DOWN)) {
             if (isOnStair == -1 || isOnStair == 1) lowerState.changeState(STAIRS);

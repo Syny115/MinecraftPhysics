@@ -30,7 +30,7 @@ private:
 class DestructableLoot : public DestructableObject
 {
 public:
-	DestructableLoot(Vector2 p, bool c, int l);
+	DestructableLoot(Vector2 p, int t, int l);
 	~DestructableLoot();
 private:
 	int loot;
