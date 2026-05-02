@@ -18,7 +18,7 @@ SceneManager::SceneManager() {
 	hall1.exit0 = &entrance;
 	hall1.exit1 = &hall2;
 	hall1.exit2 = &hall1p5;
-	hall1.area = 0;;
+	hall1.area = 0;
 	hall1p5.exit0 = &hall1;
 	hall1p5.area = 0;
 	hall2.exit0 = &hall1;

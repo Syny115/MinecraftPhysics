@@ -247,6 +247,7 @@ void PlayableScene::parseTiles(const char* path) {
         //else if (lData == 248) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN END
         else if (lData == 249) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
         else if (lData == 250) bossStart = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS START
+        else if (lData == 251) knightSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // KNIGHT
 
         else if (lData == 226 && !dVec.empty()) { //STAIR END DOWN
             int i = -1;

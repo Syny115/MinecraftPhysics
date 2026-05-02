@@ -181,6 +181,14 @@ void PlayableScene::updateScene() {
 		}
 	}
 
+	for (int i = knightSpawners.size() - 1; i >= 0; i--) {
+		Vector2 p = GetWorldToScreen2D(knightSpawners[i], camera);
+		if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+			enemies.push_back(new Knight(knightSpawners[i]));
+			knightSpawners.erase(knightSpawners.begin() + i);
+		}
+	}
+
 	if (!Vector2Equals(bossSpawner, { 0, 0 }))
 	{
 		Vector2 p = GetWorldToScreen2D(bossSpawner, camera);
