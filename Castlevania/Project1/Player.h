@@ -72,6 +72,8 @@ private:
     bool wasOnFloor = true;
     bool isOnCeiling = true;
 
+    bool isOnSave = false;
+
     bool leftBlocked = false;
     bool rightBlocked = false;
 
@@ -120,6 +122,7 @@ public:
     void wallCollision(vector<Rectangle> wallRec);
     void stairCollision(vector<staircase>& stairs);
     void enemyCollision(vector<damageRect>& dmgRects);
+    void saveCollision(Vector2 rec);
 
     void update();
     void lateUpdate() override;

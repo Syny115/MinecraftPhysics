@@ -15,6 +15,7 @@
 #include "Loot.h"
 #include "Projectile.h"
 #include "UI.h"
+#include "Savepoint.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -77,6 +78,7 @@ class PlayableScene : public Scene {
 private:
 	const char* path;
 	Player* player;
+	SavePoint* savePoint;
 	vector<Rectangle> solidRects;
 	vector<damageRect> enemyRects;
 	vector<Rectangle> lootRects;

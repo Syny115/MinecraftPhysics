@@ -52,6 +52,7 @@ PlayableScene::PlayableScene(const char* path, int spawn) : Scene() {
 
 void PlayableScene::start() {
 	player = new Player(spawnpoint);
+	if (!Vector2Equals(spawnponits[4], Vector2Zero())) savePoint = new SavePoint(spawnponits[4]);
 	GameManager::getInstance().getGamePointer()->publicPlayLevelMusic();
 	spawnCoolDown.startTimer();
 	debugTile = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::DEBUG_TILE);
@@ -60,6 +61,7 @@ void PlayableScene::start() {
 
 PlayableScene::~PlayableScene() {
 	delete player;
+	delete savePoint;
 	delete debugTile;
 	UnloadTexture(tileAtlas);
 	for (Loot* loot : lootitems) if (loot != nullptr && loot != (Loot*)0xFFFFFFFFFFFFFFFF) delete loot;
@@ -97,7 +99,7 @@ void PlayableScene::updateScene() {
 	timeLeft.updateTimer();
 
 	if (timeLeft.isTriggerd()) {
-		GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::PLAYABLE);
+		GameManager::getInstance().getGamePointer()->sceneMan.requestSaveRoom();
 	}
 
 	//collisions
@@ -108,6 +110,7 @@ void PlayableScene::updateScene() {
 		player->wallCollision(solidRects);
 		player->stairCollision(stairs);
 		player->enemyCollision(enemyRects);
+		if (!Vector2Equals(spawnponits[4], Vector2Zero())) player->saveCollision(spawnponits[4]);
 		for (int i = 0; i < 4; i++) {
 			if (CheckCollisionPointRec(player->getPosition(), exits[i])) {
 				GameManager::getInstance().getGamePointer()->sceneMan.requestRoomExit(i);
@@ -191,6 +194,7 @@ void PlayableScene::updateScene() {
 
 	//physics
 	if (player != nullptr) player->update();
+	if (savePoint != nullptr) savePoint->update();
 
 	for (int i = destructables.size() - 1; i >= 0; i--) {
 		destructables[i]->update();
@@ -243,8 +247,6 @@ void PlayableScene::drawScene() {
 		}
 	}
 
-	player->drawPlayer();
-
 	if (!lootitems.empty()) {
 		for (int i = 0; i < lootitems.size(); i++) {
 			lootitems[i]->Draw();
@@ -294,6 +296,8 @@ void PlayableScene::drawScene() {
 		particles[i].sprite->draw(particles[i].position);
 	}
 	
+	if (savePoint != nullptr) savePoint->draw();
+	if (player != nullptr) player->drawPlayer();
 
 	EndMode2D();
 	

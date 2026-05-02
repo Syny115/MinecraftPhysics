@@ -179,6 +179,11 @@ void Player::enemyCollision(vector<damageRect>& dmgRect) {
     }
 }
 
+void Player::saveCollision(Vector2 vec) {
+    if (CheckCollisionPointRec(vec, hurtbox)) isOnSave = true;
+    else isOnSave = false;
+}
+
 
 void Player::moveH(bool accelerate, bool decelerate) {
     normalizedVelocity = getNormalizedVelocity();
@@ -252,7 +257,6 @@ void Player::earlyUpdate() {
 void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
-    
     if (!attackTimer.isActive() && !startAttackTimer.isActive())
     {
         if (IsKeyPressed(I_INV_D)) GameManager::getInstance().changeSubWeapon(false);
@@ -293,6 +297,7 @@ void Player::update() {
         else if (getInputAxis()) lowerState.changeState(WALK);
         if (IsKeyDown(I_DOWN)) {
             if (isOnStair == -1 || isOnStair == 1) lowerState.changeState(STAIRS);
+            else if (isOnSave) upperState.changeState(STUN);
             else lowerState.changeState(CROUCH);
         }
         if (IsKeyDown(I_UP) && (isOnStair == -2 || isOnStair == 2)) lowerState.changeState(STAIRS);
@@ -311,6 +316,7 @@ void Player::update() {
         else if (!isOnFloor) lowerState.changeState(FALL);
         else if (IsKeyDown(I_DOWN)) {
             if (isOnStair == -1 || isOnStair == 1) lowerState.changeState(STAIRS);
+            else if (isOnSave) upperState.changeState(STUN);
             else lowerState.changeState(CROUCH);
         }
         else if (IsKeyDown(I_UP) && (isOnStair == -2 || isOnStair == 2)) lowerState.changeState(STAIRS);
@@ -431,7 +437,7 @@ void Player::update() {
         if (deathTimer.isTriggerd()) {
             *health = 16;
             *whipLevel = 0;
-            GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::PLAYABLE);
+            GameManager::getInstance().getGamePointer()->sceneMan.requestSaveRoom();
         }
         break;
     case KNOCKBACK:
@@ -628,6 +634,9 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
         else if (future == STUN) {
             stunTimer.startTimer();
             lowerState.changeState(CROUCH);
+            if (isOnSave) {
+                GameManager::getInstance().gameSaved();
+            }
         }
     }
     else {

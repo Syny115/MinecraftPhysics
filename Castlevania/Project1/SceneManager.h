@@ -9,6 +9,7 @@ struct room {
 	room* exit1 = nullptr;
 	room* exit2 = nullptr;
 	room* exit3 = nullptr;
+	int area;
 };
 
 class SceneManager
@@ -21,12 +22,16 @@ public:
 	void requestRoomExit(int exit);
 	void requestFirstRoomInArea(int area);
 	void requestSpecificRoom(int r);
+	void requestSaveRoom();
 	room* getExit(int exit);
 	int getAllRoomsSize();
+
+	void gameSaved();
 
 private:
 	room* head;
 	room* currentRoom;
+	room* saveRoom;
 	vector<room*> areas;
 	vector<room*> allRooms;
 };

@@ -15,6 +15,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Savepoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes.h" />
@@ -34,5 +35,6 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Savepoint.h" />
   </ItemGroup>
 </Project>

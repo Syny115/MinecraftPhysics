@@ -171,6 +171,11 @@ public:
 	void setInvetory(string key, bool value) { inventory.at(key) = value; if (value) gamePointer->publicPlaySound(Game::WEAPON_PICK);}
 	bool getInvetory(string key) { return inventory.at(key); }
 
+	void gameSaved() {
+		gamePointer->sceneMan.gameSaved();
+		gamePointer->publicPlaySound(Game::TREASURE);
+	}
+
 	friend class Player;
 };
 

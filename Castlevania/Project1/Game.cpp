@@ -19,7 +19,7 @@ void Game::publicPlayLevelMusic() {
         publicPlayMusic(VAMPIRE_KILLER);
         break;
     default:
-        publicPlayMusic(VAMPIRE_KILLER);
+        //publicPlayMusic(VAMPIRE_KILLER);
         break;
     }
 }

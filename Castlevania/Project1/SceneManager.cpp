@@ -14,13 +14,18 @@ SceneManager::SceneManager() {
 	allRooms.push_back(&hall3);
 
 	entrance.exit1 = &hall1;
+	entrance.area = 0;
 	hall1.exit0 = &entrance;
 	hall1.exit1 = &hall2;
 	hall1.exit2 = &hall1p5;
+	hall1.area = 0;;
 	hall1p5.exit0 = &hall1;
+	hall1p5.area = 0;
 	hall2.exit0 = &hall1;
 	hall2.exit1 = &hall3;
+	hall2.area = 0;
 	hall3.exit0 = &hall2;
+	hall3.area = 0;
 
 
 	//----------------------------------------------------------------------------------//
@@ -32,6 +37,7 @@ SceneManager::SceneManager() {
 
 	head = &entrance;
 	areas.push_back(head);
+	saveRoom = &hall3;
 }
 
 SceneManager::~SceneManager()
@@ -74,8 +80,16 @@ void SceneManager::requestFirstRoomInArea(int area) {
 void SceneManager::requestSpecificRoom(int r) {
 	if (allRooms[r] != nullptr) {
 		currentRoom = allRooms[r];
+		GameManager::getInstance().setArea(currentRoom->area);
 		GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, 0));
 	}
+}
+
+void SceneManager::requestSaveRoom() {
+		currentRoom = saveRoom;
+		GameManager::getInstance().setArea(currentRoom->area);
+		GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, 4));
+	
 }
 
 room* SceneManager::getExit(int exit) {
@@ -86,3 +100,7 @@ room* SceneManager::getExit(int exit) {
 }
 
 int SceneManager::getAllRoomsSize() { return allRooms.size(); }
+
+void SceneManager::gameSaved() { 
+	saveRoom = currentRoom;
+}

@@ -217,6 +217,10 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("knightTile", 1, 160, 240, 16, 16, 0, 1);
         currentAnimName = "zombieTile";
         break;
+    case SAVE:
+        add("savepoint", 5, 1, 135, 32, 32, 1, 5);
+        currentAnimName = "savepoint";
+        break;
     default:
         break;
     }
