@@ -12,9 +12,12 @@ public:
 	virtual ~Enemy();
 	virtual void hitCollision(vector<damageRect>& dmgRect);
 	virtual void update() override;
+	virtual void smartMovement(vector<Rectangle> solidRects);
 	void draw() {
 		if (!hitCooldown.isActive() || (int)(GetTime() / GetFrameTime()) % 8 > 0 || health == 0)
 		{
+			DrawRectangleLinesEx(floorCollider, 1, WHITE);
+			DrawRectangleLinesEx(wallCollider, 1, GREEN);
 			sprite->draw({ offsetX, offsetY });
 		}
 	}
@@ -28,6 +31,9 @@ protected:
 	int points;
 	int direction = 1;
 	bool offCamera;
+
+	Rectangle wallCollider;
+	Rectangle floorCollider;
 };
 
 
@@ -47,6 +53,7 @@ public:
 	~Bat();
 	void update() override;
 	void groundCollision(vector<Rectangle> floorRec) override{}
+	void smartMovement(vector<Rectangle> solidRects) override {}
 
 private:
 	enum class BatState { IDLE, CHASE };
@@ -65,6 +72,8 @@ public:
 	Medusa(Vector2 pos);
 	~Medusa();
 	void groundCollision(vector<Rectangle> floorRec) override {}
+	void smartMovement(vector<Rectangle> solidRects) override {}
+
 private:
 	const float sinFrequency = 2.0f;
 	Vector2 velocity = { 50.0f, 40.0f };
@@ -122,6 +131,8 @@ public:
 	BatBoss(Vector2 pos);
 	~BatBoss() override;
 	void groundCollision(vector<Rectangle> floorRec) override {}
+	void smartMovement(vector<Rectangle> solidRects) override {}
+
 
 	Vector2 EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopHeight);
 	void prepareRoost();

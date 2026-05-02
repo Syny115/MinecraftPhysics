@@ -39,6 +39,28 @@ Enemy::~Enemy()
 	GameManager::getInstance().getActiveScene()->spawnParticle(position);
 }
 
+void Enemy::smartMovement(vector<Rectangle> solidRects) {
+	wallCollider =  { position.x -2 + (float) (size.x/2 + 4) * direction, position.y + -8, 4, 16 };
+	floorCollider = { position.x - 2 + (float)(size.x / 2 + 4) * direction, position.y + 16, 4, 4 };
+	if (!isOnFloor) return;
+	
+	
+	int len = solidRects.size();
+	Rectangle predictedRec = wallCollider;
+	predictedRec.y += velocity.y * deltaTime;
+	int i = checkCollisionRecsArr(predictedRec, solidRects, len);
+	if (i != -1) {
+		direction *= -1;
+	}
+	predictedRec = floorCollider;
+	predictedRec.y += velocity.y * deltaTime;
+
+	i = checkCollisionRecsArr(predictedRec, solidRects, len);
+	if (i == -1) {
+		direction *= -1;
+	}
+}
+
 void Enemy::update() {
 	sprite->update(deltaTime);
 

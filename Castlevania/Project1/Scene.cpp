@@ -131,6 +131,7 @@ void PlayableScene::updateScene() {
 	for (int i = enemies.size() - 1; i >= 0; i--) {
 		enemies[i]->hitCollision(playerHitBoxes);
 		enemies[i]->groundCollision(solidRects);
+		enemies[i]->smartMovement(solidRects);
 	}
 	
 	for (int i = projectiles.size() - 1; i >= 0; i--) {
