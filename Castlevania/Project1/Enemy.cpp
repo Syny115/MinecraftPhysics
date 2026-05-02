@@ -321,6 +321,7 @@ void BatBoss::update() {
 	switch (state)
 	{
 	case IDLE:
+		health = 16;
 		sprite->setAnimation("batBossIdle");
 
 		if (GameManager::getInstance().getBossStarted()) {

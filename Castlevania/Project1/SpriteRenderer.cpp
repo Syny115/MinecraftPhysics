@@ -151,7 +151,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
 		currentAnimName = "mermanShot";
         break;
     case KNIGHT:
-        add("knightWalk", 3, 0, 96, 16, 32, 0, 6);
+        add("knightWalk", 2, 208, 0, 22, 32, 0, 6);
         currentAnimName = "knightWalk";
 		break;
     case BAT_BOSS:

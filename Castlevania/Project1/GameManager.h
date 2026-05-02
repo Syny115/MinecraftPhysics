@@ -174,6 +174,7 @@ public:
 	void gameSaved() {
 		gamePointer->sceneMan.gameSaved();
 		gamePointer->publicPlaySound(Game::TREASURE);
+		maximizeHealth();
 	}
 
 	friend class Player;

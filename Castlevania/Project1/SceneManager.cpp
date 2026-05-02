@@ -37,7 +37,7 @@ SceneManager::SceneManager() {
 
 	head = &entrance;
 	areas.push_back(head);
-	saveRoom = &hall3;
+	saveRoom = head;
 }
 
 SceneManager::~SceneManager()

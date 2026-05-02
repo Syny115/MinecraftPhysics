@@ -420,8 +420,8 @@ void PlayableScene::spawnHitEffect(Vector2 position) {
 void PlayableScene::debugEnemySpawn() {
 	mousePos = Vector2SubtractValue(GetScreenToWorld2D(GetMousePosition(), camera),8);
 
-	if (GetMouseWheelMove() > 0) debugEnemySelected = (debugEnemySelected+1) % 6;
-	else if (GetMouseWheelMove() < 0) debugEnemySelected > 0 ? debugEnemySelected-- : debugEnemySelected = 5;
+	if (GetMouseWheelMove() > 0) debugEnemySelected = (debugEnemySelected+1) % 7;
+	else if (GetMouseWheelMove() < 0) debugEnemySelected > 0 ? debugEnemySelected-- : debugEnemySelected = 6;
 	
 	switch (debugEnemySelected) {
 	case 0:
@@ -430,26 +430,31 @@ void PlayableScene::debugEnemySpawn() {
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Zombie(mousePos));
 		break;
 	case 1:
+		//medusa
+		debugTile->setAnimation("medusaTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Medusa(mousePos));
+		break;
+	case 2:
 		//bat
 		debugTile->setAnimation("batTile");
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Bat(mousePos));
 		break;
-	case 2:
+	case 3:
 		//panther
 		debugTile->setAnimation("pantherTile");
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Panther(mousePos));
 		break;
-	case 3:
+	case 4:
 		//merman
 		debugTile->setAnimation("mermanTile");
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Merman(mousePos));
 		break;
-	case 4:
+	case 5:
 		//batBoss
 		debugTile->setAnimation("bossTile");
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new BatBoss(mousePos));
 		break;
-	case 5:
+	case 6:
 		//knight
 		debugTile->setAnimation("knightTile");
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Knight(mousePos));
