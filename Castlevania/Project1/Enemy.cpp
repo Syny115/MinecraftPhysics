@@ -305,8 +305,8 @@ Knight::~Knight() {}
 BatBoss::BatBoss(Vector2 pos) {
 	isBoss = true;
 	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::BAT_BOSS);
-	size.x = sprite->getAnimationFromName("batBossIdle").frameWidth;
-	size.y = sprite->getAnimationFromName("batBossIdle").frameHeight;
+	size.x = sprite->getAnimationFromName("batBossSearching").frameWidth;
+	size.y = sprite->getAnimationFromName("batBossSearching").frameHeight;
 	hurtbox.width = size.x;
 	hurtbox.height = size.y;
 	position = pos;
