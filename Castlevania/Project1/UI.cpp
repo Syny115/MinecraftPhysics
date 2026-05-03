@@ -16,7 +16,7 @@ UI::UI() {
 	font = { 0 };
 	font.baseSize = 16;
 	font.glyphCount = 77;
-	font.glyphs = LoadFontData(fileData, fileSize, 16, 0, 77, FONT_DEFAULT);
+	font.glyphs = LoadFontData(fileData, fileSize, 16, 0, 250, FONT_DEFAULT);
 	
 	
 	sr = new SpriteRenderer("resources/sprites/misc_sprites.png", SpriteRenderer::LOOT);
@@ -72,7 +72,7 @@ void UI::updateUI() {
 		for (int i = 0; i < 16; i++) {
 			Rectangle rec = { 172 + i * (LivesRecWidth + 3), 104, LivesRecWidth, LivesRecHeight };
 			if (buffer > i) {
-				DrawRectangleRec(rec, RED);
+				DrawRectangleRec(rec, CLITERAL(Color){ 255, 152, 116, 255 });
 			}
 			else {
 				DrawRectangleLinesEx(rec, 3, WHITE);
