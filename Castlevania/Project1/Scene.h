@@ -24,6 +24,8 @@ class Scene {
 protected:
 	Camera2D camera = { 0 };
 	queue<Entity*> deletionQueue;
+	UI ui;
+	bool setup = false;
 public:
 	SceneType type;
 	Scene();
@@ -118,7 +120,7 @@ private:
 	string debug_text1;
 	string debug_text2;
 
-	UI ui;
+	
 	Timer timeLeft{ 300 };
 
 	//particles for enemies death

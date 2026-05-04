@@ -16,6 +16,7 @@ private:
 public:
 	UI();
 	~UI();
+	void initUI();
 	void updateUI();
 	void renderUI();
 	void drawTextFromTexture(string message, int font, Vector2 position, Vector2 offset, int scale, int maxWidth, Color c);

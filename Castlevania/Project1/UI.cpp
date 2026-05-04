@@ -11,7 +11,6 @@ using namespace std;
 
 UI::UI() {
 	int fileSize = 0;
-	cz = GameManager::getInstance().getActiveScene()->getCamera().zoom;
 	unsigned char* fileData = LoadFileData("resources/fonts/gamefont.ttf", &fileSize);
 	font = { 0 };
 	font.baseSize = 16;
@@ -49,6 +48,10 @@ UI::~UI() {
 	UnloadFont(font);
 	delete sw;
 	UnloadTexture(fontTexture);
+}
+
+void UI::initUI() {
+	cz = GameManager::getInstance().getActiveScene()->getCamera().zoom;
 }
 
 void UI::updateUI() {
