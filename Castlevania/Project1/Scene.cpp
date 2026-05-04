@@ -308,9 +308,11 @@ void PlayableScene::drawScene() {
 	if (savePoint != nullptr) savePoint->draw();
 	if (player != nullptr) player->drawPlayer();
 
+
 	EndMode2D();
 	
 	ui.renderUI();
+	ui.drawTextFromTexture("h llo world", 0, { 200, 200 }, { 1, 1 }, 1, 44*camera.zoom, WHITE);
 	ui.updateUI();
 	
 	if (GameManager::getInstance().debugMode)  {
