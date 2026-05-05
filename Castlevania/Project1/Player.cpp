@@ -87,7 +87,7 @@ int Player::checkCollisionPointRecArr(Vector2 point, Rectangle* recs, int len) {
 void Player::groundCollision(Rectangle floorRec) {
     wasOnFloor = isOnFloor;
     if (CheckCollisionRecs(groundCollider, floorRec)) {
-        
+
         if (velocity.y > 0) {
             isOnFloor = true;
             position.y = floorRec.y - size.y / 2;
@@ -106,7 +106,7 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     predictedRec.y += velocity.y * deltaTime;
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
     if (i != -1) {
-        
+
         if (velocity.y > 0) {
             velocity.y = 0;
             isOnFloor = true;
@@ -114,6 +114,7 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
             floorHeight = position.y;
         }
     }
+    else if (GameManager::getInstance().sceneTime / GetFrameTime() < 15) isOnFloor = true;
     else {
         isOnFloor = false;
     }
@@ -257,6 +258,7 @@ void Player::earlyUpdate() {
 void Player::update() {
     earlyUpdate(); // For things that need to be done before everything else
 
+
     if (!attackTimer.isActive() && !startAttackTimer.isActive())
     {
         if (IsKeyPressed(I_INV_D)) GameManager::getInstance().changeSubWeapon(false);
@@ -285,8 +287,8 @@ void Player::update() {
     switch (lowerState.current) {
 
     case IDLE:
-            bottomAnimOffsetY = 17;
-            bottomAnimOffsetX = -2;
+        bottomAnimOffsetY = 17;
+        bottomAnimOffsetX = -2;
         bottomSprite->setAnimation("idle");
         velocity.y = 0;
         moveH(false, true);

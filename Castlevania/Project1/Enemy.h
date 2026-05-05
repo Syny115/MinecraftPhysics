@@ -16,8 +16,8 @@ public:
 	void draw() {
 		if (!hitCooldown.isActive() || (int)(GetTime() / GetFrameTime()) % 8 > 0 || health == 0)
 		{
-			DrawRectangleLinesEx(floorCollider, 1, WHITE);
-			DrawRectangleLinesEx(wallCollider, 1, GREEN);
+			/*DrawRectangleLinesEx(floorCollider, 1, WHITE);
+			DrawRectangleLinesEx(wallCollider, 1, GREEN);*/
 			sprite->draw({ offsetX, offsetY });
 		}
 	}

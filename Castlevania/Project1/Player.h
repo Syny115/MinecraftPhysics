@@ -58,7 +58,6 @@ private:
     int* projectileCount;
     int projCost;
 
-
     float jumpForce = 230;
     float halfGrav = 0.5f * grav;
     float acc = 200;
@@ -109,7 +108,6 @@ private:
     PlayerState lowerState{*this};
 
     Vector2 lastViablePos;
-
 public:
     Player(Vector2 pos);
     ~Player();
