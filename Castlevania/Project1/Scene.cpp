@@ -95,6 +95,10 @@ void PlayableScene::updateCamera() {
 }
 
 void PlayableScene::updateScene() {
+	if (!setup) {
+		ui.initUI();
+		setup = true;
+	}
 	GameManager::getInstance().sceneTime += GetFrameTime();
 	timeLeft.updateTimer();
 
@@ -319,9 +323,11 @@ void PlayableScene::drawScene() {
 	if (savePoint != nullptr) savePoint->draw();
 	if (player != nullptr) player->drawPlayer();
 
+
 	EndMode2D();
 	
 	ui.renderUI();
+	ui.drawTextFromTexture("h llo world", 0, { 200, 200 }, { 1, 1 }, 1, 44*camera.zoom, WHITE);
 	ui.updateUI();
 	
 	if (GameManager::getInstance().debugMode)  {
@@ -356,9 +362,9 @@ void PlayableScene::drawTiles() {
 void PlayableScene::removePlayerHitBoxes(Rectangle* hitBox) {
 	for (int i = 0; i < playerHitBoxes.size(); i++) {
 		if (playerHitBoxes[i].rect == hitBox) {playerHitBoxes.erase(playerHitBoxes.begin() + i);
-		TraceLog(LOG_INFO, "Remove: rect=%p  INDEX: %d", hitBox, i);
+		//TraceLog(LOG_INFO, "Remove: rect=%p  INDEX: %d", hitBox, i);
 	}
-		else TraceLog(LOG_INFO, "Not Removed: rect=%p  INDEX: -1", hitBox);
+		//else TraceLog(LOG_INFO, "Not Removed: rect=%p  INDEX: -1", hitBox);
 	}
 	
 }
@@ -500,6 +506,10 @@ TitleScene::~TitleScene()
 }
 
 void TitleScene::updateScene() {
+	if (!setup) {
+		ui.initUI();
+		setup = true;
+	}
 	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE);
 }
 
@@ -526,6 +536,10 @@ LevelScene::~LevelScene()
 }
 
 void LevelScene::updateScene() {
+	if (!setup) {
+		ui.initUI();
+		setup = true;
+	}
 	if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_DOWN)) selection = !selection;
 	if (selection) {
 		triangleCenter = { 48-16, 16 + 96 + 8 };
@@ -566,14 +580,20 @@ LoreScene::~LoreScene()
 }
 
 void LoreScene::updateScene() {
+	if (!setup) {
+		ui.initUI();
+		setup = true;
+	}
 	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LEVEL_SELECT);
 }
 
 void LoreScene::drawScene() {
 	ClearBackground(BLACK);
 	camera.offset = { 0 , 0};
+	ui.drawTextFromTexture("This is Project 1 of Bachelor's, ", 0, { 16.0f, 16.0f }, { 0, 0 }, 1, -1, WHITE);
 	BeginMode2D(camera);
-	DrawText("This is Project 1 of Bachelor's ,", 16, 16, 16, WHITE);
+	
+	DrawText("", 16, 16, 16, WHITE);
 	DrawText("degree in Video Game Design,", 16, 32, 16, WHITE);
 	DrawText("and Development at CITM UPC,", 16, 48, 16, WHITE);
 	DrawText("in which we must recreate", 16, 64, 16, WHITE);
