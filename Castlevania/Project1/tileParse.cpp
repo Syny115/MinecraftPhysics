@@ -2,6 +2,47 @@
 #include <stack>
 #include <queue>
 
+#define door0 897
+#define door1 door0+1
+#define door2 door0+2
+#define door3 door0+3
+#define spawn0 door0+32
+#define spawn1 door1+32
+#define spawn2 door2+32
+#define spawn3 door3+32
+#define save spawn3+1
+#define stairsDownStart door0+64
+#define stairsDownEnd door0+65
+#define stairsUpStart door0+66
+#define stairsUpEnd door0+67
+#define breakableWall door0+4
+#define breakableRoast door0+5
+#define breakableUpgrade door0+37
+#define candle door0+4+64
+#define torch door0+5+64
+#define jarCandle torch+1
+#define crossCandle torch+2
+#define axeChest door0+6
+#define daggerChest axeChest+1
+#define dashChest axeChest+2
+#define holyChest axeChest+32
+#define stopChest axeChest+32+1
+#define boomerChest axeChest+32+2
+#define bossCam torch+3
+#define zombieStart door0+96
+#define zombieEnd zombieStart+1
+#define medusaStart zombieStart+2
+#define medusaEnd zombieStart+3
+#define batSpawn zombieStart+4
+#define pantherSpawn zombieStart+5
+#define mermanStart zombieStart+6
+#define mermanEnd zombieStart+7
+#define bossSpawn zombieStart+8
+#define shieldKnightSpawn zombieStart+9
+#define spearKnightSpawn zombieStart+10
+
+
+
 
 struct maxRect {
     int area, left, right, height;
@@ -206,50 +247,49 @@ void PlayableScene::parseTiles(const char* path) {
 		}
 		else collisionMat[j / col][j % col] = 0;
         //Breakables Data
-        if (lData == 194) doorMat0[j / col][j % col] = 1; //Door 0
+        if (lData == door0) doorMat0[j / col][j % col] = 1; //Door 0
         else doorMat0[j / col][j % col] = 0;
-        if (lData == 195) doorMat1[j / col][j % col] = 1; //Door 1
+        if (lData == door1) doorMat1[j / col][j % col] = 1; //Door 1
         else doorMat1[j / col][j % col] = 0;
-        if (lData == 196) doorMat2[j / col][j % col] = 1; //Door 2
+        if (lData == door2) doorMat2[j / col][j % col] = 1; //Door 2
         else doorMat2[j / col][j % col] = 0;
-        if (lData == 197) doorMat3[j / col][j % col] = 1; //Door 3
+        if (lData == door3) doorMat3[j / col][j % col] = 1; //Door 3
         else doorMat3[j / col][j % col] = 0;
         
-        if (bkData == 216) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 0)); //breakable block
-        else if (bkData == 217) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 1)); //WITH CHICKEN!!
-        else if (bkData == 218) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 2)); //projectile upgrade!!
+        if (bkData == breakableWall) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 0)); //breakable block
+        else if (bkData == breakableRoast) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 1)); //WITH CHICKEN!!
+        else if (bkData == breakableUpgrade) destructables.push_back(new DestructableWall(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }, 2)); //projectile upgrade!!
 
-        else if (bkData == 214) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth/2, tileHeight * (float)(j / col) }, 0, 0)); //Candle with random
-        else if (bkData == 215) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) - tileHeight }, 1, 0)); //Torch with random
-        else if (bkData == 229) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 1)); //Chest with axe
-        else if (bkData == 230) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 2)); //Chest with dagger
-        else if (bkData == 231) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 3)); //Chest with Holy Water
-        else if (bkData == 232) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 4)); //Chest with Stopwatch
-        else if (bkData == 233) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 5)); //Chest with Boomerang
-        else if (bkData == 234) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 0, 6)); //Candle with jar
-        else if (bkData == 235) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 0, 7)); //Candle with cross
-        else if (bkData == 236) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 8)); //Candle with dash
+        else if (bkData == candle) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth/2, tileHeight * (float)(j / col) }, 0, 0)); //Candle with random
+        else if (bkData == torch) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) - tileHeight }, 1, 0)); //Torch with random
+        else if (bkData == axeChest) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 1)); //Chest with axe
+        else if (bkData == daggerChest) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 2)); //Chest with dagger
+        else if (bkData == holyChest) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 3)); //Chest with Holy Water
+        else if (bkData == stopChest) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 4)); //Chest with Stopwatch
+        else if (bkData == boomerChest) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 5)); //Chest with Boomerang
+        else if (bkData == jarCandle) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 0, 6)); //Candle with jar
+        else if (bkData == crossCandle) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 0, 7)); //Candle with cross
+        else if (bkData == dashChest) destructables.push_back(new DestructableLoot(Vector2{ (float)(j % col) * tileWidth + tileWidth / 2, tileHeight * (float)(j / col) }, 2, 8)); //Candle with dash
 
         //Level Data
-        if (lData == 210) spawnponits[0] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 1 
-        else if (lData == 211) spawnponits[1] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 2
-        else if (lData == 212) spawnponits[2] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 3
-        else if (lData == 213) spawnponits[3] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 4
-        else if (lData == 209) spawnponits[4] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SAVE POINT
-        else if (lData == 225) dVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
-        else if (lData == 228) upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
+        if (lData == spawn0) spawnponits[0] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 1 
+        else if (lData == spawn1) spawnponits[1] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 2
+        else if (lData == spawn2) spawnponits[2] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 3
+        else if (lData == spawn3) spawnponits[3] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 4
+        else if (lData == save) spawnponits[4] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SAVE POINT
+        else if (lData == stairsDownStart) dVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
+        else if (lData == stairsUpStart) upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
 
-        else if (lData == 241) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START ZOMBER
-        else if (lData == 243) meduQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START MEDUSA
-        else if (lData == 245) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // BAT
-        else if (lData == 246) pantherSpawners.push_back({ (float)(j % col+1) * tileWidth, tileHeight * (float)(j / col+1) }); // PANTHER
-       // else if (lData == 247) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN START
-        //else if (lData == 248) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN END
-        else if (lData == 249) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
-        else if (lData == 250) bossStart = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS START
-        else if (lData == 251) knightSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // KNIGHT
+        else if (lData == zombieStart) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START ZOMBER
+        else if (lData == medusaStart) meduQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START MEDUSA
+        else if (lData == batSpawn) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // BAT
+        else if (lData == pantherSpawn) pantherSpawners.push_back({ (float)(j % col+1) * tileWidth, tileHeight * (float)(j / col+1) }); // PANTHER
+       // else if (lData == mermanStart) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN START
+        else if (lData == bossSpawn) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
+        else if (lData == bossCam) bossStart = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS START
+        else if (lData == shieldKnightSpawn) knightSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // KNIGHT
 
-        else if (lData == 226 && !dVec.empty()) { //STAIR END DOWN
+        else if (lData == stairsDownEnd && !dVec.empty()) { //STAIR END DOWN
             int i = -1;
             float adX, adY;
             do {
@@ -269,7 +309,7 @@ void PlayableScene::parseTiles(const char* path) {
             stairs.push_back(s);
         }
 
-        else if (lData == 227 && !upVec.empty()) { //STAIR START UP
+        else if (lData == stairsUpEnd && !upVec.empty()) { //STAIR START UP
             int i = -1;
             float adX, adY;
             do {
@@ -289,7 +329,7 @@ void PlayableScene::parseTiles(const char* path) {
             stairs.push_back(s);
         }
 
-        else if (lData == 242) { //ZOMBER END
+        else if (lData == zombieEnd) { //ZOMBER END
             Rectangle r = {
                 zombQ.front().x,
                 zombQ.front().y,
@@ -300,7 +340,7 @@ void PlayableScene::parseTiles(const char* path) {
             zombieSpawners.push_back(r);
         }
 
-        else if (lData == 244 && !meduQ.empty()) { //MEDUSA END
+        else if (lData == medusaEnd && !meduQ.empty()) { //MEDUSA END
             Rectangle r = {
                 meduQ.front().x,
                 meduQ.front().y,
