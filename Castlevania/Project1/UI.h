@@ -11,6 +11,7 @@ private:
 	SpriteRenderer* sw = nullptr;
 
 	unordered_map<char, Rectangle> fontBody;
+	unordered_map<char, Rectangle> fontTitle;
 	Texture2D fontTexture;
 
 public:
