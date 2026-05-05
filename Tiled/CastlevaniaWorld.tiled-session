@@ -1,14 +1,31 @@
 {
-    "activeFile": "",
+    "activeFile": "Scene1.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
+        "CastlevaniaTileset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Scene1.tmx": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 182.25,
+                "y": 205
+            }
+        }
     },
     "last.exportedFilePath": "C:/Users/Mina/Documents/GitHub/MinecraftPhysics/Castlevania/Project1/resources/json",
     "map.lastUsedExportFilter": "All Files (*)",
     "openFiles": [
+        "Scene1.tmx",
+        "CastlevaniaTileset.tsx"
     ],
     "project": "CastlevaniaWorld.tiled-project",
     "recentFiles": [
+        "CastlevaniaTileset.tsx",
+        "Scene1.tmx"
     ]
 }
