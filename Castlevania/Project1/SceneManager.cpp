@@ -2,7 +2,7 @@
 #include "GameManager.h"
 
 SceneManager::SceneManager() {
-	static room entrance{ "resources/json/Level1_Scene1.json" };
+	/*static room entrance{ "resources/json/Level1_Scene1.json" };
 	allRooms.push_back(&entrance);
 	static room hall1{ "resources/json/Level1_Scene2.json" };
 	allRooms.push_back(&hall1);
@@ -25,8 +25,10 @@ SceneManager::SceneManager() {
 	hall2.exit1 = &hall3;
 	hall2.area = 0;
 	hall3.exit0 = &hall2;
-	hall3.area = 0;
-
+	hall3.area = 0;*/
+	static room test{ "resources/json/NewTest.json" };
+	allRooms.push_back(&test);
+	test.area = 0;
 
 	//----------------------------------------------------------------------------------//
 	//	null <- | entrance	| <- | hall1	| <- | hall2	| <- | hall3	|			//
@@ -35,7 +37,7 @@ SceneManager::SceneManager() {
 	//							 | hall1p5  |											//
 	//----------------------------------------------------------------------------------//
 
-	head = &entrance;
+	head = &test;
 	areas.push_back(head);
 	saveRoom = head;
 }

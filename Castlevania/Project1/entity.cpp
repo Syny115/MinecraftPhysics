@@ -42,7 +42,7 @@ void Entity::moveV() {
 	increaseHalfOfGravity();
 
 	//Clamp position to World Size
-	position.y = Clamp(position.y, 0, GameManager::getInstance().getActiveScene()->getWorldHeight());
+	position.y = Clamp(position.y, -3 * 16, GameManager::getInstance().getActiveScene()->getWorldHeight());
 }
 
 void Entity::moveH() {
