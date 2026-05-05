@@ -136,4 +136,6 @@ public:
     void updateAnimation();
 
     void betweenStates(int previous, int current, int future, PlayerState* state);
+
+    int getDirection() { return direction; }
 };
