@@ -1,0 +1,35 @@
+{ "compressionlevel":-1,
+ "height":4,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[897, 898, 899, 900, 901, 902, 903, 904, 905, 0, 0, 0, 0, 0, 0, 0,
+            929, 930, 931, 932, 933, 934, 935, 936, 937, 0, 0, 0, 0, 0, 0, 0,
+            961, 962, 963, 964, 965, 966, 967, 968, 969, 0, 0, 0, 0, 0, 0, 0,
+            993, 994, 995, 996, 997, 998, 999, 1000, 1001, 1002, 1003, 0, 0, 0, 0, 0],
+         "height":4,
+         "id":1,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":16,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.12.0",
+ "tileheight":16,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"..\/..\/..\/..\/..\/..\/Tiled\/Castlevania.tsx"
+        }],
+ "tilewidth":16,
+ "type":"map",
+ "version":"1.10",
+ "width":16
+}
