@@ -1,17 +1,16 @@
 #include "UI.h"
 #include "GameManager.h"
 using namespace std;
-#define FontSize 36
+#define FontSize 3
 #define FontSpacing 6
 
-#define LivesRecWidth 11
-#define LivesRecHeight 20
+#define LivesRecWidth 3
+#define LivesRecHeight 6
 
 #define CameraZoom cz
 
 UI::UI() {
 	int fileSize = 0;
-	cz = GameManager::getInstance().getActiveScene()->getCamera().zoom;
 	unsigned char* fileData = LoadFileData("resources/fonts/gamefont.ttf", &fileSize);
 	font = { 0 };
 	font.baseSize = 16;
@@ -19,13 +18,40 @@ UI::UI() {
 	font.glyphs = LoadFontData(fileData, fileSize, 16, 0, 250, FONT_DEFAULT);
 	
 	
-	sr = new SpriteRenderer("resources/sprites/misc_sprites.png", SpriteRenderer::LOOT);
 	sw = new SpriteRenderer("resources/sprites/misc_sprites.png", SpriteRenderer::LOOT);
+	fontTexture = LoadTexture("resources/sprites/fonts_sprites.png");
+
+	int h = 0;
+	for (int i = 0; i+'a' <= 'z'; i++) {
+		if (i % (fontTexture.width / 8) == 0 && i != 0) h++;
+		fontBody[i + 'a'] = { i * 8.0f, h * 8.0f, 8.0f, 8.0f };
+	}
+	for (int i = 0; i <= 9; i++) {
+		fontBody[i + '0'] = { i * 8.0f, 16, 8, 8 };
+	}
+	fontBody['.'] = { 80, 8, 8, 8 };
+	fontBody[','] = { 88, 8, 8, 8 };
+	fontBody['!'] = { 96, 8, 8, 8 };
+	fontBody['?'] = { 104, 8, 8, 8 };
+	fontBody['+'] = { 112, 8, 8, 8 };
+	fontBody['*'] = { 120, 8, 8, 8 };
+	fontBody[':'] = { 80, 16, 8, 8 };
+	fontBody[';'] = { 88, 16, 8, 8 };
+	fontBody['('] = { 96, 16, 8, 8 };
+	fontBody[')'] = { 104, 16, 8, 8 };
+	fontBody['-'] = { 112, 16, 8, 8 };
+	fontBody['/'] = { 120, 16, 8, 8 };
+
+	
 }
 UI::~UI() {
 	UnloadFont(font);
-	delete sr;
 	delete sw;
+	UnloadTexture(fontTexture);
+}
+
+void UI::initUI() {
+	cz = GameManager::getInstance().getActiveScene()->getCamera().zoom;
 }
 
 void UI::updateUI() {
@@ -51,26 +77,26 @@ void UI::updateUI() {
 			text = "Score-" + to_string(buffer);
 		}
 
-		DrawTextEx(font, text.c_str(), Vector2{ 0,0 }, FontSize, FontSpacing, WHITE);
+		drawTextFromTexture(text, 0, { 1 * cz, 7 * cz }, Vector2Zero(), 1, -1, WHITE);
 
 		// Player lives
 
 		buffer = GameManager::getInstance().getPlayerHealth();
 
 		for (int i = 0; i < 16; i++) {
-			Rectangle rec = { 172 + i * (LivesRecWidth + 3), 54, LivesRecWidth, LivesRecHeight };
+			Rectangle rec = { 56*cz + i * (LivesRecWidth + 1)*cz, 18 * cz, LivesRecWidth*cz, LivesRecHeight*cz };
 			if (buffer > i) {
 				DrawRectangleRec(rec, RED);
 			}
 			else {
-				DrawRectangleLinesEx(rec, 3, WHITE);
+				DrawRectangleLinesEx(rec, 1*cz, WHITE);
 			}
 		}
 
 		// Boss lives
 		buffer = GameManager::getInstance().getBossHealth();
 		for (int i = 0; i < 16; i++) {
-			Rectangle rec = { 172 + i * (LivesRecWidth + 3), 104, LivesRecWidth, LivesRecHeight };
+			Rectangle rec = { 56*cz + i * (LivesRecWidth + 1) * cz, 26* cz, LivesRecWidth* cz, LivesRecHeight * cz };
 			if (buffer > i) {
 				DrawRectangleRec(rec, CLITERAL(Color){ 255, 152, 116, 255 });
 			}
@@ -91,22 +117,25 @@ void UI::updateUI() {
 			text = "TIME 0" + to_string(buffer);
 		}
 
-		DrawTextEx(font, text.c_str(), Vector2{ 320,0 }, FontSize, FontSpacing, WHITE);
+		drawTextFromTexture(text, 0, { 106 * cz, 7 * cz }, Vector2Zero(), 1, -1, WHITE);
 
-		text = "STAGE 0" + to_string((int)GameManager::getInstance().getGamePointer()->getLevelIndex());
+		text = "AREA 0" + to_string((int)GameManager::getInstance().getArea());
 
-		DrawTextEx(font, text.c_str(), Vector2{ 600,0 }, FontSize, FontSpacing, WHITE);
+		drawTextFromTexture(text, 0, { 185 * cz, 7 * cz }, Vector2Zero(), 1, -1, WHITE);
+
 
 		//Ammo and Lives left
 		buffer = GameManager::getInstance().getAmmo();
-		if (buffer < 10) text = "-0" + to_string(buffer);
-		else text = "-" + to_string(buffer);
+		if (buffer < 10) text = " -0" + to_string(buffer);
+		else text = " -" + to_string(buffer);
 
-		DrawTextEx(font, text.c_str(), Vector2{ 580,16 * CameraZoom }, FontSize, FontSpacing, WHITE);
+		drawTextFromTexture("*", 0, { 168 * cz, 16 * cz }, Vector2Zero(), 1, -1, RED);
+		drawTextFromTexture(text, 0, { 168 * cz, 16 * cz }, Vector2Zero(), 1, -1, WHITE);
 
-		text = "P-03"; //When lives are added do the get
+		text = "/-03"; //When lives are added do the get
 
-		DrawTextEx(font, text.c_str(), Vector2{ 552,32 * CameraZoom }, FontSize, FontSpacing, WHITE);
+		drawTextFromTexture(text, 0, { 168 * cz, 24 * cz }, Vector2Zero(), 1, -1, WHITE);
+
 		buffer = GameManager::getInstance().getSubWeapon();
 		if(buffer != 0){
 			if (buffer == 1) sw->setAnimation("dagger");
@@ -114,7 +143,7 @@ void UI::updateUI() {
 			else if (buffer == 2) sw->setAnimation("holywater");
 			else if (buffer == 2) sw->setAnimation("cross");
 			else if (buffer == 2) sw->setAnimation("stopwatch");
-			sw->draw({ 420, 60 }, 4.125);
+			sw->draw({ 134*cz, 18*cz }, 4.125);
 		}
 	}
 	
@@ -123,14 +152,40 @@ void UI::updateUI() {
 
 void UI::renderUI() {
 	isRendering = true;
-	DrawRectangle(0, 0, 800, 150, BLACK);
-	DrawRectangleLinesEx(Rectangle{ 400, 50, 100, 80 }, 5, RED);
-
-	DrawTextEx(font, "PLAYER", Vector2{ 0,16 * CameraZoom }, FontSize, FontSpacing, WHITE);
-	DrawTextEx(font, "ENEMY", Vector2{ 0,32 * CameraZoom }, FontSize, FontSpacing, WHITE);
+	DrawRectangle(0, 0, 256*cz, 48*cz, BLACK);
+	DrawRectangleLinesEx(Rectangle{ 128 * cz, 16 * cz, 32 * cz, 22 * cz }, 1*cz, RED);
+	
+	drawTextFromTexture("PLAYER", 0, { 1 * cz, 15 * cz }, Vector2Zero(), 1, 50 * cz, WHITE);
+	drawTextFromTexture("Enemy", 0, { 1 * cz, 23 * cz }, Vector2Zero(), 1, 50 * cz, WHITE);
 
 	//Add the bigheart sprite here
 	
-	sr->setAnimation("bigheart");
-	sr->draw({ 530,35 }, CameraZoom);
+
+}
+
+
+void UI::drawTextFromTexture(string message, int font, Vector2 position, Vector2 offset, int scale, int maxWidth, Color c) {
+	scale *= cz;
+	unordered_map<char, Rectangle>* f;
+	if (font == 0) {
+		f = &fontBody;
+	}
+	else {
+		f = &fontBody;
+	}
+	Rectangle sourceRect;
+	Rectangle destRect = (*f)['a'];
+	float w = destRect.width, h = destRect.height;
+	int x = 0, y = 0;
+	for (int i = 0; i < message.size(); i++) {
+		sourceRect = fontBody[tolower(message.c_str()[i])];
+		destRect = { position.x + x, position.y + y, sourceRect.width * scale, sourceRect.width * scale };
+		DrawTexturePro(fontTexture, sourceRect, destRect, { 0, 0 }, 0, c);
+		x += w * scale + offset.x * cz;
+		if (x > maxWidth && maxWidth > 0) {
+			y += h * scale + offset.y * cz;
+			x = 0;
+		}
+	}
+
 }
