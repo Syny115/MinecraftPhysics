@@ -13,8 +13,8 @@
 #define save spawn3+1
 #define stairsDownStart door0+64
 #define stairsDownEnd door0+65
-#define stairsUpStart door0+66
-#define stairsUpEnd door0+67
+#define stairsUpStart door0+67
+#define stairsUpEnd door0+66
 #define breakableWall door0+4
 #define breakableRoast door0+5
 #define breakableUpgrade door0+37
@@ -278,8 +278,10 @@ void PlayableScene::parseTiles(const char* path) {
         else if (lData == spawn3) spawnponits[3] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SPAWN 4
         else if (lData == save) spawnponits[4] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SAVE POINT
         else if (lData == stairsDownStart) dVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
-        else if (lData == stairsUpStart) upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR END UP
-
+        else if (lData == stairsUpEnd) {
+            printf("\n\nA\n\n");
+            upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col ) }); //STAIR END UP
+        }
         else if (lData == zombieStart) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START ZOMBER
         else if (lData == medusaStart) meduQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START MEDUSA
         else if (lData == batSpawn) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // BAT
@@ -309,7 +311,8 @@ void PlayableScene::parseTiles(const char* path) {
             stairs.push_back(s);
         }
 
-        else if (lData == stairsUpEnd && !upVec.empty()) { //STAIR START UP
+        else if (lData == stairsUpStart && !upVec.empty()) { //STAIR START UP
+            printf("\n\nB\n\n");
             int i = -1;
             float adX, adY;
             do {
@@ -320,8 +323,10 @@ void PlayableScene::parseTiles(const char* path) {
             } while (adX != adY * -1 && i < upVec.size());
             
 
+
+
             staircase s = {
-                Rectangle{ upVec[i].x, upVec[i].y- tileHeight, 2.0f * tileWidth, 1.0f * tileHeight},
+                Rectangle{ upVec[i].x- tileWidth, upVec[i].y, 2.0f * tileWidth, 1.0f * tileHeight},
                 Rectangle{ (float)(j % col) * tileWidth - tileWidth, (float)(j / col) * tileHeight, 2.0f * tileWidth, 1.0f * tileHeight},
                 true
             };

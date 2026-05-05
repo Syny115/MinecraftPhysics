@@ -298,6 +298,17 @@ void PlayableScene::drawScene() {
 			}
 		}
 		debugTile->draw(mousePos);
+		
+		for (int i = 0; i < stairs.size(); i++) {
+			if (stairs[i].up) {
+				DrawRectangleLinesEx(stairs[i].start, 2, PURPLE);
+				DrawRectangleLinesEx(stairs[i].end, 2, PURPLE);
+			} else {
+				DrawRectangleLinesEx(stairs[i].start, 2, PINK);
+				DrawRectangleLinesEx(stairs[i].end, 2, PINK);
+			}
+
+		}
 	}
 
 
