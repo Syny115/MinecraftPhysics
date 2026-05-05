@@ -153,8 +153,26 @@ void PlayableScene::updateScene() {
 	{
 		if (CheckCollisionPointRec(player->getPosition(), zombieSpawners[i])
 			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
-			spawnCoolDown.startTimer();
-			enemies.push_back(new Zombie(GetScreenToWorld2D(Vector2{ screenWidth + 100, screenHeight }, camera)));
+			Vector2 positionCandidate = { screenWidth + 100, screenHeight };
+			if (player->getDirection() < 0) {
+				positionCandidate.x = -100;
+				
+			}
+			positionCandidate = GetScreenToWorld2D(positionCandidate, camera);
+			bool onFloor = false;
+			for (int i = 0; i < solidRects.size(); i++) {
+				if (positionCandidate.x >= solidRects[i].x && positionCandidate.x <= solidRects[i].x + solidRects[i].width) {
+					onFloor = true;
+					positionCandidate.y = solidRects[i].y;
+					break;
+				}
+			}
+			if (onFloor)
+			{
+				
+				spawnCoolDown.startTimer();
+				enemies.push_back(new Zombie(positionCandidate));
+			}
 		}
 	}
 
@@ -163,6 +181,12 @@ void PlayableScene::updateScene() {
 		if (CheckCollisionPointRec(player->getPosition(), medusaSpawners[i])
 			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
 			spawnCoolDown.startTimer();
+
+			Vector2 positionCandidate = { screenWidth + 100, screenHeight };
+			if (player->getDirection() < 0) {
+				positionCandidate.x = -100;
+			}
+
 			Vector2 p = GetScreenToWorld2D(Vector2{ screenWidth + 100, 0 }, camera);
 			p.y = player->getPosition().y;
 			enemies.push_back(new Medusa(p));
@@ -305,8 +329,8 @@ void PlayableScene::drawScene() {
 		
 		for (int i = 0; i < stairs.size(); i++) {
 			if (stairs[i].up) {
-				DrawRectangleLinesEx(stairs[i].start, 2, PURPLE);
-				DrawRectangleLinesEx(stairs[i].end, 2, PURPLE);
+				DrawRectangleLinesEx(stairs[i].start, 2, VIOLET);
+				DrawRectangleLinesEx(stairs[i].end, 2, VIOLET);
 			} else {
 				DrawRectangleLinesEx(stairs[i].start, 2, PINK);
 				DrawRectangleLinesEx(stairs[i].end, 2, PINK);
