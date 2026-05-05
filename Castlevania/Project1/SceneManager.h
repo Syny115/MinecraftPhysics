@@ -29,6 +29,7 @@ public:
 	void gameSaved();
 
 private:
+	bool saved = false;
 	room* head;
 	room* currentRoom;
 	room* saveRoom;

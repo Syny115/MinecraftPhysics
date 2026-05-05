@@ -173,6 +173,7 @@ public:
 
 	void gameSaved() {
 		gamePointer->sceneMan.gameSaved();
+		gamePointer->getActiveScene()->resetTimeLeft();
 		gamePointer->publicPlaySound(Game::TREASURE);
 		maximizeHealth();
 	}

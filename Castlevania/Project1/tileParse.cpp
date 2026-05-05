@@ -279,7 +279,6 @@ void PlayableScene::parseTiles(const char* path) {
         else if (lData == save) spawnponits[4] = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; //SAVE POINT
         else if (lData == stairsDownStart) dVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); //STAIR START DOWN
         else if (lData == stairsUpEnd) {
-            printf("\n\nA\n\n");
             upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col ) }); //STAIR END UP
         }
         else if (lData == zombieStart) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START ZOMBER
@@ -312,7 +311,6 @@ void PlayableScene::parseTiles(const char* path) {
         }
 
         else if (lData == stairsUpStart && !upVec.empty()) { //STAIR START UP
-            printf("\n\nB\n\n");
             int i = -1;
             float adX, adY;
             do {

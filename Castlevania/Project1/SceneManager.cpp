@@ -88,9 +88,11 @@ void SceneManager::requestSpecificRoom(int r) {
 }
 
 void SceneManager::requestSaveRoom() {
-		currentRoom = saveRoom;
-		GameManager::getInstance().setArea(currentRoom->area);
-		GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, 4));
+	int spawn = 0;
+	if (saved) spawn = 4;
+	currentRoom = saveRoom;
+	GameManager::getInstance().setArea(currentRoom->area);
+	GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, spawn));
 	
 }
 
@@ -105,4 +107,5 @@ int SceneManager::getAllRoomsSize() { return allRooms.size(); }
 
 void SceneManager::gameSaved() { 
 	saveRoom = currentRoom;
+	saved = true;
 }

@@ -63,6 +63,7 @@ public:
 	virtual Player* getPlayer() { return nullptr; }
 
 	virtual float getTimeLeft() { return 0; }
+	virtual void resetTimeLeft() {}
 
 	virtual void spawnParticle(Vector2 position) {}
 	virtual void spawnHitEffect(Vector2 position) {}
@@ -176,6 +177,7 @@ public:
 	void removeProjectile(Projectile* p) override;
 	Player* getPlayer() override { return player; }
 	float getTimeLeft() override { return timeLeft.getTime(); }
+	void resetTimeLeft() override { timeLeft.startTimer(timeLeft.getLifeTime()); }
 	void spawnParticle(Vector2 position) override;
 	void spawnHitEffect(Vector2 position) override;
 };
