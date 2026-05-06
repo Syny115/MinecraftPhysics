@@ -25,14 +25,19 @@ UI::UI() {
 	for (int i = 0; i+'a' <= 'z'; i++) {
 		if (i % (fontTexture.width / 8) == 0 && i != 0) h++;
 		fontBody[i + 'a'] = { i * 8.0f, h * 8.0f, 8.0f, 8.0f };
+		fontTitle[i + 'a'] = { i * 8.0f, h * 16.0f + 28, 8.0f, 12.0f };
 	}
 	for (int i = 0; i <= 9; i++) {
 		fontBody[i + '0'] = { i * 8.0f, 16, 8, 8 };
 	}
 	fontBody['.'] = { 80, 8, 8, 8 };
+	fontTitle['.'] = { 80, 44, 8, 12 };
 	fontBody[','] = { 88, 8, 8, 8 };
+	fontTitle[','] = { 88, 44, 8, 12 };
 	fontBody['!'] = { 96, 8, 8, 8 };
+	fontTitle['!'] = { 96, 44, 8, 12 };
 	fontBody['?'] = { 104, 8, 8, 8 };
+	fontTitle['?'] = { 104, 44, 8, 12 };
 	fontBody['+'] = { 112, 8, 8, 8 };
 	fontBody['*'] = { 120, 8, 8, 8 };
 	fontBody[':'] = { 80, 16, 8, 8 };
@@ -40,7 +45,10 @@ UI::UI() {
 	fontBody['('] = { 96, 16, 8, 8 };
 	fontBody[')'] = { 104, 16, 8, 8 };
 	fontBody['-'] = { 112, 16, 8, 8 };
+	fontTitle['-'] = { 112, 44, 8, 12 };
 	fontBody['/'] = { 120, 16, 8, 8 };
+	fontTitle['/'] = { 120, 44, 8, 12 };
+
 
 	
 }
@@ -171,15 +179,18 @@ void UI::drawTextFromTexture(string message, int font, Vector2 position, Vector2
 		f = &fontBody;
 	}
 	else {
-		f = &fontBody;
+		f = &fontTitle;
 	}
 	Rectangle sourceRect;
 	Rectangle destRect = (*f)['a'];
 	float w = destRect.width, h = destRect.height;
+
 	int x = 0, y = 0;
 	for (int i = 0; i < message.size(); i++) {
-		sourceRect = fontBody[tolower(message.c_str()[i])];
-		destRect = { position.x + x, position.y + y, sourceRect.width * scale, sourceRect.width * scale };
+		sourceRect = (*f)[tolower(message.c_str()[i])];
+		if (sourceRect.height == 0 && sourceRect.width == 0) sourceRect = fontBody[tolower(message.c_str()[i])];
+
+		destRect = { position.x + x, position.y + y, sourceRect.width * scale, sourceRect.height * scale };
 		DrawTexturePro(fontTexture, sourceRect, destRect, { 0, 0 }, 0, c);
 		x += w * scale + offset.x * cz;
 		if (x > maxWidth && maxWidth > 0) {

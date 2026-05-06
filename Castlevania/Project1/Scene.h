@@ -209,7 +209,7 @@ public:
 private:
 	Texture2D background;
 	Vector2 triangleCenter;
-	int level;
+	int level = 1;
 	bool selection;
 };
 

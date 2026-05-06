@@ -351,7 +351,6 @@ void PlayableScene::drawScene() {
 	EndMode2D();
 	
 	ui.renderUI();
-	ui.drawTextFromTexture("h llo world", 0, { 200, 200 }, { 1, 1 }, 1, 44*camera.zoom, WHITE);
 	ui.updateUI();
 	
 	if (GameManager::getInstance().debugMode)  {
@@ -566,7 +565,7 @@ void LevelScene::updateScene() {
 	}
 	if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_DOWN)) selection = !selection;
 	if (selection) {
-		triangleCenter = { 48-16, 16 + 96 + 8 };
+		triangleCenter = { 48-16-8, 16 + 96 + 8 };
 		if (IsKeyPressed(KEY_RIGHT)) level++;
 		if (IsKeyPressed(KEY_LEFT)) level--;
 		level = (int)Clamp(level, 1, GameManager::getInstance().getGamePointer()->sceneMan.getAllRoomsSize());
@@ -574,7 +573,7 @@ void LevelScene::updateScene() {
 		if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSpecificRoom(level-1);
 	}
 	else {
-		triangleCenter = { 48 - 16, 48+16+8 };
+		triangleCenter = { 48 - 16-8, 48+20 };
 		if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
 	}
 }
@@ -582,11 +581,14 @@ void LevelScene::updateScene() {
 void LevelScene::drawScene() {
 	ClearBackground(BLACK);
 	camera.offset = { 0 , 0};
+	float cz = camera.zoom;
+
+	ui.drawTextFromTexture("Start", 0, { 48.0f * cz, 64.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("Level Select", 0, { 48.0f * cz, 112.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture(to_string(level).c_str(), 0, { 64.0f * cz, 128.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+
 	BeginMode2D(camera);
 	DrawTriangle({ triangleCenter.x - 16, triangleCenter.y + 8 }, triangleCenter, { triangleCenter.x - 16, triangleCenter.y - 8 }, WHITE);
-		DrawText("Start", 48, 48+16, 24, WHITE);
-		DrawText("Level Select:", 48, 16+96, 24, WHITE);
-		DrawText(to_string(level).c_str(), 48 + 16, 40 + 96, 24, WHITE);
 	EndMode2D();
 }
 
@@ -614,20 +616,17 @@ void LoreScene::updateScene() {
 void LoreScene::drawScene() {
 	ClearBackground(BLACK);
 	camera.offset = { 0 , 0};
-	ui.drawTextFromTexture("This is Project 1 of Bachelor's, ", 0, { 16.0f, 16.0f }, { 0, 0 }, 1, -1, WHITE);
-	BeginMode2D(camera);
-	
-	DrawText("", 16, 16, 16, WHITE);
-	DrawText("degree in Video Game Design,", 16, 32, 16, WHITE);
-	DrawText("and Development at CITM UPC,", 16, 48, 16, WHITE);
-	DrawText("in which we must recreate", 16, 64, 16, WHITE);
-	DrawText("Castlevania game with raylib.", 16, 64+16, 16, WHITE);
-	DrawText("By Fernando Garcia,", 16, 64+48, 16, WHITE);
-	DrawText("Adria Pavon", 16, 64+48+16, 16, WHITE);
-	DrawText("Joao de Queiroz. Our bossman", 16, 64+48+16+16, 16, WHITE);
-	DrawText("is Rodrigo de Pedro", 16, 64+48+32+16, 16, WHITE);
-	DrawText("Press start, dingus!", 8, 64+48+32+16+32-8, 24, WHITE);
-	EndMode2D();
+	float cz = camera.zoom;
+	ui.drawTextFromTexture("This is Project 1 of Bachelor's,", 0, { 12.0f * cz, 16.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("degree in Video Game Design", 0, { 12.0f * cz, 32.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("and Development at CITM UPC,", 0, { 12.0f * cz, 64.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("in which we must recreate", 0, { 12.0f * cz, 80.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("Castlevania game with raylib.", 0, { 12.0f * cz, 96.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("By Fernando Garcia,", 0, { 12.0f * cz, 112.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("Adria Pavon and", 0, { 12.0f * cz, 128.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("Joao de Queiroz. Our bossman", 0, { 12.0f * cz, 144.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("is Rodrigo de Pedro", 0, { 12.0f * cz, 160.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("Press start, dingus!", 1, { 12.0f * cz, 192.0f * cz }, { 0, 0 }, 1, -1, WHITE);
 }
 
 
