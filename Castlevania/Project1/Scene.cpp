@@ -2,11 +2,11 @@
 #include "GameManager.h"
 
 //REPLACE LATER WHEN I HAVE GAME MANAGER
-const float screenWidth = 800;
-const float screenHeight = 700;
+const float screenWidth = GameManager::getInstance().getScreenWidth();
+const float screenHeight = GameManager::getInstance().getScreenHeight();
 
-const float viewportWidth = 256;
-const float viewportHeight = 224;
+const float viewportWidth = GameManager::getInstance().getViewportWidth();
+const float viewportHeight = GameManager::getInstance().getViewportHeight();;
 
 
 Scene::Scene() {
@@ -43,7 +43,10 @@ PlayableScene::PlayableScene(const char* path, int spawn) : Scene() {
 	GameManager::getInstance().sceneTime = 0;
 	this->path = path;
 	parseTiles(path);
-	timeLeft.startTimer();
+	timeLeft = &(GameManager::getInstance().Time);
+	if (timeLeft->isActive() == false){
+		timeLeft->startTimer();
+	}
 	while (Vector2Equals(spawnponits[spawn], Vector2Zero())  && spawn >= 0) {
 		spawn = (spawn + 1) % 5;
 	}
@@ -100,9 +103,9 @@ void PlayableScene::updateScene() {
 		setup = true;
 	}
 	GameManager::getInstance().sceneTime += GetFrameTime();
-	timeLeft.updateTimer();
+	timeLeft->updateTimer();
 
-	if (timeLeft.isTriggerd()) {
+	if (timeLeft->isTriggerd()) {
 		GameManager::getInstance().getGamePointer()->sceneMan.requestSaveRoom();
 	}
 

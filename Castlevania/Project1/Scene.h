@@ -121,8 +121,7 @@ private:
 	string debug_text2;
 
 	
-	Timer timeLeft{ 300 };
-
+	Timer *timeLeft;
 	//particles for enemies death
 	struct Particle {
 		Vector2 position;
@@ -177,7 +176,7 @@ public:
 	void pushProjectile(Projectile* p) override;
 	void removeProjectile(Projectile* p) override;
 	Player* getPlayer() override { return player; }
-	float getTimeLeft() override { return timeLeft.getTime(); }
+	float getTimeLeft() override { return timeLeft->getTime(); }
 	void spawnParticle(Vector2 position) override;
 	void spawnHitEffect(Vector2 position) override;
 };

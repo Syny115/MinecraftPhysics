@@ -85,10 +85,11 @@ void SceneManager::requestSpecificRoom(int r) {
 	}
 }
 
-void SceneManager::requestSaveRoom() {
-		currentRoom = saveRoom;
-		GameManager::getInstance().setArea(currentRoom->area);
-		GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, 4));
+void SceneManager::requestSaveRoom(){
+	GameManager::getInstance().Time.stopTimer();
+	currentRoom = saveRoom;
+	GameManager::getInstance().setArea(currentRoom->area);
+	GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, 4));
 	
 }
 

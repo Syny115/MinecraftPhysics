@@ -13,6 +13,7 @@ using namespace std;
 
 class GameManager {
 public:
+	Timer Time{300};
 	static GameManager& getInstance()
 	{
 		static GameManager instance; // Guaranteed to be destroyed.
