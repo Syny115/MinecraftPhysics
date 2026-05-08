@@ -90,6 +90,7 @@ void SceneManager::requestSpecificRoom(int r) {
 void SceneManager::requestSaveRoom() {
 	int spawn = 0;
 	if (saved) spawn = 4;
+	GameManager::getInstance().Time.stopTimer();
 	currentRoom = saveRoom;
 	GameManager::getInstance().setArea(currentRoom->area);
 	GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, spawn));

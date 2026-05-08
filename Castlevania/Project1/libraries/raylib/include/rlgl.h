@@ -621,7 +621,8 @@ RLAPI void rlActiveDrawBuffers(int count);              // Activate multiple dra
 RLAPI void rlBlitFramebuffer(int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth, int dstHeight, int bufferMask); // Blit active framebuffer to main framebuffer
 
 // General render state
-RLAPI void rlEnableColorBlend(void);                     // Enable color blending
+RLAPI void rlEnableCol
+lend(void);                     // Enable color blending
 RLAPI void rlDisableColorBlend(void);                   // Disable color blending
 RLAPI void rlEnableDepthTest(void);                     // Enable depth test
 RLAPI void rlDisableDepthTest(void);                    // Disable depth test
