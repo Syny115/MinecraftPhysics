@@ -1,6 +1,6 @@
-Vampire Killer 	Level 1
-Stalker 	Level 2
-Wicked Child 	Level 3
-Out of Time 	Level 4
-Heart of Fire 	Level 5
-Walking on the Edge 	Level 6
+Vampire Killer 		Level 1 - Area 0 - NO LOOP!
+Stalker 		Level 2 - Area 3 - loop at 12.885
+Wicked Child 		Level 3 - Area 4 - loop at 22.60
+Out of Time 		Level 4 - Area 2 - NO LOOP!
+Heart of Fire 		Level 5 - NOAREA -
+Walking on the Edge	Level 6 - Area 1 - loop at 6.390

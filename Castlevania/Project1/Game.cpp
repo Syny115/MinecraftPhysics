@@ -18,6 +18,21 @@ void Game::publicPlayLevelMusic() {
     case 0:
         publicPlayMusic(VAMPIRE_KILLER);
         break;
+    case 1:
+        publicPlayMusicOffset(WALKING_ON_THE_EDGE, 6.390);
+        break;
+    case 2:
+        publicPlayMusic(OUT_OF_TIME);
+        break;
+    case 3:
+        publicPlayMusicOffset(STALKER, 12.885);
+        break;
+    case 4:
+        publicPlayMusicOffset(WICKED_CHILD, 22.60);
+        break;
+    case 5:
+        publicPlayMusic(MARIO);
+        break;
     default:
         //publicPlayMusic(VAMPIRE_KILLER);
         break;
@@ -47,6 +62,19 @@ void Game::startGame() {
     musicArray[PLAYER_MISS].looping = false;
     musicArray[BLACK_NIGHT] = LoadMusicStream("resources/audio/mus_blackNight.wav");
     musicArray[BLACK_NIGHT].looping = true;
+    musicArray[STALKER] = LoadMusicStream("resources/audio/mus_stalker.wav");
+    musicArray[STALKER].looping = true;
+    musicArray[WICKED_CHILD] = LoadMusicStream("resources/audio/mus_wickedChild.wav");
+    musicArray[WICKED_CHILD].looping = true;
+    musicArray[OUT_OF_TIME] = LoadMusicStream("resources/audio/mus_outOfTime.wav");
+    musicArray[OUT_OF_TIME].looping = true;
+    musicArray[WALKING_ON_THE_EDGE] = LoadMusicStream("resources/audio/mus_walkingOnTheEdge.wav");
+    musicArray[WALKING_ON_THE_EDGE].looping = true;
+    musicArray[STAGE_CLEAR] = LoadMusicStream("resources/audio/mus_stageClear.wav");
+    musicArray[STAGE_CLEAR].looping = true;
+    musicArray[MARIO] = LoadMusicStream("resources/audio/mus_mario.wav");
+    musicArray[MARIO].looping = true;
+
     
     float pitch = 0.5f;
 

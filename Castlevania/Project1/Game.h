@@ -18,7 +18,7 @@ private:
 public:
 	enum MUSIC
 	{
-		VAMPIRE_KILLER, PLAYER_MISS, BLACK_NIGHT
+		VAMPIRE_KILLER, PLAYER_MISS, BLACK_NIGHT, STAGE_CLEAR, STALKER, WICKED_CHILD, OUT_OF_TIME, WALKING_ON_THE_EDGE, MARIO
 	};
 
 	enum SOUND
@@ -78,7 +78,6 @@ public:
 
 
 	void publicPlayMusicOffset(int i, float time) {
-		printf("%f / %f\n", GetMusicTimePlayed(musicArray[i]), GetMusicTimeLength(musicArray[i]));
 		if (i != currentSong) {
 			musFirstGo = true;
 			publicPlayMusic(i);
