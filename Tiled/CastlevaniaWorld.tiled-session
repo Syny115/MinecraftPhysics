@@ -5,15 +5,15 @@
     ],
     "fileStates": {
         "CastlevaniaTileset.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 3,
             "scaleInEditor": 1.5
         },
         "Scene1.tmx": {
-            "scale": 2,
-            "selectedLayer": 1,
+            "scale": 5.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 182.25,
-                "y": 205
+                "x": 213.54545454545456,
+                "y": 121.0909090909091
             }
         }
     },

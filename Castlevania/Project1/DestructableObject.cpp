@@ -44,7 +44,29 @@ DestructableLoot::DestructableLoot(Vector2 p, int t, int l) {
 
 DestructableWall::DestructableWall(Vector2 p, int l) {
 	sprite = new SpriteRenderer("resources/sprites/CastlevaniaTileset.png", SpriteRenderer::BREAKABLES);
-	sprite->setAnimation("ground");
+
+	switch (GameManager::getInstance().getArea()) {
+	case 0:
+		sprite->setAnimation("groundArea0");
+		break;
+	case 1:
+		sprite->setAnimation("groundArea1");
+		break;
+	case 2:
+		sprite->setAnimation("groundArea2");
+		break;
+	case 3:
+		sprite->setAnimation("groundArea3");
+		break;
+	case 4:
+		sprite->setAnimation("groundArea4");
+		break;
+	default:
+		sprite->setAnimation("groundArea0");
+		break;
+	}
+
+	
 	loot = l;
 	position = { p.x + size.x / 2, p.y + size.y / 2 };
 	hurtbox.x = p.x;

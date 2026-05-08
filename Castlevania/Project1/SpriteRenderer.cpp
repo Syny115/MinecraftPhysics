@@ -184,7 +184,11 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "whip";
         break;
     case BREAKABLES:
-        add("ground", 1, 32, 96, 16, 16, 0, 1);
+        add("groundArea0", 1, 32, 96, 16, 16, 0, 1);
+        add("groundArea1", 1, 32, 96, 16, 16, 0, 1);
+        add("groundArea2", 1, 0, 288, 16, 16, 0, 1);
+        add("groundArea3", 1, 256, 0, 16, 16, 0, 1);
+        add("groundArea4", 1, 240, 192, 16, 16, 0, 1);
         add("candle", 2, 157, 1, 8, 16, 1, 10); //needs offset!!
         add("torch", 2, 175, 1, 16, 32, 1, 10); //needs offset!!
         add("chest", 4, 137, 35, 16, 16, 1, 12);
