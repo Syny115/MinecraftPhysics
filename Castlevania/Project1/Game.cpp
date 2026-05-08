@@ -12,6 +12,7 @@ void Game::loadScene(Scene* newScene) {
 }
 
 void Game::publicPlayLevelMusic() {
+    printf("%d, is the area\n", GameManager::getInstance().getArea());
     if (activeScene == nullptr) return;
     if (activeScene->type != SceneType::PLAYABLE) return;
     switch (GameManager::getInstance().getArea()) {
@@ -105,8 +106,9 @@ void Game::startGame() {
                 else if (IsKeyPressed(KEY_F4)) GameManager::getInstance().setTimeScale(4.0f);
                 else if (IsKeyPressed(KEY_F5)) sceneMan.requestSceneLoad(SceneType::PLAYABLE);
                 else if (IsKeyPressed(KEY_F7)) sceneMan.requestRoomExit(1);
+                else if (IsKeyPressed(KEY_F8)) GameManager::getInstance().setBossStarted(true);
             }
-            if (currentSong > -1) UpdateMusicStream(musicArray[currentSong]);
+            updateMusic();
             //----------------------------------------------------------------------------------
 
         // Draw

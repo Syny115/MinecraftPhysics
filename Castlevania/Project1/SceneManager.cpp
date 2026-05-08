@@ -29,6 +29,27 @@ SceneManager::SceneManager() {
 	static room test{ "resources/json/NewTest.json" };
 	allRooms.push_back(&test);
 	test.area = 0;
+	static room testArea1{ "resources/json/NewTest.json" };
+	allRooms.push_back(&testArea1);
+	testArea1.area = 1;
+	static room testArea2{ "resources/json/NewTest.json" };
+	allRooms.push_back(&testArea2);
+	testArea2.area = 2;
+	static room testArea3{ "resources/json/NewTest.json" };
+	allRooms.push_back(&testArea3);
+	testArea3.area = 3;
+	static room testArea4{ "resources/json/NewTest.json" };
+	allRooms.push_back(&testArea4);
+	testArea4.area = 4;
+	static room testArea5{ "resources/json/NewTest.json" };
+	allRooms.push_back(&testArea5);
+	testArea5.area = 5;
+	
+	test.exit1 = &testArea1;
+	testArea1.exit1 = &testArea2;
+	testArea2.exit1 = &testArea3;
+	testArea3.exit1 = &testArea4;
+	testArea4.exit1 = &testArea5;
 
 	//----------------------------------------------------------------------------------//
 	//	null <- | entrance	| <- | hall1	| <- | hall2	| <- | hall3	|			//

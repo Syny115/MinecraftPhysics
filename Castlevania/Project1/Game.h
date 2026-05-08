@@ -13,6 +13,7 @@ private:
 	Music musicArray[10];
 	int currentSong = -1;
 	bool musFirstGo;
+	float loopPoint;
 
 	int levelIndex = 0, sceneIndex = 0;
 public:
@@ -73,6 +74,7 @@ public:
 		}
 		if (currentSong > -1) StopMusicStream(musicArray[currentSong]);
 		PlayMusicStream(musicArray[i]);
+		loopPoint = 0.0f;
 		currentSong = i;	
 	}
 
@@ -81,21 +83,28 @@ public:
 		if (i != currentSong) {
 			musFirstGo = true;
 			publicPlayMusic(i);
-			return;
-		}
-		float played = GetMusicTimePlayed(musicArray[i]);
-		float length = GetMusicTimeLength(musicArray[i]);
+			loopPoint = time;
+		}	
+	}
 
-		if (!musFirstGo && played >= length - 2 * GetFrameTime()) {
-			SeekMusicStream(musicArray[i], time);
-			return;
-		}
+	void updateMusic() {
+		if (currentSong > -1) {
+			UpdateMusicStream(musicArray[currentSong]);
 
-		if (musFirstGo && played >= time + GetFrameTime()) {
-			musFirstGo = false;
-		}
+			if (loopPoint == 0.0f) return;
 
-		
+			float played = GetMusicTimePlayed(musicArray[currentSong]);
+			float length = GetMusicTimeLength(musicArray[currentSong]);
+			printf("%f / %f\nmus first go: %d\n", played, length, musFirstGo);
+			if (!musFirstGo && played >= length - 2 * GetFrameTime()) {
+				SeekMusicStream(musicArray[currentSong], loopPoint);
+				return;
+			}
+
+			if (musFirstGo && played >= loopPoint + GetFrameTime()) {
+				musFirstGo = false;
+			}
+		}
 	}
 
 	void publicPlayLevelMusic();
