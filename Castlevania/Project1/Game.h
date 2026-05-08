@@ -76,18 +76,27 @@ public:
 		currentSong = i;	
 	}
 
+
 	void publicPlayMusicOffset(int i, float time) {
 		printf("%f / %f\n", GetMusicTimePlayed(musicArray[i]), GetMusicTimeLength(musicArray[i]));
-		if (i == currentSong) {
-			if (GetMusicTimePlayed(musicArray[i]) < time && !musFirstGo) SeekMusicStream(musicArray[i], time); //1.6 for blackNight
-			if (GetMusicTimePlayed(musicArray[i]) >= GetMusicTimeLength(musicArray[i]) - GetFrameTime())
-			{
-				musFirstGo = false;
-			}
+		if (i != currentSong) {
+			musFirstGo = true;
+			publicPlayMusic(i);
 			return;
 		}
-		musFirstGo = true;
-		publicPlayMusic(i);
+		float played = GetMusicTimePlayed(musicArray[i]);
+		float length = GetMusicTimeLength(musicArray[i]);
+
+		if (!musFirstGo && played >= length - 2 * GetFrameTime()) {
+			SeekMusicStream(musicArray[i], time);
+			return;
+		}
+
+		if (musFirstGo && played >= time + GetFrameTime()) {
+			musFirstGo = false;
+		}
+
+		
 	}
 
 	void publicPlayLevelMusic();
