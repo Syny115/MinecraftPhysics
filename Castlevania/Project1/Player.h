@@ -136,4 +136,5 @@ public:
     void updateAnimation();
 
     void betweenStates(int previous, int current, int future, PlayerState* state);
+    void startInvincibility(float time) { invincibilityTimer.startTimer(time); }
 };

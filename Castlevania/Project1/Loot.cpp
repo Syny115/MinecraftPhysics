@@ -48,9 +48,8 @@ bool Loot::playerCollision(Rectangle rec) {
 			}
 		}
 		else if (lootType == 13) {
-			//This is teh invisibility jar.
-			// Should create a Timer that while active makes the player invulnerable
-			// And also makes him glow with that epileptic sprite change animation
+			GameManager::getInstance().getGamePointer()->getActiveScene()->getPlayer()->startInvincibility(8);
+			GameManager::getInstance().getGamePointer()->publicPlaySound(Game::JAR);
 		}
 		else if (lootType == 14) {
 			GameManager::getInstance().getGamePointer()->getActiveScene()->removeAllEnemies();

@@ -175,7 +175,7 @@ void Player::enemyCollision(vector<damageRect>& dmgRect) {
     for (int i = 0; i < dmgRect.size(); i++) {
         if (CheckCollisionRecs(*dmgRect[i].rect, hurtbox) && !invincibilityTimer.isActive() && lowerState.current != DASH && lowerState.current != STUN) {
             isDamaged = dmgRect[i].damage;
-            invincibilityTimer.startTimer();
+            invincibilityTimer.startTimer(3);
         }
     }
 }
