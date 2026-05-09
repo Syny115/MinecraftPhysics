@@ -51,7 +51,7 @@ void Projectile::earlyUpdate() {
 Projectile::Projectile()
 {
 	sprite = new SpriteRenderer("resources/sprites/simon_sprites.png", SpriteRenderer::PROJECTILES);
-	owner = PLAYER;
+	//owner = PLAYER;
 	direction = 0;
 }
 
@@ -170,4 +170,44 @@ void Sfire::update() {
 	position.y -=  path.y * 120 * deltaTime;
 	 
 	lateUpdate();
+}
+
+//BOOMERANG
+
+Boomerang::Boomerang(Vector2 pos, int dir, int own, Rectangle *hurtBox)
+{
+	owner = own;
+	if (own == PLAYER) {
+		sprite->setAnimation("boomerang");
+		hurtbox.width = sprite->getAnimationFromName("boomerang").frameWidth;
+		hurtbox.height = sprite->getAnimationFromName("boomerang").frameHeight;
+	}
+	else {
+		sprite->setAnimation("axe");
+		hurtbox.width = sprite->getAnimationFromName("axe").frameWidth;
+		hurtbox.height = sprite->getAnimationFromName("axe").frameHeight;
+	}
+	damage = 2;
+	position = pos;
+	startX = pos.x;
+	direction = dir;
+	velocity.x = dir * 150;
+	size = Vector2{ hurtbox.width, hurtbox.height };
+	
+	ownerBox = hurtBox;
+}
+
+void Boomerang::update() {
+	earlyUpdate();
+	if (velocity.x * direction < 0 && CheckCollisionRecs(hurtbox, *ownerBox)) queueDeletion();
+	if (abs((position.x - startX)) > 16 * 4) {
+		if (velocity.x * direction > -150 ) velocity.x -= direction * deltaTime * 250;
+	}
+	moveHLinear(velocity.x);
+	lateUpdate();
+}
+
+Boomerang::~Boomerang()
+{
+
 }

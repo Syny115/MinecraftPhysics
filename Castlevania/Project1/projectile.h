@@ -87,3 +87,18 @@ private:
 	Vector2 path;
 	Vector2 playerPos;
 };
+
+//BOOMERANG
+
+class Boomerang : public Projectile {
+public:
+	Boomerang(Vector2 pos, int dir, int own, Rectangle *hurtBox);
+	~Boomerang();
+
+	void update() override;
+	bool enemyCollision(vector<damageRect>& dmgRect) override { return false; }
+	bool playerCollision(Rectangle rec) override { return false; }
+private:
+	Rectangle* ownerBox;
+	float startX;
+};
