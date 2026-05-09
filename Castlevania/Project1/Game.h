@@ -9,7 +9,7 @@ class Game {
 private:
 	Scene* activeScene = nullptr;
 	Scene* pendingScene = nullptr;
-	Sound soundArray[10];
+	Sound soundArray[11];
 	Music musicArray[10];
 	int currentSong = -1;
 	bool musFirstGo;
@@ -24,7 +24,7 @@ public:
 
 	enum SOUND
 	{
-		WHIP, BREAK, CROSS, DAGGER, HEART, JAR, TREASURE, WEAPON_PICK, AXE, HURT
+		WHIP, BREAK, CROSS, DAGGER, HEART, JAR, TREASURE, WEAPON_PICK, AXE, HURT, RAISE_HEALTH
 	};
 
 	
@@ -50,7 +50,7 @@ public:
 
 	void publicPlaySound(int i) {
 		if (!IsAudioDeviceReady()) return;
-		if (i < 0 || i >= 10) {
+		if (i < 0 || i >= 11) {
 			TraceLog(LOG_ERROR, "publicPlaySound: invalid index %d", i);
 			return;
 		}

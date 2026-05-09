@@ -138,4 +138,5 @@ public:
     void betweenStates(int previous, int current, int future, PlayerState* state);
 
     int getDirection() { return direction; }
+    void startInvincibility(float time) { invincibilityTimer.startTimer(time); }
 };

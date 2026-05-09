@@ -56,4 +56,6 @@ public:
 	virtual void updateColliderPosiotions();
 	Rectangle getHurtbox() { return hurtbox; };
 	Rectangle* getHurtboxPtr() { return &hurtbox; }
+
+	int getHealth() { return health; }
 };
