@@ -53,7 +53,9 @@ bool Loot::playerCollision(Rectangle rec) {
 			// And also makes him glow with that epileptic sprite change animation
 		}
 		else if (lootType == 14) {
-			// Should queue deletion on every enemy on screen 
+			GameManager::getInstance().getGamePointer()->getActiveScene()->removeAllEnemies();
+			GameManager::getInstance().getGamePointer()->publicPlaySound(Game::CROSS);
+
 		}
 		else if (lootType == 15) {
 			// Gives... one life? I can't find this one up item anywhere

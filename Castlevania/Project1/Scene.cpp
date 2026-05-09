@@ -393,6 +393,12 @@ void PlayableScene::removeEnemyRects(Rectangle* hitbox) {
 	}
 }
 
+void PlayableScene::removeAllEnemies() {
+	for (int i = enemies.size()-1; i >= 0; i--) {
+		if (enemies[i]->getHealth() != GameManager::getInstance().getBossHealth()) enemies[i]->queueDeletion();
+	}
+}
+
 void PlayableScene::removeProjectile(Projectile* p) {
 	if (p->getOwner() == Projectile::PLAYER) removePlayerHitBoxes(p->getHurtboxPtr());
 	if (p->getOwner() == Projectile::ENEMY) removeEnemyRects(p->getHurtboxPtr());

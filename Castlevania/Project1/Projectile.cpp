@@ -195,6 +195,8 @@ Boomerang::Boomerang(Vector2 pos, int dir, int own, Rectangle *hurtBox)
 	size = Vector2{ hurtbox.width, hurtbox.height };
 	
 	ownerBox = hurtBox;
+
+	sfxTimer.startTimer();
 }
 
 void Boomerang::update() {
@@ -205,6 +207,11 @@ void Boomerang::update() {
 	}
 	moveHLinear(velocity.x);
 	lateUpdate();
+	sfxTimer.updateTimer();
+	if (sfxTimer.isTriggerd()) {
+		GameManager::getInstance().getGamePointer()->publicPlaySound(Game::AXE);
+		sfxTimer.startTimer();
+	}
 }
 
 Boomerang::~Boomerang()

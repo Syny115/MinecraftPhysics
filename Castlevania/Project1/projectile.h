@@ -101,4 +101,5 @@ public:
 private:
 	Rectangle* ownerBox;
 	float startX;
+	Timer sfxTimer{ 0.25 };
 };
