@@ -39,6 +39,7 @@ void Game::startGame() {
     soundArray[TREASURE] = LoadSound("resources/audio/snd_treasure.wav");
     soundArray[WEAPON_PICK] = LoadSound("resources/audio/snd_weaponPick.wav");
     soundArray[WHIP] = LoadSound("resources/audio/snd_whip.wav");
+    soundArray[RAISE_HEALTH] = LoadSound("resources/audio/snd_raiseHealth.wav");
 
     //Music
     musicArray[VAMPIRE_KILLER] = LoadMusicStream("resources/audio/mus_vampireKiller.wav");
@@ -105,7 +106,7 @@ void Game::startGame() {
     for (int i = 0; i < 10; i++) {
         UnloadMusicStream(musicArray[i]);
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
         UnloadSound(soundArray[i]);
     }
     

@@ -106,9 +106,9 @@ public:
 
 	int getHealth() { return playerHealth; }
 
-	void addHealth(int h) { playerHealth += h; }
+	void addHealth(int h) { playerHealth += h; gamePointer->publicPlaySound(Game::RAISE_HEALTH);}
 
-	void maximizeHealth() { playerHealth = 16; }
+	void maximizeHealth() { playerHealth = 16; gamePointer->publicPlaySound(Game::RAISE_HEALTH);}
 
 	void addWhipLevel(int wl) { if (whipLevel < 2) whipLevel+=wl; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
 
@@ -141,7 +141,7 @@ public:
 
 	void resetScore() { score = 0; }
 
-	void setProjectileUpgrade(int projcount) { projectileUpgrade = projcount; }
+	void setProjectileUpgrade(int projcount) { projectileUpgrade = projcount; gamePointer->publicPlaySound(Game::WEAPON_PICK);}
 
 	void resetProjectiles() { projectileCount = 0; }
 
@@ -173,7 +173,6 @@ public:
 
 	void gameSaved() {
 		gamePointer->sceneMan.gameSaved();
-		gamePointer->publicPlaySound(Game::TREASURE);
 		maximizeHealth();
 	}
 
