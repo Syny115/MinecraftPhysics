@@ -108,6 +108,8 @@ private:
 	const float speed = 40.0f;
 };
 
+//SHIELD KNIGHT
+
 class ShieldKnight : public Enemy
 {
 public:
@@ -119,7 +121,8 @@ private:
 	enum class KnightState { ATTACK, WALK };
 	KnightState state = KnightState::WALK;
 	float lastProjectileX;
-
+	Timer attackTimer{ 3.00f };
+	float playerX;
 };
 
 // BAT BOSS

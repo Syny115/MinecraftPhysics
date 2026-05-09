@@ -296,15 +296,22 @@ ShieldKnight::ShieldKnight(Vector2 pos)
 	hurtbox.width = size.x;
 	hurtbox.height = size.y;
 	position = pos;
-	health = 2;
+	health = 4;
 	damage = 1;
 	points = 500;
+	attackTimer.startTimer();
 }
 
 void ShieldKnight::update() {
 	earlyUpdate();
 	moveV();
 	moveHLinear(20 * direction);
+	attackTimer.updateTimer();
+
+	if (attackTimer.isTriggerd()) {
+		if ((playerX - position.x) *direction > 0) GameManager::getInstance().getActiveScene()->pushProjectile(new Boomerang(position, direction, Projectile::ENEMY, &hurtbox));
+		attackTimer.startTimer();
+	}
 
 
 	//if (() isHittable = true;
@@ -318,19 +325,21 @@ void ShieldKnight::update() {
 void ShieldKnight::hitCollision(vector<damageRect>& dmgRect) {
 
 	float s = GameManager::getInstance().getWhipLevel() < 2 ? 32 : 48;
-	float playerX = GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x;
+	playerX = GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x;
 	
 		hitCooldown.updateTimer();
 		if (hitCooldown.isActive()) return;
 		for (int i = 0; i < dmgRect.size(); i++) {
 			if (CheckCollisionRecs(hurtbox, *dmgRect[i].rect)) {
-				cout << lastProjectileX << endl;
+				
 				if (dmgRect[i].rect->width == s) {
 					if ((playerX - position.x) * direction > 0) return;
 				}
 				else {
 					if (lastProjectileX == 0.0f) lastProjectileX = dmgRect[i].rect->x;
-					if ((dmgRect[i].rect->x - position.x) * direction > 0 || (dmgRect[i].rect->x - lastProjectileX) * direction > 0) {
+					cout << "last Proj x: " << lastProjectileX << endl;
+					cout << "distance " << ((dmgRect[i].rect->x - lastProjectileX)) << endl;
+					if ((dmgRect[i].rect->x - position.x) * direction > 0 || (dmgRect[i].rect->x - lastProjectileX) * direction < 0) {
 						lastProjectileX = dmgRect[i].rect->x;
 						return;
 					}

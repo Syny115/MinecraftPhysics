@@ -187,6 +187,7 @@ Boomerang::Boomerang(Vector2 pos, int dir, int own, Rectangle *hurtBox)
 		hurtbox.width = sprite->getAnimationFromName("axe").frameWidth;
 		hurtbox.height = sprite->getAnimationFromName("axe").frameHeight;
 	}
+	damage = 2;
 	position = pos;
 	startX = pos.x;
 	direction = dir;
