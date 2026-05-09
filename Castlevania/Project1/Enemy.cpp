@@ -288,7 +288,7 @@ Merman::~Merman() {}
 
 //KNIGHT
 
-Knight::Knight(Vector2 pos)
+ShieldKnight::ShieldKnight(Vector2 pos)
 {
 	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::KNIGHT);
 	size.x = sprite->getAnimationFromName("knightWalk").frameWidth;
@@ -301,26 +301,50 @@ Knight::Knight(Vector2 pos)
 	points = 500;
 }
 
-void Knight::update() {
+void ShieldKnight::update() {
 	earlyUpdate();
 	moveV();
 	moveHLinear(20 * direction);
 
 
-	if ((GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x - position.x)*direction < 0) isHittable = true;
+	//if (() isHittable = true;
 	
-	else isHittable = false;
+	//else isHittable = false;
 
 	Enemy::update();
 	lateUpdate();
 }
 
-void Knight::hitCollision(vector<damageRect>& playerHitBoxes) {
-	if (!isHittable) return;
-	Enemy::hitCollision(playerHitBoxes);
+void ShieldKnight::hitCollision(vector<damageRect>& dmgRect) {
+
+	float s = GameManager::getInstance().getWhipLevel() < 2 ? 32 : 48;
+	float playerX = GameManager::getInstance().getActiveScene()->getPlayer()->getPosition().x;
+	
+		hitCooldown.updateTimer();
+		if (hitCooldown.isActive()) return;
+		for (int i = 0; i < dmgRect.size(); i++) {
+			if (CheckCollisionRecs(hurtbox, *dmgRect[i].rect)) {
+				cout << lastProjectileX << endl;
+				if (dmgRect[i].rect->width == s) {
+					if ((playerX - position.x) * direction > 0) return;
+				}
+				else {
+					if (lastProjectileX == 0.0f) lastProjectileX = dmgRect[i].rect->x;
+					if ((dmgRect[i].rect->x - position.x) * direction > 0 || (dmgRect[i].rect->x - lastProjectileX) * direction > 0) {
+						lastProjectileX = dmgRect[i].rect->x;
+						return;
+					}
+				}
+				
+				lastProjectileX = 0.0f;
+				health -= dmgRect[i].damage;
+				hitCooldown.startTimer();
+				GameManager::getInstance().getActiveScene()->spawnHitEffect(position);
+			}
+		}
 }
 
-Knight::~Knight() {}
+ShieldKnight::~ShieldKnight() {}
 
 //BAT BOSS
 

@@ -146,12 +146,12 @@ void UI::updateUI() {
 
 		buffer = GameManager::getInstance().getSubWeapon();
 		if(buffer != 0){
-			if (buffer == 1) sw->setAnimation("dagger");
-			else if (buffer == 2) sw->setAnimation("axe");
-			else if (buffer == 2) sw->setAnimation("holywater");
-			else if (buffer == 2) sw->setAnimation("cross");
-			else if (buffer == 2) sw->setAnimation("stopwatch");
-			sw->draw({ 134*cz, 18*cz }, 4.125);
+			if (buffer == GameManager::DAGGER) sw->setAnimation("dagger");
+			else if (buffer == GameManager::AXE) sw->setAnimation("axe");
+			else if (buffer == GameManager::HOLYWATER) sw->setAnimation("holywater");
+			else if (buffer == GameManager::BOOMERANG) sw->setAnimation("boomerang");
+			else if (buffer == GameManager::STOPWATCH) sw->setAnimation("stopwatch");
+			sw->draw({ 136*cz, 20*cz }, cz);
 		}
 	}
 	

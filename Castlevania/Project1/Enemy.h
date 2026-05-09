@@ -108,17 +108,17 @@ private:
 	const float speed = 40.0f;
 };
 
-class Knight : public Enemy
+class ShieldKnight : public Enemy
 {
 public:
 	void update() override;
 	void hitCollision(vector<damageRect>& dmgRect) override;
-	Knight(Vector2 pos);
-	~Knight();
+	ShieldKnight(Vector2 pos);
+	~ShieldKnight();
 private:
 	enum class KnightState { ATTACK, WALK };
 	KnightState state = KnightState::WALK;
-	bool isHittable = true;
+	float lastProjectileX;
 
 };
 

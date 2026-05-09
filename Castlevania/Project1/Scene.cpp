@@ -191,7 +191,7 @@ void PlayableScene::updateScene() {
 	for (int i = knightSpawners.size() - 1; i >= 0; i--) {
 		Vector2 p = GetWorldToScreen2D(knightSpawners[i], camera);
 		if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
-			enemies.push_back(new Knight(knightSpawners[i]));
+			enemies.push_back(new ShieldKnight(knightSpawners[i]));
 			knightSpawners.erase(knightSpawners.begin() + i);
 		}
 	}
@@ -474,7 +474,7 @@ void PlayableScene::debugEnemySpawn() {
 	case 6:
 		//knight
 		debugTile->setAnimation("knightTile");
-		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new Knight(mousePos));
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new ShieldKnight(mousePos));
 		break;
 	default:
 		break;

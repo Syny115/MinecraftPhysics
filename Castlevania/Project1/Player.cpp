@@ -619,6 +619,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
             if (subAttack) {
                 if (*subWeapon == GameManager::DAGGER) GameManager::getInstance().getActiveScene()->pushProjectile(new Dagger({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
                 else if (*subWeapon == GameManager::AXE) GameManager::getInstance().getActiveScene()->pushProjectile(new Axe({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER));
+                else if (*subWeapon == GameManager::BOOMERANG) GameManager::getInstance().getActiveScene()->pushProjectile(new Boomerang({ position.x + direction * 8, position.y }, direction, Projectile::PLAYER, &hurtbox));
                 *ammo-=projCost;
                 (*projectileCount)++;
             }
