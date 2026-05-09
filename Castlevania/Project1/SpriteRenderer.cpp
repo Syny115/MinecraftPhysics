@@ -198,7 +198,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("dagger", 1, 148, 112, 20, 20, 1, 1);
         add("axe", 4, 211, 91, 20, 20, 1, 12);
         add("holywater", 1, 0, 0, 0, 0, 1, 1);
-        add("boomerang", 1, 0, 0, 0, 0, 1, 6);
+        add("boomerang", 3, 148, 91, 20, 20, 1, 6);
         add("fireball", 1, 177, 154, 12, 6, 1, 1);
         currentAnimName = "dagger";
         break;

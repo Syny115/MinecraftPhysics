@@ -22,12 +22,16 @@ public:
 	}
 	float sceneTime = 0;
 	bool debugMode = false;
+	enum weapons
+	{
+		EMPTY, DAGGER, AXE, HOLYWATER, BOOMERANG, STOPWATCH
+	};
 private:
 	GameManager() {
 		inventory["dagger"] = false;
 		inventory["axe"] = false;
 		inventory["holywater"] = false;
-		inventory["cross"] = false;
+		inventory["boomerang"] = false;
 		inventory["stopwatch"] = false;
 		inventory["dash"] = false;
 	}
@@ -41,11 +45,6 @@ private:
 	const float viewportHeight = 224;
 
 	bool bossStarted = false;;
-
-	enum weapons
-	{
-		EMPTY, DAGGER, AXE, HOLYWATER, CROSS, STOPWATCH
-	};
 
 	int playerHealth = 16;
 	int enemyHealth = 0;
@@ -115,7 +114,7 @@ public:
 
 	void changeSubWeapon(bool dir) { 
 		int mult = dir ? 1 : -1;
-		const char* weaponKeys[] = { "", "dagger", "axe", "holywater", "cross", "stopwatch" };
+		const char* weaponKeys[] = { "", "dagger", "axe", "holywater", "boomerang", "stopwatch" };
 		int total = 6;
 		int next = subWeapon;
 
