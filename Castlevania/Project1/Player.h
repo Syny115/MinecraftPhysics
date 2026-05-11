@@ -32,6 +32,7 @@ private:
     Timer deathTimer{ 3.0 };
     Timer dashTimer{ 0.25 };
     Timer dashCooldown{ 0.125 };
+    Timer postDashClarityCooldown{ 0.25 };
 
     enum playerStates
     {
@@ -127,6 +128,7 @@ public:
     void earlyUpdate() override;
 
     void moveH(bool accelerate, bool decelerate);
+    void moveHLinear(const int speed) override;
     void moveV() override;
     int getNormalizedVelocity();
     void increaseHalfOfVelocity(bool accelerate, bool decelerate);

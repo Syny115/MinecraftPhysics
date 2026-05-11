@@ -51,7 +51,7 @@ public:
 	virtual void update();
 	virtual void moveV();
 	virtual void moveH();
-	void moveHLinear(const int speed);
+	virtual void moveHLinear(const int speed);
 	void moveVLinear(const int speed);
 	virtual void updateColliderPosiotions();
 	Rectangle getHurtbox() { return hurtbox; };
