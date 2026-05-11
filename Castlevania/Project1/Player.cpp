@@ -265,7 +265,12 @@ void Player::moveV() {
     grav = IsKeyDown(I_JUMP) ? halfGrav : halfGrav * 2;
 
     Entity::moveV();
-    if (position.y >= worldHeight) { isDamaged = true; position = lastViablePos; }
+    if (position.y >= worldHeight) { 
+        isDamaged = 1;
+        if (position.x < lastViablePos.x) direction = -1;
+        else direction = 1;
+        position = lastViablePos; 
+    }
 }
 
 void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
