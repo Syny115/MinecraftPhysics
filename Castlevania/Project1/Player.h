@@ -128,6 +128,7 @@ public:
     void earlyUpdate() override;
 
     void moveH(bool accelerate, bool decelerate);
+    void moveHLinear(const int speed) override;
     void moveV() override;
     int getNormalizedVelocity();
     void increaseHalfOfVelocity(bool accelerate, bool decelerate);

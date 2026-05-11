@@ -280,6 +280,12 @@ void Player::increaseHalfOfVelocity(bool accelerate, bool decelerate) {
     if (velocity.x * normalizedVelocity < 0) velocity.x = 0;
 }
 
+void Player::moveHLinear(const int speed) {
+    Entity::moveHLinear(speed);
+    if (!GameManager::getInstance().bossStarted) position.x = Clamp(position.x, size.x / 2, worldWidth - size.x / 2);
+    else  position.x = Clamp(position.x, size.x / 2 + worldWidth - 256, worldWidth - size.x / 2);
+}
+
 int someCounter = 0;
 
 void Player::earlyUpdate() {
