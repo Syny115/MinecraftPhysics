@@ -59,10 +59,42 @@ void Player::updateColliderPosiotions() {
     leftCollider.height = size.y - 10;
     rightCollider.height = size.y - 10;
 
+    topCollider.height = 2;
+
     whipCollider.x = position.x -whipCollider.width/2 + (whipCollider.width + size.x) * 0.5 * direction;
     
+    if (lowerState.current == DASH && postDashClarityCooldown.isActive()) {
+        hurtbox.height = 4;
+        hurtbox.y = position.y + size.y/2 - 2;
+        hurtbox.x = position.x - size.x/2;
+        leftCollider.height *= 0.5;
+        rightCollider.height *= 0.5;
+        leftCollider.y += leftCollider.height + 4;
+        rightCollider.y += rightCollider.height + 4;
+        topCollider.height = 0;
+    }
+    else if(postDashClarityCooldown.isActive()){
+        leftCollider.height *= 0.5;
+        rightCollider.height *= 0.5;
+        leftCollider.y += leftCollider.height + 4;
+        rightCollider.y += rightCollider.height + 4;
+        topCollider.height = 0;
+        hurtbox.y = position.y - size.y / 2;
+        hurtbox.x = position.x - size.x / 2;
+        hurtbox.height = size.y;
+    }
+    else if (lowerState.current == DASH) {
+        hurtbox.height = 4;
+        hurtbox.y = position.y + size.y / 2 - 2;
+        hurtbox.x = position.x - size.x / 2;
+        leftCollider.height *= 0.5;
+        rightCollider.height *= 0.5;
+        leftCollider.y += leftCollider.height + 4;
+        rightCollider.y += rightCollider.height + 4;
+        topCollider.height = 0;
+    }
 
-    if (lowerState.current == STUN || lowerState.current == CROUCH) {
+    else if (lowerState.current == STUN || lowerState.current == CROUCH) {
         hurtbox = Rectangle{ offsetX, position.y, size.x , size.y / 2 };
         whipCollider.y = position.y;
     }
@@ -271,7 +303,7 @@ void Player::update() {
 
     invincibilityTimer.updateTimer(deltaTime);
     dashCooldown.updateTimer(deltaTime);
-
+    postDashClarityCooldown.updateTimer(deltaTime);
     if (isOnFloor && lowerState.current != JUMP && lowerState.current != KNOCKBACK) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
@@ -491,7 +523,8 @@ void Player::update() {
         bottomSprite->setAnimation("dash");
         dashTimer.updateTimer(deltaTime);
 
-        moveHLinear(200 * direction);
+        if((!leftBlocked && direction == -1) || (!rightBlocked && direction == 1)) moveHLinear(200 * direction);
+        
         //Transition
         if (dashTimer.isTriggerd()) {
             dashCooldown.startTimer();
@@ -658,6 +691,9 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
         else if (future == DASH) {
             dashTimer.startTimer();
             upperState.changeState(DIE);
+        }
+        else if (current == DASH) {
+            postDashClarityCooldown.startTimer();
         }
 
     }
