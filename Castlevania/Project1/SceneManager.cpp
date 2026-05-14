@@ -56,11 +56,11 @@ SceneManager::SceneManager() {
 	patio.exit2 = &redHall1;
 	patio.exit1 = &cavern1;
 
-	redHall1.exit0 = &hall2;
-	redHall1.exit1 = &tower1;
-
-	redHall2.exit0 = &patio;
+	redHall2.exit0 = &hall2;
 	redHall2.exit1 = &tower1;
+
+	redHall1.exit0 = &patio;
+	redHall1.exit1 = &tower1;
 
 	tower1.exit0 = &redHall2;
 	tower1.exit2 = &boss;
@@ -73,7 +73,7 @@ SceneManager::SceneManager() {
 	//                                  |						//
 	//                           + -  tower1 - +				//
 	//                           |             |				//
-	//                         redHall1  redHall2				//
+	//                         redHall2  redHall1				//
 	//                             |       |					//
 	// null - entrance - hall1 - hall2 - patio					//
 	//                             |      |						//
@@ -104,13 +104,18 @@ void SceneManager::requestSceneLoad(SceneType type) {
 
 void SceneManager::requestRoomExit(int exit) {
 	room* r = getExit(exit);
-	int spawn;
+	int spawn = 0;
 		if (r != nullptr) {
 			if (currentRoom == r->exit0) spawn = 0;
 			else if (currentRoom == r->exit1) spawn = 1;
-			else if (currentRoom == r->exit2) spawn = 2;
-			else if (currentRoom == r->exit3) spawn = 3;
+			else if (currentRoom == r->exit2) {
+				spawn = 2;
+			}
+			else if (currentRoom == r->exit3) {
+				spawn = 3;
+			}
 			currentRoom = r;
+			GameManager::getInstance().setArea(currentRoom->area);
 			GameManager::getInstance().setLastExit(spawn);
 			GameManager::getInstance().getGamePointer()->setPendingScene(new PlayableScene(currentRoom->path, spawn));
 		}

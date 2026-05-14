@@ -15,104 +15,104 @@
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 184.75,
-                "y": 152
+                "x": 240,
+                "y": 159.5
             }
         },
         "boss.tmx": {
             "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 786.1666666666666,
-                "y": 245
+                "x": 510.99999999999994,
+                "y": 154.33333333333334
             }
         },
         "cavern1.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 434.3333333333333,
-                "y": 155.33333333333334
+                "x": 532,
+                "y": 134.66666666666669
             }
         },
         "entrance.tmx": {
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 167.75,
-                "y": 46.5
+                "x": 212,
+                "y": 92.5
             }
         },
         "functionalTiles.json": {
             "scale": 4.4716796875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 128.02795370168155,
-                "y": 31.979034723738806
+                "x": 127.91613889495524,
+                "y": 0.22362961345271515
             }
         },
         "hall1.tmx": {
             "scale": 0.71546875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 871.4566499235641,
-                "y": 346.62590085171433
+                "x": 529.722646866128,
+                "y": 107.62175147412108
             }
         },
         "hall2.tmx": {
-            "scale": 1.3953125,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 165.91265397536392,
-                "y": 193.505039193729
+                "x": 259,
+                "y": 193
             }
         },
         "mario.tmx": {
-            "scale": 0.357734375,
+            "scale": 2,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1600.34942127102,
-                "y": 159.33609958506236
+                "x": 1027.5,
+                "y": 208.5
             }
         },
         "patio.tmx": {
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 575,
-                "y": 522.6666666666666
+                "x": 227.99999999999997,
+                "y": 412.66666666666663
             }
         },
         "redHall1.tmx": {
-            "scale": 0.69765625,
-            "selectedLayer": 0,
+            "scale": 1.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 168.42105263157896,
-                "y": 858.589025755879
+                "x": 147.33333333333331,
+                "y": 669.3333333333333
             }
         },
         "redHall2.tmx": {
-            "scale": 1,
-            "selectedLayer": 0,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 106.5,
-                "y": 695
+                "x": 312,
+                "y": 196.66666666666669
             }
         },
         "tower1.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 207,
-                "y": 458
+                "x": 302,
+                "y": 686
             }
         },
         "tower2.tmx": {
             "scale": 0.71546875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 799.4758680934702,
-                "y": 480.10482638130605
+                "x": 799.4758680934704,
+                "y": 480.8036689233457
             }
         }
     },
@@ -137,8 +137,8 @@
     "project": "CastlevaniaWorld.tiled-project",
     "recentFiles": [
         "functionalTiles.json",
-        "Scene1.tmx",
         "CastlevaniaTileset.tsx",
+        "Scene1.tmx",
         "boss.tmx",
         "tower2.tmx",
         "tower1.tmx",
