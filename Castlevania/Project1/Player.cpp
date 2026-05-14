@@ -687,7 +687,7 @@ void Player::betweenStates(int previous, int current, int future, PlayerState* s
         }
     }
     else {
-        if (current == FALL) maxHeight = 256;
+        if (current == FALL) maxHeight = worldHeight;
         else if (current == STAIRS) lockStair = 0;
         else if (current == DASH)upperState.changeState(IDLE);
         if (future == KNOCKBACK) 

@@ -95,7 +95,7 @@ public:
 
 			float played = GetMusicTimePlayed(musicArray[currentSong]);
 			float length = GetMusicTimeLength(musicArray[currentSong]);
-			printf("%f / %f\nmus first go: %d\n", played, length, musFirstGo);
+			//printf("%f / %f\nmus first go: %d\n", played, length, musFirstGo);
 			if (!musFirstGo && played >= length - 2 * GetFrameTime()) {
 				SeekMusicStream(musicArray[currentSong], loopPoint);
 				return;

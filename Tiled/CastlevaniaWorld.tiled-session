@@ -76,11 +76,11 @@
             }
         },
         "patio.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 0,
+            "scale": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 227.99999999999997,
-                "y": 412.66666666666663
+                "x": 1079.6666666666665,
+                "y": 442.33333333333326
             }
         },
         "redHall1.tmx": {
