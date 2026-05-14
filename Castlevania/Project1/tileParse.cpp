@@ -231,7 +231,7 @@ void PlayableScene::parseTiles(const char* path) {
 		if (doc["layers"][i]["name"] == "BackGround") background = i;
 		if (doc["layers"][i]["name"] == "ForeGround") foreground = i;
 		if (doc["layers"][i]["name"] == "Breakables") breakables = i;
-		if (doc["layers"][i]["name"] == "Level") level = i;
+		if (doc["layers"][i]["name"] == "Level" || doc["layers"][i]["name"] == "Levels") level = i;
 	}
 	len = row * col;
 	int bData, fData, lData, bkData;

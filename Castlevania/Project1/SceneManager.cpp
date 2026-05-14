@@ -2,63 +2,87 @@
 #include "GameManager.h"
 
 SceneManager::SceneManager() {
-	/*static room entrance{ "resources/json/Level1_Scene1.json" };
+	static room entrance{ "resources/json/entrance.json" };
+	static room hall1{ "resources/json/hall1.json" };
+	static room hall2{ "resources/json/hall2.json" };
+	static room cavern1{ "resources/json/cavern1.json" };
+	static room patio{ "resources/json/patio.json" };
+	static room mario{ "resources/json/mario.json" };
+	static room redHall1{ "resources/json/redHall1.json" };
+	static room redHall2{ "resources/json/redHall2.json" };
+	static room tower1{ "resources/json/tower1.json" };
+	static room boss{ "resources/json/boss.json" };
+
 	allRooms.push_back(&entrance);
-	static room hall1{ "resources/json/Level1_Scene2.json" };
 	allRooms.push_back(&hall1);
-	static room hall1p5{ "resources/json/Level1_Scene2-5.json" };
-	allRooms.push_back(&hall1p5);
-	static room hall2{ "resources/json/Level1_Scene3.json" };
 	allRooms.push_back(&hall2);
-	static room hall3{ "resources/json/Level1_Scene4.json" };
-	allRooms.push_back(&hall3);
+	allRooms.push_back(&cavern1);
+	allRooms.push_back(&patio);
+	allRooms.push_back(&redHall1);
+	allRooms.push_back(&redHall2);
+	allRooms.push_back(&tower1);
+	allRooms.push_back(&boss);
+	allRooms.push_back(&mario);
+
+	entrance.area = 0;
+	hall1.area = 0;
+	hall2.area = 0;
+	patio.area = 1;
+	cavern1.area = 2;
+	redHall1.area = 3;
+	redHall2.area = 3;
+	tower1.area = 4;
+	boss.area = 4;
+	mario.area = 5;
+
+
+
 
 	entrance.exit1 = &hall1;
-	entrance.area = 0;
+
 	hall1.exit0 = &entrance;
 	hall1.exit1 = &hall2;
-	hall1.exit2 = &hall1p5;
-	hall1.area = 0;
-	hall1p5.exit0 = &hall1;
-	hall1p5.area = 0;
+
 	hall2.exit0 = &hall1;
-	hall2.exit1 = &hall3;
-	hall2.area = 0;
-	hall3.exit0 = &hall2;
-	hall3.area = 0;*/
-	static room test{ "resources/json/NewTest.json" };
-	allRooms.push_back(&test);
-	test.area = 0;
-	static room testArea1{ "resources/json/NewTest.json" };
-	allRooms.push_back(&testArea1);
-	testArea1.area = 1;
-	static room testArea2{ "resources/json/NewTest.json" };
-	allRooms.push_back(&testArea2);
-	testArea2.area = 2;
-	static room testArea3{ "resources/json/NewTest.json" };
-	allRooms.push_back(&testArea3);
-	testArea3.area = 3;
-	static room testArea4{ "resources/json/NewTest.json" };
-	allRooms.push_back(&testArea4);
-	testArea4.area = 4;
-	static room testArea5{ "resources/json/NewTest.json" };
-	allRooms.push_back(&testArea5);
-	testArea5.area = 5;
-	
-	test.exit1 = &testArea1;
-	testArea1.exit1 = &testArea2;
-	testArea2.exit1 = &testArea3;
-	testArea3.exit1 = &testArea4;
-	testArea4.exit1 = &testArea5;
+	hall2.exit1 = &patio;
+	hall2.exit2 = &cavern1;
+	hall2.exit3 = &redHall1;
 
-	//----------------------------------------------------------------------------------//
-	//	null <- | entrance	| <- | hall1	| <- | hall2	| <- | hall3	|			//
-	//			|			| -> |			| -> |			| -> | hall3	| -> null	//
-	//								V	^												//
-	//							 | hall1p5  |											//
-	//----------------------------------------------------------------------------------//
+	cavern1.exit0 = nullptr; //ONE WAY
+	cavern1.exit1 = &patio;
+	cavern1.exit2 = &mario;
 
-	head = &test;
+	patio.exit0 = &hall2;
+	patio.exit1 = &redHall2;
+	patio.exit2 = &cavern1;
+
+	redHall1.exit0 = &hall2;
+	redHall1.exit1 = &tower1;
+
+	redHall2.exit0 = &patio;
+	redHall2.exit1 = &tower1;
+
+	tower1.exit0 = &redHall1;
+	tower1.exit1 = &boss;
+	tower1.exit2 = &redHall2;
+
+	boss.exit0 = &tower1;
+
+	//==========================================================//
+	//                                 boss						//
+	//                                  |						//
+	//                           + -  tower1 - +				//
+	//                           |             |				//
+	//                         redHall1  redHall2				//
+	//                             |       |					//
+	// null - entrance - hall1 - hall2 - patio					//
+	//                             |      |						//
+	//                          cavern1 - +						//
+	//							   |							//
+	//							 mario							//
+	//==========================================================//	
+
+	head = &entrance;
 	areas.push_back(head);
 	saveRoom = head;
 }

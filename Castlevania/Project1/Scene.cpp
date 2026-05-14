@@ -47,7 +47,7 @@ PlayableScene::PlayableScene(const char* path, int spawn) : Scene() {
 	if (timeLeft->isActive() == false){
 		timeLeft->startTimer();
 	}
-	while (Vector2Equals(spawnponits[spawn], Vector2Zero())  && spawn >= 0) {
+	while (Vector2Equals(spawnponits[spawn], Vector2Zero())  && spawn > 0) {
 		spawn = (spawn + 1) % 5;
 	}
 	spawnpoint = spawnponits[spawn];

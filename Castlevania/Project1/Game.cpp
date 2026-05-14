@@ -20,7 +20,7 @@ void Game::publicPlayLevelMusic() {
         publicPlayMusic(VAMPIRE_KILLER);
         break;
     case 1:
-        publicPlayMusicOffset(WALKING_ON_THE_EDGE, 6.390);
+        publicPlayMusicOffset(WICKED_CHILD, 22.60);
         break;
     case 2:
         publicPlayMusic(OUT_OF_TIME);
@@ -29,7 +29,7 @@ void Game::publicPlayLevelMusic() {
         publicPlayMusicOffset(STALKER, 12.885);
         break;
     case 4:
-        publicPlayMusicOffset(WICKED_CHILD, 22.60);
+        publicPlayMusicOffset(WALKING_ON_THE_EDGE, 6.390);
         break;
     case 5:
         publicPlayMusic(MARIO);
