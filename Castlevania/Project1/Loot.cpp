@@ -15,7 +15,9 @@ Loot::Loot(Vector2 p, int lt) {
 	size = Vector2{hurtbox.width, hurtbox.height};
 	position = p;
 	velocity = Vector2{ 10,20 }; //v.x = 0, v.y = 20
-	despawntime.startTimer();
+	if (lootType != 4 && lootType != 5 && lootType != 6 && lootType != 7 && lootType != 8 && lootType != 9 && lootType != 17) {
+		despawntime.startTimer();
+	}
 	if (lt != 1) {grav = 200; velocity.x = 0; }
 	else grav = 0;
 }

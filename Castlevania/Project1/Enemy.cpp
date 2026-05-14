@@ -77,7 +77,7 @@ void Enemy::update() {
 	}
 	Vector2 temp = GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera());
 	Rectangle screen = { -GetScreenWidth() / 2, -GetScreenHeight() / 2, GetScreenWidth() * 2, GetScreenHeight() * 2 };
-	if (!CheckCollisionPointRec(temp, screen))
+	if (!CheckCollisionPointRec(temp, screen) && !isBoss)
 	{
 		//TODO implement unloading for monsters that do not infinately despawm
 		health = 0;
