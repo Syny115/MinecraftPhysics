@@ -44,17 +44,17 @@ SceneManager::SceneManager() {
 	hall1.exit1 = &hall2;
 
 	hall2.exit0 = &hall1;
-	hall2.exit1 = &patio;
-	hall2.exit2 = &cavern1;
-	hall2.exit3 = &redHall1;
+	hall2.exit1 = &cavern1;
+	hall2.exit2 = &redHall2;
+	hall2.exit3 = &patio;
 
 	cavern1.exit0 = nullptr; //ONE WAY
 	cavern1.exit1 = &patio;
 	cavern1.exit2 = &mario;
 
 	patio.exit0 = &hall2;
-	patio.exit1 = &redHall2;
-	patio.exit2 = &cavern1;
+	patio.exit2 = &redHall1;
+	patio.exit1 = &cavern1;
 
 	redHall1.exit0 = &hall2;
 	redHall1.exit1 = &tower1;
@@ -62,9 +62,9 @@ SceneManager::SceneManager() {
 	redHall2.exit0 = &patio;
 	redHall2.exit1 = &tower1;
 
-	tower1.exit0 = &redHall1;
-	tower1.exit1 = &boss;
-	tower1.exit2 = &redHall2;
+	tower1.exit0 = &redHall2;
+	tower1.exit2 = &boss;
+	tower1.exit1 = &redHall1;
 
 	boss.exit0 = &tower1;
 
