@@ -185,7 +185,7 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         break;
     case BREAKABLES:
         add("groundArea0", 1, 32, 96, 16, 16, 0, 1);
-        add("groundArea4", 1, 32, 96, 16, 16, 0, 1);
+        add("groundArea4", 1, 240, 320, 16, 16, 0, 1);
         add("groundArea2", 1, 0, 288, 16, 16, 0, 1);
         add("groundArea3", 1, 256, 0, 16, 16, 0, 1);
         add("groundArea1", 1, 240, 192, 16, 16, 0, 1);
