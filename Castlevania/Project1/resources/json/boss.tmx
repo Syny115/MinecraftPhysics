@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="1">
- <tileset firstgid="1" source="CastlevaniaTileset.tsx"/>
+ <tileset firstgid="1" source="../../../../Tiled/CastlevaniaTileset.tsx"/>
  <layer id="1" name="BackGround" width="80" height="40">
   <data encoding="csv">
 818,564,817,818,817,819,818,817,564,819,819,818,817,817,818,819,819,819,819,0,0,794,794,794,794,794,794,794,794,794,794,794,794,794,794,794,628,628,730,727,528,696,696,696,730,727,696,763,696,730,727,696,696,528,696,762,759,759,0,720,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
