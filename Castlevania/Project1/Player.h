@@ -80,7 +80,7 @@ private:
     bool jumpAllowed = false;
     
     float stunHeight = 100;
-    float maxHeight = 256;
+    float maxHeight = 2560;
 
     bool subAttack;
 
