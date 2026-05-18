@@ -146,7 +146,10 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
             floorHeight = position.y;
         }
     }
-    else if (GameManager::getInstance().sceneTime / GetFrameTime() < 15) isOnFloor = true;
+    else if (isLoading) { 
+        isOnFloor = true;
+        jumpAllowed = false;
+    }
     else {
         isOnFloor = false;
     }
@@ -371,7 +374,7 @@ void Player::update() {
             bottomAnimOffsetY = 17;
             bottomAnimOffsetX = -2;
         bottomSprite->setAnimation("crouch");
-        if (jumpAllowed) 
+        if (jumpAllowed && !isLoading) 
         {
             someCounter++;
             velocity.y -= jumpForce;
@@ -625,6 +628,8 @@ void Player::update() {
 
 void Player::lateUpdate() {
     updateColliderPosiotions();
+    if (GameManager::getInstance().sceneTime / GetFrameTime() < 10) isLoading = true;
+    else isLoading = false;
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*ammo), 1);
     GameManager::getInstance().getActiveScene()->setDebugMessage(to_string(*projectileCount), 2);
 }
@@ -652,7 +657,7 @@ void Player::drawPlayer() {
 }
 
 void Player::betweenStates(int previous, int current, int future, PlayerState* state) {
-    if (state == &upperState) {
+    if (state == &upperState && !isLoading) {
         if (current == IDLE && future == STARTATTACK) {
             whipCollider.width = GameManager::getInstance().whipLevel < 2 ? 32 : 48;
             startAttackTimer.startTimer();

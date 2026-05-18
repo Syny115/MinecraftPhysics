@@ -546,7 +546,8 @@ void TitleScene::updateScene() {
 		GameManager::getInstance().getGamePointer()->publicPlayMusic(-1);
 		setup = true;
 	}
-	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE);
+	if (IsKeyPressed(KEY_ENTER) && IsKeyDown(KEY_LEFT_SHIFT)) { GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE); GameManager::getInstance().debugMode = true; }
+	else if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE);
 }
 
 void TitleScene::drawScene() {
