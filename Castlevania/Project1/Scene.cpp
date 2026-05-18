@@ -87,13 +87,16 @@ PlayableScene::~PlayableScene() {
 
 
 void PlayableScene::updateCamera() {
-	if (GetWorldToScreen2D(bossStart, camera).x > 0 || bossStart.x < 0) 
+	camera.target = player->getPosition();
+	if ((GetWorldToScreen2D(bossStart, camera).x > 0 || bossStart.x < 0) && !GameManager::getInstance().getBossStarted())
 	{
-		camera.target = player->getPosition();
+		
 		camera.target = { Clamp(camera.target.x, viewportWidth / 2.0f, worldWidth - viewportWidth / 2.0f), Clamp(camera.target.y, viewportHeight / 2.0f - 3*16, worldHeight - viewportHeight / 2.0f) };
 	}
 	else {
 		GameManager::getInstance().setBossStarted(true);
+		camera.target = { Clamp(camera.target.x, bossStart.x + viewportWidth / 2.0f, worldWidth - viewportWidth / 2.0f), Clamp(camera.target.y, viewportHeight / 2.0f - 3 * 16, worldHeight - viewportHeight / 2.0f) };
+	
 	}
 }
 
@@ -540,6 +543,7 @@ TitleScene::~TitleScene()
 void TitleScene::updateScene() {
 	if (!setup) {
 		ui.initUI();
+		GameManager::getInstance().getGamePointer()->publicPlayMusic(-1);
 		setup = true;
 	}
 	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE);

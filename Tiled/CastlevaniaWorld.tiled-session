@@ -15,48 +15,48 @@
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 257.5,
-                "y": 159.5
+                "x": 240,
+                "y": 159.75
             }
         },
         "boss.tmx": {
-            "scale": 3,
+            "scale": 2,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 97.99999999999999,
-                "y": 104
+                "x": 592.5,
+                "y": 155.5
             }
         },
         "cavern1.tmx": {
             "scale": 4,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 84,
-                "y": 84.75
+                "x": 640,
+                "y": 160.125
             }
         },
         "entrance.tmx": {
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 62.5,
-                "y": 34
+                "x": 320,
+                "y": 87.75
             }
         },
         "functionalTiles.json": {
             "scale": 4.4716796875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 102.64599257479797,
-                "y": 30.41362742956977
+                "x": 127.91613889495522,
+                "y": 0.3354444201790727
             }
         },
         "hall1.tmx": {
             "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 775.9999999999999,
-                "y": 284
+                "x": 776,
+                "y": 95.33333333333334
             }
         },
         "hall2.tmx": {
@@ -64,39 +64,39 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 264,
-                "y": 175.5
+                "y": 176.25
             }
         },
         "mario.tmx": {
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 206.5,
-                "y": 168
+                "x": 2711,
+                "y": 160
             }
         },
         "patio.tmx": {
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 538,
-                "y": 257
+                "x": 1438,
+                "y": 382
             }
         },
         "redHall1.tmx": {
             "scale": 0.33,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": -75.75757575757575,
-                "y": 527.2727272727273
+                "x": 239.3939393939395,
+                "y": 396.969696969697
             }
         },
         "redHall2.tmx": {
             "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 256,
-                "y": 565.3333333333334
+                "x": 320,
+                "y": 406.6666666666667
             }
         },
         "tower1.tmx": {
@@ -104,20 +104,20 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 800,
-                "y": 480.25
+                "y": 480.5
             }
         },
         "tower2.tmx": {
             "scale": 0.71546875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 799.4758680934704,
-                "y": 480.8036689233457
+                "x": 799.4758680934702,
+                "y": 480.104826381306
             }
         }
     },
-    "last.exportedFilePath": "C:/Users/Mina/Documents/GitHub/MinecraftPhysics/Castlevania/Project1/resources/json",
-    "map.lastUsedExportFilter": "All Files (*)",
+    "last.exportedFilePath": "C:/Users/joaodqn/Documents/GitHub/MinecraftPhysics/Castlevania/Project1/resources/json",
+    "map.lastUsedExportFilter": "Todos los archivos (*)",
     "openFiles": [
         "Scene1.tmx",
         "CastlevaniaTileset.tsx",
@@ -136,13 +136,13 @@
     ],
     "project": "CastlevaniaWorld.tiled-project",
     "recentFiles": [
-        "hall1.tmx",
-        "functionalTiles.json",
-        "CastlevaniaTileset.tsx",
         "Scene1.tmx",
+        "CastlevaniaTileset.tsx",
         "boss.tmx",
         "cavern1.tmx",
         "entrance.tmx",
+        "functionalTiles.json",
+        "hall1.tmx",
         "hall2.tmx",
         "mario.tmx",
         "tower2.tmx",

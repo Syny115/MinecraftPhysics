@@ -14,7 +14,9 @@ void Game::loadScene(Scene* newScene) {
 void Game::publicPlayLevelMusic() {
     printf("%d, is the area\n", GameManager::getInstance().getArea());
     if (activeScene == nullptr) return;
-    if (activeScene->type != SceneType::PLAYABLE) return;
+    if (activeScene->type != SceneType::PLAYABLE) {
+        return;
+    }
     switch (GameManager::getInstance().getArea()) {
     case 0:
         publicPlayMusic(VAMPIRE_KILLER);

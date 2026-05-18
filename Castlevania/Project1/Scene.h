@@ -71,6 +71,8 @@ public:
 	virtual void spawnParticle(Vector2 position) {}
 	virtual void spawnHitEffect(Vector2 position) {}
 
+	virtual Vector2 getBossStart() { return { 0, 0 }; }
+
 
 };
 
@@ -183,6 +185,8 @@ public:
 	void resetTimeLeft() override { timeLeft->startTimer(timeLeft->getLifeTime()); }
 	void spawnParticle(Vector2 position) override;
 	void spawnHitEffect(Vector2 position) override;
+
+	Vector2 getBossStart() { return bossStart; }
 };
 
 // TILE SCREEN

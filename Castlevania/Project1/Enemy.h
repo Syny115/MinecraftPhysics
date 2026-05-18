@@ -161,6 +161,9 @@ private:
 	float swoopHeight = 50;
 	float t;
 	float dist;
+
+	float middle;
+	float dif;
 };
 
 

@@ -369,6 +369,9 @@ BatBoss::BatBoss(Vector2 pos) {
 	damage = 2;
 	points = 5000;
 	globalHealth = GameManager::getInstance().getBossHealthPointer();
+	Scene* s = GameManager::getInstance().getActiveScene();
+	dif = (s->getWorldWidth() - s->getBossStart().x)/2;
+	middle = s->getBossStart().x + (dif);
 }
 
 void BatBoss::update() {
@@ -438,7 +441,7 @@ void BatBoss::update() {
 }
 
 BatBoss::~BatBoss() {
-	GameManager::getInstance().getActiveScene()->pushLoot(new Loot({ GameManager::getInstance().getActiveScene()->getWorldWidth() - (128), 96 }, 4)); //ORB
+	GameManager::getInstance().getActiveScene()->pushLoot(new Loot({ middle, 96 }, 4)); //ORB
 }
 
 Vector2 BatBoss::EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopHeight) {
@@ -455,19 +458,18 @@ Vector2 BatBoss::EvaluateSwoop(Vector2 start, Vector2 end, float t, float swoopH
 	// Parabolic offset: peak at t = 0.5, zero at t = 0 and t = 1
 	float offset = swoopHeight * (1.0f - std::pow(2.0f * t - 1.0f, 2.0f));
 
-	float w = GameManager::getInstance().getActiveScene()->getWorldWidth();
+	
 
 	// Apply the offset
 	return Vector2Clamp( {
 		linearPoint.x + perpendicular.x * offset,
 		linearPoint.y + perpendicular.y * offset
-		}, { w - (256), 31 }, {w, 224});
+		}, { middle-dif, 31 }, {middle+dif, 224});
 }
 
 void BatBoss::prepareRoost() {
 	startPos = position;
 	targetPos.y = 96 + (float)GetRandomValue(0, 80);
-	float middle = GameManager::getInstance().getActiveScene()->getWorldWidth()-(128);
 	if (playerPos.x > middle) targetPos.x = middle - (float)GetRandomValue(0, 128-16);
 	else targetPos.x = middle + (float)GetRandomValue(0, 128 - 16);
 	swoopTimer = 0.0f;
