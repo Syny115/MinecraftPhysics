@@ -71,6 +71,7 @@ private:
     int direction = 1;
     bool wasOnFloor = true;
     bool isOnCeiling = true;
+    bool isLoading = true;
 
     bool isOnSave = false;
 
