@@ -125,6 +125,14 @@ private:
 	float playerX;
 };
 
+class SpearKnight : public Enemy
+{
+public:
+	void update() override;
+	SpearKnight(Vector2 pos);
+	~SpearKnight();
+};
+
 // BAT BOSS
 
 class BatBoss : public Enemy

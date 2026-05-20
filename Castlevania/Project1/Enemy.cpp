@@ -276,9 +276,7 @@ Merman::Merman(Vector2 pos)
 void Merman::update() {
 	earlyUpdate();
 
-	if (setup) {
-		moveHLinear(velocity.x * direction);
-	}
+	moveHLinear(velocity.x * direction);
 
 	Enemy::update();
 	lateUpdate();
@@ -354,6 +352,32 @@ void ShieldKnight::hitCollision(vector<damageRect>& dmgRect) {
 }
 
 ShieldKnight::~ShieldKnight() {}
+
+//SPEAR KNIGHT
+
+SpearKnight::SpearKnight(Vector2 pos)
+{
+	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::SPEAR_KNIGHT);
+	size.x = sprite->getAnimationFromName("spearKnightWalk").frameWidth;
+	size.y = sprite->getAnimationFromName("spearKnightWalk").frameHeight;
+	hurtbox.width = size.x;
+	hurtbox.height = size.y;
+	position = pos;
+	health = 4;
+	damage = 1;
+	points = 500;
+}
+
+void SpearKnight::update() {
+	earlyUpdate();
+	moveV();
+	moveHLinear(60 * direction);
+
+	Enemy::update();
+	lateUpdate();
+}
+
+SpearKnight::~SpearKnight() {}
 
 //BAT BOSS
 
