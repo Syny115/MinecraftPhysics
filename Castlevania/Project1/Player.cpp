@@ -45,6 +45,7 @@ int Player::getNormalizedVelocity() {
 }
 
 void Player::updateColliderPosiotions() {
+    knockBackCheck = { position.x - direction * 16, position.y + size.y / 2 + 1 };
     groundCollider.x = offsetX;
     groundCollider.y = offsetY + size.y - 1;
 
@@ -136,9 +137,15 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     int len = floorRec.size();
     Rectangle predictedRec = groundCollider;
     predictedRec.y += velocity.y * deltaTime;
+    
+    for (int i = 0; i < len; i++) {
+        knockbackAllowed = CheckCollisionPointRec(knockBackCheck, floorRec[i]);
+        if (knockbackAllowed) break;
+    }
+    
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
+    
     if (i != -1) {
-
         if (velocity.y > 0) {
             velocity.y = 0;
             isOnFloor = true;
@@ -271,6 +278,7 @@ void Player::moveV() {
         isDamaged = 1;
         if (position.x < lastViablePos.x) direction = -1;
         else direction = 1;
+        velocity.x = 0;
         position = lastViablePos; 
     }
 }
@@ -491,12 +499,14 @@ void Player::update() {
             bottomAnimOffsetY = 17;
             bottomAnimOffsetX = -2;
         bottomSprite->setAnimation("stairsIdleDown");
-        if (lowerState.previous != STAIRS && jumpAllowed) {
+        *health -= isDamaged;
+
+        if (lowerState.previous != STAIRS && jumpAllowed && knockbackAllowed) {
             jumpAllowed = false;
             velocity.x = -50 * direction;
             velocity.y = -180;
         }
-        *health -= isDamaged;
+        
         isDamaged = 0;
 
         moveH(false, false);
@@ -647,6 +657,9 @@ void Player::drawPlayer() {
         DrawRectangleRec(topCollider, RED);
         DrawRectangleRec(leftCollider, RED);
         DrawRectangleRec(rightCollider, RED);
+        if (knockbackAllowed) DrawCircleV(knockBackCheck, 2, ORANGE);
+        else DrawCircleV(knockBackCheck, 2, BLUE);
+        DrawCircleV(lastViablePos, 1, SKYBLUE);
     }
     if (upperState.current == STARTATTACK) {
         whipSprite->draw(Vector2{ offsetX + (topAnimOffsetX * direction)-4, offsetY + topAnimOffsetY + 13 });

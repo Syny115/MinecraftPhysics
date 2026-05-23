@@ -79,6 +79,7 @@ private:
     bool rightBlocked = false;
 
     bool jumpAllowed = false;
+    bool knockbackAllowed = false;
     
     float stunHeight = 100;
     float maxHeight = 2560;
@@ -103,6 +104,8 @@ private:
     Rectangle leftCollider;
     Rectangle rightCollider;
     Rectangle groundCollider;
+
+    Vector2 knockBackCheck;
 
     Rectangle whipCollider = {0, 0, 32, 16};
 
