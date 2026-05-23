@@ -103,7 +103,8 @@ private:
 	vector<Rectangle> zombieSpawners;
 	vector<Rectangle> medusaSpawners;
 	vector<Vector2> batSpawners;
-	vector<Vector2> knightSpawners;
+	vector<Vector2> shieldSpawners;
+	vector<Vector2> spearSpawners;
 	vector<Vector2> pantherSpawners;
 	Vector2 bossSpawner;
 

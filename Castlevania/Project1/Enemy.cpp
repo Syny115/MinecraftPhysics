@@ -363,7 +363,7 @@ SpearKnight::SpearKnight(Vector2 pos)
 	hurtbox.width = size.x;
 	hurtbox.height = size.y;
 	position = pos;
-	health = 4;
+	health = 2;
 	damage = 1;
 	points = 500;
 }
@@ -371,7 +371,7 @@ SpearKnight::SpearKnight(Vector2 pos)
 void SpearKnight::update() {
 	earlyUpdate();
 	moveV();
-	moveHLinear(60 * direction);
+	moveHLinear(40 * direction);
 
 	Enemy::update();
 	lateUpdate();

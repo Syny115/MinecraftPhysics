@@ -125,6 +125,8 @@ private:
 	float playerX;
 };
 
+//SPEAR KNIGHT
+
 class SpearKnight : public Enemy
 {
 public:

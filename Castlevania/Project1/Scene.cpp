@@ -215,11 +215,19 @@ void PlayableScene::updateScene() {
 		}
 	}
 
-	for (int i = knightSpawners.size() - 1; i >= 0; i--) {
-		Vector2 p = GetWorldToScreen2D(knightSpawners[i], camera);
+	for (int i = shieldSpawners.size() - 1; i >= 0; i--) {
+		Vector2 p = GetWorldToScreen2D(shieldSpawners[i], camera);
 		if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
-			enemies.push_back(new ShieldKnight(knightSpawners[i]));
-			knightSpawners.erase(knightSpawners.begin() + i);
+			enemies.push_back(new ShieldKnight(shieldSpawners[i]));
+			shieldSpawners.erase(shieldSpawners.begin() + i);
+		}
+	}
+
+	for (int i = spearSpawners.size() - 1; i >= 0; i--) {
+		Vector2 p = GetWorldToScreen2D(spearSpawners[i], camera);
+		if (CheckCollisionPointRec(p, { 0, 0, screenWidth, screenHeight })) {
+			enemies.push_back(new SpearKnight(spearSpawners[i]));
+			spearSpawners.erase(spearSpawners.begin() + i);
 		}
 	}
 
@@ -481,8 +489,8 @@ void PlayableScene::spawnHitEffect(Vector2 position) {
 void PlayableScene::debugEnemySpawn() {
 	mousePos = Vector2SubtractValue(GetScreenToWorld2D(GetMousePosition(), camera),8);
 
-	if (GetMouseWheelMove() > 0) debugEnemySelected = (debugEnemySelected+1) % 7;
-	else if (GetMouseWheelMove() < 0) debugEnemySelected > 0 ? debugEnemySelected-- : debugEnemySelected = 6;
+	if (GetMouseWheelMove() > 0) debugEnemySelected = (debugEnemySelected+1) % 8;
+	else if (GetMouseWheelMove() < 0) debugEnemySelected > 0 ? debugEnemySelected-- : debugEnemySelected = 7;
 	
 	switch (debugEnemySelected) {
 	case 0:
@@ -516,9 +524,14 @@ void PlayableScene::debugEnemySpawn() {
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new BatBoss(mousePos));
 		break;
 	case 6:
-		//knight
-		debugTile->setAnimation("knightTile");
+		//Shield knight
+		debugTile->setAnimation("ShieldTile");
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new ShieldKnight(mousePos));
+		break;
+	case 7:
+		//Spear knight
+		debugTile->setAnimation("SpearTile");
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) enemies.push_back(new SpearKnight(mousePos));
 		break;
 	default:
 		break;

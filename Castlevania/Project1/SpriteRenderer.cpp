@@ -222,7 +222,8 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("mermanTile", 1, 96, 512 - 16, 16, 16, 0, 1);
         add("bossTile", 1, 128, 512 - 16, 16, 16, 0, 1);
         add("camTile", 1, 128, 512 - 32, 16, 16, 0, 1);
-        add("knightTile", 1, 144, 512 - 16, 16, 16, 0, 1);
+        add("ShieldTile", 1, 144, 512 - 16, 16, 16, 0, 1);
+        add("SpearTile", 1, 160, 512 - 16, 16, 16, 0, 1);
         currentAnimName = "zombieTile";
         break;
     case SAVE:

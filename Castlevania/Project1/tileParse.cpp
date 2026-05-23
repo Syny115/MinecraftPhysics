@@ -288,7 +288,8 @@ void PlayableScene::parseTiles(const char* path) {
        // else if (lData == mermanStart) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN START
         else if (lData == bossSpawn) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
         else if (lData == bossCam) bossStart = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS START
-        else if (lData == shieldKnightSpawn) knightSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // KNIGHT
+        else if (lData == shieldKnightSpawn) shieldSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // SHIELD KNIGHT
+        else if (lData == spearKnightSpawn) spearSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // SPEAR KNIGHT
 
         else if (lData == stairsDownEnd && !dVec.empty()) { //STAIR END DOWN
             int i = -1;
