@@ -146,6 +146,9 @@ void Player::groundCollision(vector<Rectangle> floorRec) {
     int i = checkCollisionRecsArr(predictedRec, floorRec, len);
     
     if (i != -1) {
+
+        if (position.x > floorRec[i].x + 8 && position.x < floorRec[i].x + floorRec[i].width - 8) lastViablePos = position;
+
         if (velocity.y > 0) {
             velocity.y = 0;
             isOnFloor = true;
@@ -305,7 +308,6 @@ int someCounter = 0;
 
 void Player::earlyUpdate() {
     Entity::earlyUpdate();
-    if (isOnFloor) lastViablePos = position;
 }
 
 void Player::update() {
