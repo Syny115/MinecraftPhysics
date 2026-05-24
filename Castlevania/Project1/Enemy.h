@@ -105,7 +105,7 @@ public:
 	Merman(Vector2 pos);
 	~Merman();
 private:
-	enum class MermanState { SPAWN, RETURN, SHOT, WALK, COOLDOWN };
+	enum class MermanState { SPAWN, SHOT, WALK, COOLDOWN };
 	MermanState state = MermanState::SPAWN;
 	const float speed = 40.0f;
 	Timer shotTimer{ 2 };

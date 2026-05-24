@@ -287,10 +287,6 @@ void Merman::update() {
 		moveV();
 		if (isOnFloor) state = MermanState::WALK;
 		break;
-	case MermanState::RETURN:
-		sprite->setAnimation("mermanShot");
-		moveV();
-		break;
 	case MermanState::WALK:
 		sprite->setAnimation("mermanWalk");
 		if (shotTimer.isTriggerd()) state = MermanState::SHOT;

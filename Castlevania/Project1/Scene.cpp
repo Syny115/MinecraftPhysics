@@ -202,9 +202,9 @@ void PlayableScene::updateScene() {
 			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
 			spawnCoolDown.startTimer();
 
-			Vector2 positionCandidate = { player->getPosition().x + player->getDirection() * 16 * 8, worldHeight - 8};
-			if (positionCandidate.x < 0) positionCandidate.x = player->getPosition().x - player->getDirection() * 16 * 8;
-			else if (positionCandidate.x > worldWidth) positionCandidate.x = player->getPosition().x - player->getDirection() * 16 * 4;
+			Vector2 positionCandidate = { player->getPosition().x + player->getDirection() * 16 * 6, worldHeight - 8};
+			if (positionCandidate.x < 0) positionCandidate.x = player->getPosition().x - player->getDirection() * 16 * 6;
+			else if (positionCandidate.x > worldWidth) positionCandidate.x = player->getPosition().x - player->getDirection() * 16 * 6;
 
 			enemies.push_back(new Merman(positionCandidate));
 		}
