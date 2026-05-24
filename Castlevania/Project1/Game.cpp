@@ -103,13 +103,19 @@ void Game::startGame() {
             //----------------------------------------------------------------------------------
             activeScene->updateScene();
             if (GameManager::getInstance().debugMode) {
-                if (IsKeyPressed(KEY_F1)) GameManager::getInstance().setTimeScale(0.5f);
-                else if (IsKeyPressed(KEY_F2)) GameManager::getInstance().setTimeScale(1.0f);
-                else if (IsKeyPressed(KEY_F3)) GameManager::getInstance().setTimeScale(2.0f);
-                else if (IsKeyPressed(KEY_F4)) GameManager::getInstance().setTimeScale(4.0f);
+                if (IsKeyPressed(KEY_F1)) sceneMan.requestRoomExit(0);
+                else if (IsKeyPressed(KEY_F2)) sceneMan.requestRoomExit(1);
+                else if (IsKeyPressed(KEY_F3)) sceneMan.requestRoomExit(2);
+                else if (IsKeyPressed(KEY_F4)) sceneMan.requestRoomExit(3);
                 else if (IsKeyPressed(KEY_F5)) sceneMan.requestSceneLoad(SceneType::PLAYABLE);
-                else if (IsKeyPressed(KEY_F7)) sceneMan.requestRoomExit(1);
-                else if (IsKeyPressed(KEY_F8)) GameManager::getInstance().setBossStarted(true);
+
+                else if (IsKeyPressed(KEY_F6)) GameManager::getInstance().maximizeHealth();
+                else if (IsKeyPressed(KEY_F7)) activeScene->removeAllEnemies();
+                else if (IsKeyPressed(KEY_F8)) {
+                    GameManager::getInstance().addWhipLevel(2);
+                    GameManager::getInstance().addAmmo(99);
+                    GameManager::getInstance().unlockAll();
+                }
             }
             updateMusic();
             //----------------------------------------------------------------------------------

@@ -28,12 +28,7 @@ public:
 	};
 private:
 	GameManager() {
-		inventory["dagger"] = false;
-		inventory["axe"] = false;
-		inventory["holywater"] = false;
-		inventory["boomerang"] = false;
-		inventory["stopwatch"] = false;
-		inventory["dash"] = false;
+		lockAll();
 	}
 
 
@@ -131,6 +126,24 @@ public:
 		}
 
 		subWeapon = next;
+	}
+
+	void unlockAll() {
+		inventory["dagger"] = true;
+		inventory["axe"] = true;
+		//inventory["holywater"] = true;
+		inventory["boomerang"] = true;
+		//inventory["stopwatch"] = true;
+		inventory["dash"] = true;
+	}
+
+	void lockAll() {
+		inventory["dagger"] = false;
+		inventory["axe"] = false;
+		inventory["holywater"] = false;
+		inventory["boomerang"] = false;
+		inventory["stopwatch"] = false;
+		inventory["dash"] = false;
 	}
 
 	void setSubWeapon(int sw) { subWeapon = sw; }

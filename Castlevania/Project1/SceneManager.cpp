@@ -48,7 +48,7 @@ SceneManager::SceneManager() {
 	hall2.exit2 = &redHall2;
 	hall2.exit3 = &patio;
 
-	cavern1.exit0 = nullptr; //ONE WAY
+	cavern1.exit0 = &hall2; //ONE WAY
 	cavern1.exit1 = &patio;
 	cavern1.exit2 = &mario;
 

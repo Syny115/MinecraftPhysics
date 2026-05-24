@@ -330,7 +330,6 @@ void Player::update() {
     if (isOnFloor && lowerState.current != JUMP && lowerState.current != KNOCKBACK) { // TODO: When frame buffer is implemented make it so that if the frame buffer is true, jump can be allowed from JUMP
         jumpAllowed = true;
     }
-    if (IsKeyPressed(KEY_F6) && GameManager::getInstance().debugMode) isDamaged = 6;
     if (isDamaged != 0 && lowerState.current != DIE)
     {
         attackTimer.stopTimer();
