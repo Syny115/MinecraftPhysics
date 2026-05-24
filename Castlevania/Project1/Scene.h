@@ -102,6 +102,7 @@ private:
 
 	vector<Rectangle> zombieSpawners;
 	vector<Rectangle> medusaSpawners;
+	vector<Rectangle> mermanSpawners;
 	vector<Vector2> batSpawners;
 	vector<Vector2> shieldSpawners;
 	vector<Vector2> spearSpawners;

@@ -188,14 +188,25 @@ void PlayableScene::updateScene() {
 			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
 			spawnCoolDown.startTimer();
 
-			Vector2 positionCandidate = { screenWidth + 100, screenHeight };
-			if (player->getDirection() < 0) {
-				positionCandidate.x = -100;
-			}
 
-			Vector2 p = GetScreenToWorld2D(Vector2{ screenWidth + 100, 0 }, camera);
+
+			Vector2 p = GetScreenToWorld2D(Vector2{ player->getDirection() < 0 ? -100 : screenWidth + 100, 0 }, camera);
 			p.y = player->getPosition().y;
 			enemies.push_back(new Medusa(p));
+		}
+	}
+
+	for (int i = mermanSpawners.size() - 1; i >= 0; i--)
+	{
+		if (CheckCollisionPointRec(player->getPosition(), mermanSpawners[i])
+			&& enemies.size() < enemyCap && !spawnCoolDown.isActive()) {
+			spawnCoolDown.startTimer();
+
+			Vector2 positionCandidate = { player->getPosition().x + player->getDirection() * 16 * 4, worldHeight - 8};
+			if (positionCandidate.x < 0) positionCandidate.x = player->getPosition().x - player->getDirection() * 16 * 4;
+			else if (positionCandidate.x > worldWidth) positionCandidate.x = player->getPosition().x - player->getDirection() * 16 * 4;
+
+			enemies.push_back(new Merman(positionCandidate));
 		}
 	}
 

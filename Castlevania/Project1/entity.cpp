@@ -14,10 +14,15 @@ void Entity::groundCollision(vector<Rectangle> floorRec) {
 	predictedRec.y += velocity.y * deltaTime;
 	int i = checkCollisionRecsArr(predictedRec, floorRec, len);
 	if (i != -1) {
-		isOnFloor = true;
-		position.y = floorRec[i].y - size.y / 2;
-		floorHeight = position.y;
-		if (velocity.y > 0) velocity.y = 0;
+		if (floorRec[i].y < position.y) {
+			if (velocity.y < 0) velocity.y = 0;
+		}
+		else {
+			isOnFloor = true;
+			position.y = floorRec[i].y - size.y / 2;
+			floorHeight = position.y;
+			if (velocity.y > 0) velocity.y = 0;
+		}
 	}
 	else isOnFloor = false;
 }

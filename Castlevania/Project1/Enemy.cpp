@@ -272,18 +272,64 @@ Merman::Merman(Vector2 pos)
 	health = 1;																																																												
 	damage = 1;
 	points = 400;
+	velocity.y = -600;
+	velocity.x = 40;
 }
 
 void Merman::update() {
 	earlyUpdate();
+	shotTimer.updateTimer();
+	shotCooldown.updateTimer();
+	switch (state) {
+	case MermanState::SPAWN:
+		sprite->setAnimation("mermanShot");
 
-	moveHLinear(velocity.x * direction);
+		moveV();
+		if (isOnFloor) state = MermanState::WALK;
+		break;
+	case MermanState::RETURN:
+		sprite->setAnimation("mermanShot");
+		moveV();
+		break;
+	case MermanState::WALK:
+		sprite->setAnimation("mermanWalk");
+		if (shotTimer.isTriggerd()) state = MermanState::SHOT;
+		else if (!shotTimer.isActive()) shotTimer.startTimer();
+		moveV();
+		moveHLinear(velocity.x * direction);
+		break;
+	case MermanState::SHOT:
+		sprite->setAnimation("mermanShot");
+		GameManager::getInstance().getActiveScene()->pushProjectile(new Hfire({ position.x, position.y - 8 }, direction, Projectile::ENEMY));
+		shotCooldown.startTimer();
+		state = MermanState::COOLDOWN;
+		break;
+	case MermanState::COOLDOWN:
+		if (shotCooldown.isTriggerd()) {
+			shotTimer.startTimer();
+			state = MermanState::WALK;
+		}
+		break;
+	default:
+		break;
+	}
+
 
 	Enemy::update();
 	lateUpdate();
 }
 
 Merman::~Merman() {}
+
+void Merman::groundCollision(vector<Rectangle> floorRec) {
+	if (velocity.y < 0) return;
+	Entity::groundCollision(floorRec);
+}
+
+void Merman::smartMovement(vector<Rectangle> solidRects) {
+	if (state == MermanState::SPAWN) return;
+	Enemy::smartMovement(solidRects);
+}
 
 //KNIGHT
 

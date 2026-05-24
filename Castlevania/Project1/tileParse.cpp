@@ -218,6 +218,7 @@ void PlayableScene::parseTiles(const char* path) {
     vector<Vector2> dVec;
     queue<Vector2> zombQ;
     queue<Vector2> meduQ;
+    queue<Vector2> mermQ;
 
     vector<vector<int>> doorMat0(row, vector<int>(col));
     vector<vector<int>> doorMat1(row, vector<int>(col));
@@ -281,11 +282,11 @@ void PlayableScene::parseTiles(const char* path) {
         else if (lData == stairsUpEnd) {
             upVec.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col ) }); //STAIR END UP
         }
-        else if (lData == zombieStart) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START ZOMBER
-        else if (lData == medusaStart) meduQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });       //START MEDUSA
+        else if (lData == zombieStart) zombQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });     // START ZOMBER
+        else if (lData == medusaStart) meduQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });     // START MEDUSA
+        else if (lData == mermanStart) mermQ.push({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) });     // START MERMAN
         else if (lData == batSpawn) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // BAT
         else if (lData == pantherSpawn) pantherSpawners.push_back({ (float)(j % col+1) * tileWidth, tileHeight * (float)(j / col+1) }); // PANTHER
-       // else if (lData == mermanStart) batSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // MERMAN START
         else if (lData == bossSpawn) bossSpawner = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS
         else if (lData == bossCam) bossStart = { (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }; // BOSS START
         else if (lData == shieldKnightSpawn) shieldSpawners.push_back({ (float)(j % col) * tileWidth, tileHeight * (float)(j / col) }); // SHIELD KNIGHT
@@ -353,6 +354,17 @@ void PlayableScene::parseTiles(const char* path) {
             };
             meduQ.pop();
             medusaSpawners.push_back(r);
+        }
+
+        else if (lData == mermanEnd && !mermQ.empty()) { //MERMAN END
+            Rectangle r = {
+                mermQ.front().x,
+                mermQ.front().y,
+                (((float)(j % col) + 1) * tileWidth) - mermQ.front().x,
+                (((float)(j / col) + 1) * tileHeight) - mermQ.front().y
+            };
+            mermQ.pop();
+            mermanSpawners.push_back(r);
         }
 	}
 

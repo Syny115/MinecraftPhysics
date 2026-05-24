@@ -100,12 +100,16 @@ class Merman : public Enemy
 {
 public:
 	void update() override;
+	void groundCollision(vector<Rectangle> floorRec) override;
+	void smartMovement(vector<Rectangle> solidRects) override;
 	Merman(Vector2 pos);
 	~Merman();
 private:
-	enum class MermanState { SHOT, WALK };
-	MermanState state = MermanState::SHOT;
+	enum class MermanState { SPAWN, RETURN, SHOT, WALK, COOLDOWN };
+	MermanState state = MermanState::SPAWN;
 	const float speed = 40.0f;
+	Timer shotTimer{ 2 };
+	Timer shotCooldown{ 0.5 };
 };
 
 //SHIELD KNIGHT
