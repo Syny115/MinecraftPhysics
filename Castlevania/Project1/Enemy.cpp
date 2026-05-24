@@ -42,7 +42,7 @@ Enemy::~Enemy()
 void Enemy::smartMovement(vector<Rectangle> solidRects) {
 	wallCollider =  { position.x -2 + (float) (size.x/2 + 4) * direction, position.y + -8, 4, 16 };
 	floorCollider = { position.x - 2 + (float)(size.x / 2 + 4) * direction, position.y + 16, 4, 4 };
-	if (!isOnFloor) return;
+	
 	
 	
 	int len = solidRects.size();
@@ -52,6 +52,7 @@ void Enemy::smartMovement(vector<Rectangle> solidRects) {
 	if (i != -1) {
 		direction *= -1;
 	}
+	if (!isOnFloor) return;
 	predictedRec = floorCollider;
 	predictedRec.y += velocity.y * deltaTime;
 
