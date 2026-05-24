@@ -47,13 +47,19 @@ Q / E → Cycle secondary weapon
 Hold SHIFT while pressing enter in the START screen to enter debug mode!
 
 F1 -> Go through exit 0 (usually the previous room)
+
 F2 -> Go through exit 1 
+
 F3 -> Go through exit 2
+
 F4 -> Go through exit 3
+
 F5 -> Reload room
 
 F6 -> Maximize health
+
 F7 -> Kill all enemies (doesn't work on the boss)
+
 F8 -> Unlock all upgrades!
 
 ## Got lost? Here's a map!
