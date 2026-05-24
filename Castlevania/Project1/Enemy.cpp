@@ -78,9 +78,9 @@ void Enemy::update() {
 	}
 	Vector2 temp = GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera());
 	Rectangle screen = { -GetScreenWidth() / 2, -GetScreenHeight() / 2, GetScreenWidth() * 2, GetScreenHeight() * 2 };
-	if (!CheckCollisionPointRec(temp, screen) && !isBoss)
+	if ((!CheckCollisionPointRec(temp, screen) || position.y == GameManager::getInstance().getActiveScene()->getWorldHeight()) && !isBoss)
 	{
-		//TODO implement unloading for monsters that do not infinately despawm
+		//TODO implement unloading for monsters that do not infinately spawm
 		health = 0;
 		offCamera = true;
 	}
@@ -109,7 +109,7 @@ void Enemy::hitCollision(vector<damageRect>& dmgRect) {
 
 }
 
-// ZOMBIE //por hacer: que cambie de dirección al llegar a un muro
+// ZOMBIE 
 Zombie::Zombie(Vector2 pos)
 {
 	sprite = new SpriteRenderer("resources/sprites/enemies_sprites.png", SpriteRenderer::ZOMBIE);
