@@ -79,7 +79,7 @@ F8 -> Unlock all upgrades!
 
 ## Features
 
-Move, jump, climbing up and down stairs, crouching, whip (main weapon), whip upgrades, daggers and axe (subweapons), destructible objects, loot  system, enemies: zombie, bat, panther, medusa and bat boss, UI and OST and music effects.
+Move, jump, climbing up and down stairs, crouching, whip (main weapon), whip upgrades, daggers, boomerang and axe (subweapons), destructible objects, loot  system, enemies: zombie, bat, panther, medusa, merman, shield knight, spear knight and bat boss, UI and OST and music effects.
 
 Assets by Nintendo.
 
