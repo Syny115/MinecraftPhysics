@@ -713,6 +713,7 @@ void CreditsScene::updateScene() {
 	else {
 		castle->setAnimation("castleDestroy");
 		credits->setAnimation("blank");
+		GameManager::getInstance().getGamePointer()->publicPlayMusic(-1);
 	}
 	
 	
