@@ -27,7 +27,7 @@ private:
 
     int findAnimation(const string& name) const;
 public:
-    enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BAT_BOSS, MEDUSA, MERMAN, KNIGHT, SPEAR_KNIGHT, LOOT, PANTHER, WHIP, BREAKABLES, PROJECTILES, PARTICLES, HIT_EFFECT, DEBUG_TILE, SAVE };
+    enum Type { PLAYER_TOP, PLAYER_BOTTOM, ZOMBIE, BAT, BAT_BOSS, MEDUSA, MERMAN, KNIGHT, SPEAR_KNIGHT, LOOT, PANTHER, WHIP, BREAKABLES, PROJECTILES, PARTICLES, HIT_EFFECT, DEBUG_TILE, SAVE, CUTSCENE };
 
     SpriteRenderer() : currentFrame(0), frameTimer(0), flipX(false) {}
     SpriteRenderer(const char* path, int spriteType);
@@ -38,6 +38,8 @@ public:
     void update(float deltaTime);                   // avanza el timer
     void draw(Vector2 position);                    // dibuja el frame actual
     void draw(Vector2 position, float scale); // mismo que draw pero con scale
+
     string getAnimation() { return currentAnimName; }
     Animation getAnimationFromName(string can) { return animationLibrary[findAnimation(can)]; }
+    int getCurrentFrame() { return currentFrame; }
 };

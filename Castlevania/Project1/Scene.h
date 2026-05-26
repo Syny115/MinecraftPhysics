@@ -232,3 +232,48 @@ public:
 private:
 };
 
+// CREDITS SCREEN
+
+class CreditsScene : public Scene
+{
+public:
+	CreditsScene();
+	~CreditsScene();
+	void updateScene() override;
+	void drawScene() override;
+private:
+	SpriteRenderer* castle = nullptr;
+	SpriteRenderer* credits = nullptr;
+	Texture2D background;
+
+	string creditAnims[20] = {"cred_0-a", "cred_0-b", "cred_1-a", "cred_1-b", "cred_2-a", "cred_2-b", 
+							"cred_3-a", "cred_3-b", "cred_4-a", "cred_4-b", "cred_5-a", "cred_5-b", 
+							"cred_6-a", "cred_6-b", "cred_7-a", "cred_7-b", "cred_8-a", "cred_8-b", "cred_9-a", "cred_9-b" };
+	int curCred = 0;
+
+	Timer credTimer{ 1 };
+
+};
+
+// CUTSCENE SCREEN
+
+class CutScene : public Scene
+{
+public:
+	CutScene();
+	~CutScene();
+	void updateScene() override;
+	void drawScene() override;
+private:
+	SpriteRenderer* simon = nullptr;
+	SpriteRenderer* cloud1 = nullptr;
+	SpriteRenderer* cloud2 = nullptr;
+	SpriteRenderer* bat = nullptr;
+	Texture2D background;
+
+	
+
+	
+
+};
+

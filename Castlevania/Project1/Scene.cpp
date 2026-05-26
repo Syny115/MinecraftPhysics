@@ -570,7 +570,7 @@ void TitleScene::updateScene() {
 		setup = true;
 	}
 	if (IsKeyPressed(KEY_ENTER) && IsKeyDown(KEY_LEFT_SHIFT)) { GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE); GameManager::getInstance().debugMode = true; }
-	else if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE);
+	else if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::CUTSCENE);
 }
 
 void TitleScene::drawScene() {
@@ -611,7 +611,7 @@ void LevelScene::updateScene() {
 	}
 	else {
 		triangleCenter = { 48 - 16-8, 48+20 };
-		if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
+		if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::CUTSCENE);
 	}
 }
 
@@ -664,6 +664,118 @@ void LoreScene::drawScene() {
 	ui.drawTextFromTexture("Joao de Queiroz. Our bossman", 0, { 12.0f * cz, 144.0f * cz }, { 0, 0 }, 1, -1, WHITE);
 	ui.drawTextFromTexture("is Rodrigo de Pedro", 0, { 12.0f * cz, 160.0f * cz }, { 0, 0 }, 1, -1, WHITE);
 	ui.drawTextFromTexture("Press start, dingus!", 1, { 12.0f * cz, 192.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+}
+
+
+// CREDITS screen
+
+CreditsScene::CreditsScene()
+{
+	type = SceneType::CREDITS;
+	camera.zoom = screenWidth / viewportWidth;
+	background = LoadTexture("resources/sprites/cutscenes_sprites.png");
+	castle = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	credits = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+}
+
+CreditsScene::~CreditsScene()
+{
+	delete castle;
+	delete credits;
+	UnloadTexture(background);
+}
+
+void CreditsScene::updateScene() {
+	if (!setup) {
+		ui.initUI();
+		setup = true;
+	}
+	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::TITLE);
+	castle->update(GetFrameTime());
+	credits->update(GetFrameTime());
+	credTimer.updateTimer();
+
+	if (castle->getCurrentFrame() == 9 || castle->getAnimation() == "castle") castle->setAnimation("castle");
+	else castle->setAnimation("castleDestroy");
+	credits->setAnimation(creditAnims[curCred]);
+
+	if (curCred < 19) {
+		if (credits->getCurrentFrame() == 3) curCred++;
+		else if (credTimer.isTriggerd()) {
+			curCred++;
+		}
+	}
+
+	
+	if (curCred % 2 == 0 && !credTimer.isActive()) credTimer.startTimer();
+
+
+}
+
+void CreditsScene::drawScene() {
+	ClearBackground(BLACK);
+	camera.offset = { 0 , 0};
+	float cz = camera.zoom;
+	
+	BeginMode2D(camera);
+		DrawTextureRec(background, { 0, 576, 256, 224 }, Vector2Zero(), WHITE);
+		castle->draw({160, 32});
+		credits->draw({16, 48});
+	EndMode2D();
+
+}
+
+// CUTSCENE screen
+
+CutScene::CutScene()
+{
+	type = SceneType::CREDITS;
+	camera.zoom = screenWidth / viewportWidth;
+	background = LoadTexture("resources/sprites/cutscenes_sprites.png");
+	simon = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	cloud1 = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	cloud2 = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	bat = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+}
+
+CutScene::~CutScene()
+{
+	delete simon;
+	delete cloud1;
+	delete cloud2;
+	delete bat;
+	UnloadTexture(background);
+}
+
+void CutScene::updateScene() {
+	if (!setup) {
+		ui.initUI();
+		setup = true;
+	}
+	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
+	simon->update(GetFrameTime());
+	cloud1->update(GetFrameTime());
+	cloud2->update(GetFrameTime());
+	bat->update(GetFrameTime());
+
+
+
+
+}
+
+void CutScene::drawScene() {
+	ClearBackground(BLACK);
+	camera.offset = { 0 , 0};
+	float cz = camera.zoom;
+	
+	BeginMode2D(camera);
+		DrawTextureRec(background, { 0, 400, 256, 176 }, {0, 24}, WHITE);
+		simon->draw({160, 32});
+		cloud1->draw({16, 48});
+		cloud2->draw({16, 48});
+		bat->draw({16, 48});
+	EndMode2D();
+
 }
 
 
