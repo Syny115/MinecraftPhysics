@@ -231,8 +231,14 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         currentAnimName = "savepoint";
         break;
     case CUTSCENE:
-        add("castleDestroy", 10, 256, 576, 64, 80, 0, 3);
+        add("castleDestroy", 10, 256, 576, 64, 80, 0, 5);
         add("castle", 1, 832, 576, 64, 80, 0, 1);
+
+        add("simonWalk", 3, 256, 416, 16, 32, 0, 9);
+        add("simonLook", 1, 256, 448, 16, 32, 0, 1);
+        add("bat", 2, 256, 400, 8, 8, 0, 16);
+        add("cloud", 1, 256+16, 400, 32, 16, 0, 1);
+
         add("cred_0-a", 4, 0, 0, 128, 72, 0, 5);
         add("cred_0-b", 1, 384, 0, 128, 72, 0, 1);
         add("cred_1-a", 4, 512, 0, 128, 72, 0, 5);
@@ -257,6 +263,8 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("cred_8-b", 1, 384, 320, 128, 72, 0, 1);
         add("cred_9-a", 4, 512, 320, 128, 72, 0, 5);
         add("cred_9-b", 1, 512+384, 320, 128, 72, 0, 1);
+
+        add("blank", 1, 0, 0, 0, 0, 0, 1);
 
         currentAnimName = "castleDestroy";
     default:

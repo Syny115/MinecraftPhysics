@@ -570,7 +570,7 @@ void TitleScene::updateScene() {
 		setup = true;
 	}
 	if (IsKeyPressed(KEY_ENTER) && IsKeyDown(KEY_LEFT_SHIFT)) { GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE); GameManager::getInstance().debugMode = true; }
-	else if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::CUTSCENE);
+	else if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LORE);
 }
 
 void TitleScene::drawScene() {
@@ -613,6 +613,7 @@ void LevelScene::updateScene() {
 		triangleCenter = { 48 - 16-8, 48+20 };
 		if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::CUTSCENE);
 	}
+	GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::NAME_ENTRY);
 }
 
 void LevelScene::drawScene() {
@@ -647,6 +648,7 @@ void LoreScene::updateScene() {
 		ui.initUI();
 		setup = true;
 	}
+	GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::NAME_ENTRY);
 	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::LEVEL_SELECT);
 }
 
@@ -689,26 +691,34 @@ void CreditsScene::updateScene() {
 	if (!setup) {
 		ui.initUI();
 		setup = true;
+		GameManager::getInstance().getGamePointer()->publicPlaySound(Game::CASTLE_DESTRUCTION);
 	}
 	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::TITLE);
 	castle->update(GetFrameTime());
 	credits->update(GetFrameTime());
 	credTimer.updateTimer();
 
-	if (castle->getCurrentFrame() == 9 || castle->getAnimation() == "castle") castle->setAnimation("castle");
-	else castle->setAnimation("castleDestroy");
-	credits->setAnimation(creditAnims[curCred]);
-
-	if (curCred < 19) {
-		if (credits->getCurrentFrame() == 3) curCred++;
-		else if (credTimer.isTriggerd()) {
-			curCred++;
+	if (castle->getCurrentFrame() == 9 || castle->getAnimation() == "castle") {
+		castle->setAnimation("castle");
+		if (curCred < 19) {
+			if (credits->getCurrentFrame() == 3) curCred++;
+			else if (credTimer.isTriggerd()) {
+				curCred++;
+			}
 		}
+		if (curCred % 2 == 0 && !credTimer.isActive()) credTimer.startTimer();
+		GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::VOYAGER);
+		credits->setAnimation(creditAnims[curCred]);
 	}
+	else {
+		castle->setAnimation("castleDestroy");
+		credits->setAnimation("blank");
+	}
+	
+	
+	
 
 	
-	if (curCred % 2 == 0 && !credTimer.isActive()) credTimer.startTimer();
-
 
 }
 
@@ -733,34 +743,52 @@ CutScene::CutScene()
 	camera.zoom = screenWidth / viewportWidth;
 	background = LoadTexture("resources/sprites/cutscenes_sprites.png");
 	simon = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
-	cloud1 = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
-	cloud2 = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
-	bat = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	cloud = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	bat2 = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	bat1 = new SpriteRenderer("resources/sprites/cutscenes_sprites.png", SpriteRenderer::CUTSCENE);
+	cutTimer.startTimer();
 }
 
 CutScene::~CutScene()
 {
 	delete simon;
-	delete cloud1;
-	delete cloud2;
-	delete bat;
+	delete cloud;
+	delete bat2;
+	delete bat1;
 	UnloadTexture(background);
 }
 
 void CutScene::updateScene() {
+	cutTimer.updateTimer();
 	if (!setup) {
 		ui.initUI();
 		setup = true;
 	}
-	if (IsKeyPressed(KEY_ENTER)) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
+	if (IsKeyPressed(KEY_ENTER) || cutTimer.isTriggerd()) GameManager::getInstance().getGamePointer()->sceneMan.requestFirstRoomInArea(0);
 	simon->update(GetFrameTime());
-	cloud1->update(GetFrameTime());
-	cloud2->update(GetFrameTime());
-	bat->update(GetFrameTime());
+	cloud->update(GetFrameTime());
+	bat2->update(GetFrameTime());
+	bat1->update(GetFrameTime());
 
+	
+	cloud->setAnimation("cloud");
+	bat1->setAnimation("bat");
+	bat2->setAnimation("bat");
 
+	cloudPos.x -= GetFrameTime() * 4;
+	
+	bat1Pos.x -= GetFrameTime() * 10;
+	bat1Pos.y += GetFrameTime() * 5;
 
+	bat2Pos.x += GetFrameTime() * 5;
+	bat2Pos.y -= GetFrameTime() * 5;
 
+	if (simonPos.x > 128 - 8) {
+		simon->setAnimation("simonWalk");
+		simonPos.x -= GetFrameTime() * 30;
+	}
+	else simon->setAnimation("simonLook");
+	GameManager::getInstance().getGamePointer()->publicPlayMusic(Game::PROLOGUE);
 }
 
 void CutScene::drawScene() {
@@ -770,10 +798,10 @@ void CutScene::drawScene() {
 	
 	BeginMode2D(camera);
 		DrawTextureRec(background, { 0, 400, 256, 176 }, {0, 24}, WHITE);
-		simon->draw({160, 32});
-		cloud1->draw({16, 48});
-		cloud2->draw({16, 48});
-		bat->draw({16, 48});
+		simon->draw(simonPos);
+		cloud->draw(cloudPos);
+		bat2->draw(bat2Pos);
+		bat1->draw(bat1Pos);
 	EndMode2D();
 
 }

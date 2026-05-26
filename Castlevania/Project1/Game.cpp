@@ -58,6 +58,7 @@ void Game::startGame() {
     soundArray[WEAPON_PICK] = LoadSound("resources/audio/snd_weaponPick.wav");
     soundArray[WHIP] = LoadSound("resources/audio/snd_whip.wav");
     soundArray[RAISE_HEALTH] = LoadSound("resources/audio/snd_raiseHealth.wav");
+    soundArray[CASTLE_DESTRUCTION] = LoadSound("resources/audio/snd_castleDestruction.wav");
 
     //Music
     musicArray[VAMPIRE_KILLER] = LoadMusicStream("resources/audio/mus_vampireKiller.wav");
@@ -78,6 +79,12 @@ void Game::startGame() {
     musicArray[STAGE_CLEAR].looping = true;
     musicArray[MARIO] = LoadMusicStream("resources/audio/mus_mario.wav");
     musicArray[MARIO].looping = true;
+    musicArray[PROLOGUE] = LoadMusicStream("resources/audio/mus_prologue.wav");
+    musicArray[PROLOGUE].looping = false;
+    musicArray[VOYAGER] = LoadMusicStream("resources/audio/mus_voyager.wav");
+    musicArray[VOYAGER].looping = false;
+    musicArray[NAME_ENTRY] = LoadMusicStream("resources/audio/mus_nameEntry.wav");
+    musicArray[NAME_ENTRY].looping = true;
 
     
     float pitch = 0.5f;

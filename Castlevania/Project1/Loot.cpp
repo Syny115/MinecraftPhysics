@@ -69,7 +69,7 @@ bool Loot::playerCollision(Rectangle rec) {
 			GameManager::getInstance().maximizeHealth();
 			GameManager::getInstance().Time.stopTimer();
 			GameManager::getInstance().setBossStarted(false);
-			GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::TITLE);
+			GameManager::getInstance().getGamePointer()->sceneMan.requestSceneLoad(SceneType::CREDITS);
 
 
 			// Deletes all enemies from scene, so copy loottype == 14 code (Or call it)

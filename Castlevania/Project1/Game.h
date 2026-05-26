@@ -9,8 +9,8 @@ class Game {
 private:
 	Scene* activeScene = nullptr;
 	Scene* pendingScene = nullptr;
-	Sound soundArray[11];
-	Music musicArray[10];
+	Sound soundArray[12];
+	Music musicArray[13];
 	int currentSong = -1;
 	bool musFirstGo;
 	float loopPoint;
@@ -19,12 +19,12 @@ private:
 public:
 	enum MUSIC
 	{
-		VAMPIRE_KILLER, PLAYER_MISS, BLACK_NIGHT, STAGE_CLEAR, STALKER, WICKED_CHILD, OUT_OF_TIME, WALKING_ON_THE_EDGE, MARIO
+		VAMPIRE_KILLER, PLAYER_MISS, BLACK_NIGHT, STAGE_CLEAR, STALKER, WICKED_CHILD, OUT_OF_TIME, WALKING_ON_THE_EDGE, MARIO, PROLOGUE, NAME_ENTRY, VOYAGER
 	};
 
 	enum SOUND
 	{
-		WHIP, BREAK, CROSS, DAGGER, HEART, JAR, TREASURE, WEAPON_PICK, AXE, HURT, RAISE_HEALTH
+		WHIP, BREAK, CROSS, DAGGER, HEART, JAR, TREASURE, WEAPON_PICK, AXE, HURT, RAISE_HEALTH, CASTLE_DESTRUCTION
 	};
 
 	
@@ -50,7 +50,7 @@ public:
 
 	void publicPlaySound(int i) {
 		if (!IsAudioDeviceReady()) return;
-		if (i < 0 || i >= 11) {
+		if (i < 0 || i >= 12) {
 			TraceLog(LOG_ERROR, "publicPlaySound: invalid index %d", i);
 			return;
 		}

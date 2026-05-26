@@ -266,14 +266,17 @@ public:
 	void drawScene() override;
 private:
 	SpriteRenderer* simon = nullptr;
-	SpriteRenderer* cloud1 = nullptr;
-	SpriteRenderer* cloud2 = nullptr;
-	SpriteRenderer* bat = nullptr;
+	SpriteRenderer* cloud = nullptr;
+	SpriteRenderer* bat2 = nullptr;
+	SpriteRenderer* bat1 = nullptr;
 	Texture2D background;
 
-	
+	Vector2 simonPos = {256+16, 225-16-32-24};
+	Vector2 bat1Pos = {132, 32};
+	Vector2 bat2Pos = {48, 108};
+	Vector2 cloudPos = {256-48, 24+40};
 
-	
+	Timer cutTimer{ 7 };
 
 };
 
