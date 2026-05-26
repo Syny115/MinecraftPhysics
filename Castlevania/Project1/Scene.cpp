@@ -461,14 +461,13 @@ void PlayableScene::removeProjectile(Projectile* p) {
 	if (p->getOwner() == Projectile::ENEMY) removeEnemyRects(p->getHurtboxPtr());
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i] == p) projectiles.erase(projectiles.begin() + i);
-		GameManager::getInstance().addProjectileCount(-1);
+		if (p->getOwner() == Projectile::PLAYER) GameManager::getInstance().addProjectileCount(-1);
 	}
 }
 
 void PlayableScene::pushProjectile(Projectile* p) { 
 	Rectangle* rec = p->getHurtboxPtr();
 	if (p->getOwner() == Projectile::PLAYER) pushPlayerHitBoxes({ rec, p->getDamage() });
-	if (p->getOwner() == Projectile::ENEMY) pushEnemyRects({ rec, p->getDamage() });
 	if (p->getOwner() == Projectile::ENEMY) pushEnemyRects({ rec, p->getDamage() });
 	projectiles.push_back(p); 
 	 
