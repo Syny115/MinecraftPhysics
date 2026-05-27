@@ -6,6 +6,7 @@ SceneManager::SceneManager() {
 	static room hall1{ "resources/json/hall1.json" };
 	static room hall2{ "resources/json/hall2.json" };
 	static room cavern1{ "resources/json/cavern1.json" };
+	static room cavern2{ "resources/json/cavern2.json" };
 	static room patio{ "resources/json/patio.json" };
 	static room mario{ "resources/json/mario.json" };
 	static room redHall1{ "resources/json/redHall1.json" };
@@ -17,6 +18,7 @@ SceneManager::SceneManager() {
 	allRooms.push_back(&hall1);
 	allRooms.push_back(&hall2);
 	allRooms.push_back(&cavern1);
+	allRooms.push_back(&cavern2);
 	allRooms.push_back(&patio);
 	allRooms.push_back(&redHall1);
 	allRooms.push_back(&redHall2);
@@ -29,6 +31,7 @@ SceneManager::SceneManager() {
 	hall2.area = 0;
 	patio.area = 1;
 	cavern1.area = 2;
+	cavern2.area = 2;
 	redHall1.area = 3;
 	redHall2.area = 3;
 	tower1.area = 4;
@@ -49,12 +52,15 @@ SceneManager::SceneManager() {
 	hall2.exit3 = &patio;
 
 	cavern1.exit0 = &hall2; //ONE WAY
-	cavern1.exit1 = &patio;
+	cavern1.exit1 = &cavern2;
 	cavern1.exit2 = &mario;
+
+	cavern2.exit0 = &cavern1;
+	cavern2.exit1 = &patio;
 
 	patio.exit0 = &hall2;
 	patio.exit2 = &redHall1;
-	patio.exit1 = &cavern1;
+	patio.exit1 = &cavern2;
 
 	redHall2.exit0 = &hall2;
 	redHall2.exit1 = &tower1;
@@ -77,7 +83,7 @@ SceneManager::SceneManager() {
 	//                             |       |					//
 	// null - entrance - hall1 - hall2 - patio					//
 	//                             |      |						//
-	//                          cavern1 - +						//
+	//                        cavern1 - cavern2					//
 	//							   |							//
 	//							 mario							//
 	//==========================================================//	
