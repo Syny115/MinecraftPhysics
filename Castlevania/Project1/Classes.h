@@ -17,7 +17,9 @@ enum class SceneType {
     TITLE,
     LORE,
     PLAYABLE,
-    LEVEL_SELECT
+    LEVEL_SELECT,
+    CREDITS,
+    CUTSCENE
 };
 
 class Timer

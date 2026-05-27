@@ -32,6 +32,7 @@ protected:
 	int direction = 1;
 	bool offCamera;
 
+
 	Rectangle wallCollider;
 	Rectangle floorCollider;
 };

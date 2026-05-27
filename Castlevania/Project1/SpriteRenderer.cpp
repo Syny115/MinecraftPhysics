@@ -230,6 +230,43 @@ SpriteRenderer::SpriteRenderer(const char* path, int spriteType)
         add("savepoint", 5, 1, 135, 32, 32, 1, 5);
         currentAnimName = "savepoint";
         break;
+    case CUTSCENE:
+        add("castleDestroy", 10, 256, 576, 64, 80, 0, 5);
+        add("castle", 1, 832, 576, 64, 80, 0, 1);
+
+        add("simonWalk", 3, 256, 416, 16, 32, 0, 9);
+        add("simonLook", 1, 256, 448, 16, 32, 0, 1);
+        add("bat", 2, 256, 400, 8, 8, 0, 16);
+        add("cloud", 1, 256+16, 400, 32, 16, 0, 1);
+
+        add("cred_0-a", 4, 0, 0, 128, 72, 0, 5);
+        add("cred_0-b", 1, 384, 0, 128, 72, 0, 1);
+        add("cred_1-a", 4, 512, 0, 128, 72, 0, 5);
+        add("cred_1-b", 1, 512+384, 0, 128, 72, 0, 1);
+
+        add("cred_2-a", 4, 0, 80, 128, 72, 0, 5);
+        add("cred_2-b", 1, 384, 80, 128, 72, 0, 1);
+        add("cred_3-a", 4, 512, 80, 128, 72, 0, 5);
+        add("cred_3-b", 1, 512+384, 80, 128, 72, 0, 1);
+
+        add("cred_4-a", 4, 0, 160, 128, 72, 0, 5);
+        add("cred_4-b", 1, 384, 160, 128, 72, 0, 1);
+        add("cred_5-a", 4, 512, 160, 128, 72, 0, 5);
+        add("cred_5-b", 1, 512+384, 160, 128, 72, 0, 1);
+
+        add("cred_6-a", 4, 0, 240, 128, 72, 0, 5);
+        add("cred_6-b", 1, 384, 240, 128, 72, 0, 1);
+        add("cred_7-a", 4, 512, 240, 128, 72, 0, 5);
+        add("cred_7-b", 1, 512+384, 240, 128, 72, 0, 1);
+
+        add("cred_8-a", 4, 0, 320, 128, 72, 0, 5);
+        add("cred_8-b", 1, 384, 320, 128, 72, 0, 1);
+        add("cred_9-a", 4, 512, 320, 128, 72, 0, 5);
+        add("cred_9-b", 1, 512+384, 320, 128, 72, 0, 1);
+
+        add("blank", 1, 0, 0, 0, 0, 0, 1);
+
+        currentAnimName = "castleDestroy";
     default:
         break;
     }

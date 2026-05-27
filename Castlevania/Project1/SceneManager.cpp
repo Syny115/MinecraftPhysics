@@ -97,6 +97,8 @@ void SceneManager::requestSceneLoad(SceneType type) {
 		case SceneType::TITLE: GameManager::getInstance().getGamePointer()->setPendingScene(new TitleScene()); break;
 		case SceneType::LORE: GameManager::getInstance().getGamePointer()->setPendingScene(new LoreScene()); break;
 		case SceneType::LEVEL_SELECT: GameManager::getInstance().getGamePointer()->setPendingScene(new LevelScene()); break;
+		case SceneType::CREDITS: GameManager::getInstance().getGamePointer()->setPendingScene(new CreditsScene()); break;
+		case SceneType::CUTSCENE: GameManager::getInstance().getGamePointer()->setPendingScene(new CutScene()); break;
 	default: GameManager::getInstance().getGamePointer()->setPendingScene(new TitleScene()); break;
 	}
 	
