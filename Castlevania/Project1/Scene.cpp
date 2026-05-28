@@ -663,9 +663,9 @@ void LoreScene::drawScene() {
 	ui.drawTextFromTexture("Castlevania game with raylib.", 0, { 12.0f * cz, 96.0f * cz }, { 0, 0 }, 1, -1, WHITE);
 	ui.drawTextFromTexture("By Fernando Garcia,", 0, { 12.0f * cz, 112.0f * cz }, { 0, 0 }, 1, -1, WHITE);
 	ui.drawTextFromTexture("Adria Pavon and", 0, { 12.0f * cz, 128.0f * cz }, { 0, 0 }, 1, -1, WHITE);
-	ui.drawTextFromTexture("Joao de Queiroz. Our bossman", 0, { 12.0f * cz, 144.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("Joao de Queiroz. Our teacher", 0, { 12.0f * cz, 144.0f * cz }, { 0, 0 }, 1, -1, WHITE);
 	ui.drawTextFromTexture("is Rodrigo de Pedro", 0, { 12.0f * cz, 160.0f * cz }, { 0, 0 }, 1, -1, WHITE);
-	ui.drawTextFromTexture("Press start, dingus!", 1, { 12.0f * cz, 192.0f * cz }, { 0, 0 }, 1, -1, WHITE);
+	ui.drawTextFromTexture("Press start, and have fun!", 1, { 12.0f * cz, 192.0f * cz }, { 0, 0 }, 1, -1, WHITE);
 }
 
 
