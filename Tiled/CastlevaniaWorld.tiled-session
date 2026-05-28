@@ -1,5 +1,5 @@
 {
-    "activeFile": "patio.tmx",
+    "activeFile": "cavern2.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -8,7 +8,7 @@
             "scaleInDock": 1
         },
         "CastlevaniaTileset.tsx": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 4,
             "scaleInEditor": 1.5
         },
         "Scene1.tmx": {
@@ -23,8 +23,8 @@
             "scale": 2,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 592.5,
-                "y": 155.5
+                "x": 480,
+                "y": 135.75
             }
         },
         "cavern1.tmx": {
@@ -33,6 +33,14 @@
             "viewCenter": {
                 "x": 640,
                 "y": 160.125
+            }
+        },
+        "cavern2.tmx": {
+            "scale": 1,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": -160,
+                "y": 308
             }
         },
         "entrance.tmx": {
@@ -52,11 +60,11 @@
             }
         },
         "hall1.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 776,
-                "y": 95.33333333333334
+                "x": 1441,
+                "y": 82.66666666666667
             }
         },
         "hall2.tmx": {
@@ -64,31 +72,31 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 264,
-                "y": 176.25
+                "y": 175.75
             }
         },
         "mario.tmx": {
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 2711,
-                "y": 160
+                "x": 1600,
+                "y": 111.75
             }
         },
         "patio.tmx": {
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 3,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1438,
-                "y": 382
+                "x": 641.6666666666666,
+                "y": 580.6666666666666
             }
         },
         "redHall1.tmx": {
             "scale": 0.33,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.3939393939395,
-                "y": 396.969696969697
+                "x": 239.39393939393938,
+                "y": 398.4848484848485
             }
         },
         "redHall2.tmx": {
@@ -96,7 +104,7 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 320,
-                "y": 406.6666666666667
+                "y": 407.3333333333333
             }
         },
         "tower1.tmx": {
@@ -104,20 +112,20 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 800,
-                "y": 480.5
+                "y": 480.25
             }
         },
         "tower2.tmx": {
             "scale": 0.71546875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 799.4758680934702,
-                "y": 480.104826381306
+                "x": 799.4758680934701,
+                "y": 480.10482638130605
             }
         }
     },
-    "last.exportedFilePath": "C:/Users/joaodqn/Documents/GitHub/MinecraftPhysics/Castlevania/Project1/resources/json",
-    "map.lastUsedExportFilter": "Todos los archivos (*)",
+    "last.exportedFilePath": "C:/Users/Mina/Documents/GitHub/MinecraftPhysics/Castlevania/Project1/resources/json",
+    "map.lastUsedExportFilter": "All Files (*)",
     "openFiles": [
         "Scene1.tmx",
         "CastlevaniaTileset.tsx",
@@ -132,7 +140,8 @@
         "redHall1.tmx",
         "redHall2.tmx",
         "tower1.tmx",
-        "tower2.tmx"
+        "tower2.tmx",
+        "cavern2.tmx"
     ],
     "project": "CastlevaniaWorld.tiled-project",
     "recentFiles": [
@@ -145,8 +154,8 @@
         "hall1.tmx",
         "hall2.tmx",
         "mario.tmx",
-        "tower2.tmx",
-        "tower1.tmx",
+        "patio.tmx",
+        "redHall1.tmx",
         "redHall2.tmx"
     ]
 }

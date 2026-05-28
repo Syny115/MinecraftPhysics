@@ -78,7 +78,7 @@ void Enemy::update() {
 	}
 	Vector2 temp = GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera());
 	Rectangle screen = { -GetScreenWidth() / 2, -GetScreenHeight() / 2, GetScreenWidth() * 2, GetScreenHeight() * 2 };
-	if ((!CheckCollisionPointRec(temp, screen) || position.y == GameManager::getInstance().getActiveScene()->getWorldHeight()) && !isBoss)
+	if ((!(temp.x > screen.x && temp.x < screen.width + screen.x) || position.y == GameManager::getInstance().getActiveScene()->getWorldHeight()) && !isBoss)
 	{
 		//TODO implement unloading for monsters that do not infinately spawm
 		health = 0;
@@ -350,14 +350,13 @@ void ShieldKnight::update() {
 	attackTimer.updateTimer();
 
 	if (attackTimer.isTriggerd()) {
-		if ((playerX - position.x) *direction > 0) GameManager::getInstance().getActiveScene()->pushProjectile(new Boomerang(position, direction, Projectile::ENEMY, &hurtbox));
+		Vector2 temp = GetWorldToScreen2D(position, GameManager::getInstance().getActiveScene()->getCamera());
+		Rectangle screen = { 0, 0, GetScreenWidth(), GetScreenHeight() };
+
+		if ((playerX - position.x) *direction > 0 && CheckCollisionPointRec(temp, screen)) GameManager::getInstance().getActiveScene()->pushProjectile(new Boomerang(position, direction, Projectile::ENEMY, &hurtbox));
 		attackTimer.startTimer();
 	}
 
-
-	//if (() isHittable = true;
-	
-	//else isHittable = false;
 
 	Enemy::update();
 	lateUpdate();
