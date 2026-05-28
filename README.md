@@ -6,11 +6,12 @@ This is Project 1 of Bachelor's degree in Video Game Design and Development at C
 
 ## Installation
 
-Extract and double click ya dummy!
+Extract and double click!
 
 ## 1 minute video gameplay
 
-https://youtu.be/\_H48EHIys4I
+Assignment 2- https://youtu.be/\_H48EHIys4I
+Assignment 3- 
 
 ## Credits
 
@@ -72,10 +73,10 @@ F8 -> Unlock all upgrades!
 	//                             |       |					//
 	// null - entrance - hall1 - hall2 - patio					//
 	//                             |      |						//
-	//                          cavern1 - +						//
+	//                        cavern1 - cavern2					//
 	//							   |							//
-	//							 ?????							//
-	//==========================================================//
+	//							 mario							//
+	//==========================================================//	
 
 ## Features
 
